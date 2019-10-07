@@ -18,18 +18,31 @@ def gen_random_object_id():
     rest = binascii.b2a_hex(os.urandom(8)).decode('ascii')
     return timestamp + rest
 
+class WippImageCollection():
+    def __init__(self, json):
+        self.json = json
+        
+        self.id = self.json['id']
+        self.name = self.json['name']
+        
+    def __repr__(self):
+        return f'{self.id}\t{self.name}'
+
 class wipp:
 
+    def __init__(self, make):
+        self.api_route = 'http://wipp-backend:8080/api'
+        self.wipp_ui_url = os.getenv('WIPP_UI_URL') #i.e. http://wipp-ui.ci.aws.labshare.org/notebooks/
+        self.notebooks_path = '/opt/shared/wipp/temp/notebooks'
+
     def register_notebook(self, notebook_path, name, description):
-        api_route = 'http://wipp-backend:8080/api/notebooks/'
-        notebooks_path = '/opt/shared/wipp/temp/notebooks'
-        wipp_ui_url = os.getenv('WIPP_UI_URL') #i.e. http://wipp-ui.ci.aws.labshare.org/notebooks/
-        
+        notebooks_api_route = os.path.join(self.api_route, 'notebooks')
+
         #Generate random ObjectID for notebook
         object_id = gen_random_object_id()
         
         #Create destination folder in WIPP
-        dest_folder = os.path.join(notebooks_path, object_id)
+        dest_folder = os.path.join(self.notebooks_path, object_id)
         if not os.path.exists(dest_folder):
             os.makedirs(dest_folder)
 
@@ -38,7 +51,7 @@ class wipp:
         shutil.copy(notebook_path, dest_path)
 
         #Send API request to WIPP to register notebook
-        url = api_route + 'import'
+        url = os.path.join(notebooks_api_route, 'import')
         querystring = {
            "folderName":object_id,
            "name":name,
@@ -51,11 +64,34 @@ class wipp:
             response_json = response.json()
             
             #Append workflow URL information
-            response_json["url"] = wipp_ui_url
+            response_json["url"] = self.wipp_ui_url
 
             result["info"] = response_json
         elif response.status_code == 400:
             result["error"] = response.text
         return result
+    
+    def get_image_collections_summary(self):
+        r = requests.get(os.path.join(self.api_route, 'imagesCollections'))
+        if r.status_code==200:
+            total_pages = r.json()['page']['totalPages']
+            page_size = r.json()['page']['size']
+            
+            return (total_pages, page_size)
+
+    def get_image_collections_page(self, index):
+        r = requests.get(os.path.join(self.api_route, 'imagesCollections', f'?page={index}'))
+        if r.status_code==200:
+            collections_page = r.json()['_embedded']['imagesCollections']
+            return [WippImageCollection(collection) for collection in collections_page]
+    
+    def get_image_collections_all_pages(self):
+        total_pages, _ = self.get_image_collections_summary()
+        return [self.get_image_collections_page(page) for page in range(total_pages)]
         
+
+    def get_image_collections(self):
+        
+
+
         
