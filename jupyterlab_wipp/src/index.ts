@@ -1,5 +1,5 @@
 import { JupyterFrontEnd, JupyterFrontEndPlugin, ILabShell } from '@jupyterlab/application';
-import { ICommandPalette, MainAreaWidget, showDialog, Dialog } from '@jupyterlab/apputils'
+import { ICommandPalette, showDialog, Dialog } from '@jupyterlab/apputils'
 import { IMainMenu } from '@jupyterlab/mainmenu'
 import { INotebookTracker } from '@jupyterlab/notebook'
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
