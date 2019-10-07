@@ -16,7 +16,7 @@ class InfoCheckHandler(WippHandler):
         }))
 
 
-class WippRegister(WippHandler):
+class WippRegisterNotebook(WippHandler):
     def post(self):
         """
         POST request handler, registers notebook in WIPP
@@ -33,11 +33,19 @@ class WippRegister(WippHandler):
         
         self.finish(json.dumps(response))
 
+class WippImageCollections(WippHandler):
+    def get(self):
+        """
+        """
+        response = self.wipp.get_image_collections_all_pages()
+        self.finish(json.dumps(response))
+        
 
 def setup_handlers(web_app):
     handlers = [
         ('/wipp/info', InfoCheckHandler),
-        ('/wipp/register', WippRegister)
+        ('/wipp/register', WippRegisterNotebook),
+        ('/wipp/imageCollections', WippImageCollections)
     ]
     base_url = web_app.settings['base_url']
     handlers = [(url_path_join(base_url, x[0]), x[1]) for x in handlers]
