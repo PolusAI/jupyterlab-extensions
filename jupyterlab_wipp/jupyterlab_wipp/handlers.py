@@ -37,7 +37,7 @@ class WippImageCollections(WippHandler):
     def get(self):
         """
         """
-        response = self.wipp.get_image_collections_all_pages()
+        response = self.wipp.get_image_collections()
         self.finish(json.dumps(response))
         
 

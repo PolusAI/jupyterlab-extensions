@@ -91,6 +91,7 @@ class wipp:
         
 
     def get_image_collections(self):
+        return [collection.json for collection in sum(self.get_image_collections_all_pages(), [])]
         
 
 
