@@ -1,3 +1,10 @@
 .wipp-WippLogo {
     background-image: url(logo-wipp.svg);
 }
+
+.wipp-WippSidebar {
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    overflow: auto;
+  }

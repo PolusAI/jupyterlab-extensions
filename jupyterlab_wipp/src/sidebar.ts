@@ -1,4 +1,4 @@
-import { Widget, PanelLayout } from '@phosphor/widgets';
+import { Widget } from '@phosphor/widgets';
 
 /**
  * Sidebar widget for displaying WIPP image collections.
@@ -9,6 +9,7 @@ export class WippSidebar extends Widget {
      */
     constructor() {
         super();
+        this.addClass('wipp-WippSidebar');
         //let layout = (this.layout = new PanelLayout());
         //layout.addWidget(this._dashboard);
     }
