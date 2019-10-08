@@ -100,9 +100,11 @@ function activate(
 
   // Create the WIPP sidebar panel
   const sidebar = new WippSidebar();
+  sidebar.id = 'wipp-labextension:plugin';
   sidebar.title.iconClass = 'wipp-WippLogo jp-SideBar-tabIcon';
   sidebar.title.caption = 'WIPP';
 
+  // Register sidebar panel with JupyterLab
   labShell.add(sidebar, 'left', { rank: 200 });
 }
 
