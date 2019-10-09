@@ -8,3 +8,13 @@
     font-size: var(--jp-ui-font-size1);
     overflow: auto;
   }
+
+.wipp-WippSidebar-table {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 8px;
+    padding: 0;
+    list-style-type: none;
+  }
