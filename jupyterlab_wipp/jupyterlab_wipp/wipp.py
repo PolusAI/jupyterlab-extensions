@@ -30,7 +30,7 @@ class WippImageCollection():
 
 class wipp:
 
-    def __init__(self, make):
+    def __init__(self):
         self.api_route = 'http://wipp-backend:8080/api'
         self.wipp_ui_url = os.getenv('WIPP_UI_URL') #i.e. http://wipp-ui.ci.aws.labshare.org/notebooks/
         self.notebooks_path = '/opt/shared/wipp/temp/notebooks'
