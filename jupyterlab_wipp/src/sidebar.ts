@@ -1,7 +1,7 @@
 import { Widget, PanelLayout } from '@phosphor/widgets';
 import { ServerConnection } from '@jupyterlab/services';
 import { URLExt } from '@jupyterlab/coreutils';
-import { Drag } from '@phosphor/dragdrop';
+//import { Drag } from '@phosphor/dragdrop';
 
 function ApiRequest<T>(
     url: string,
