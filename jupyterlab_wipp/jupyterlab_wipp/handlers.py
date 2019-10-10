@@ -38,6 +38,7 @@ class WippImageCollections(WippHandler):
         """
         """
         response = self.wipp.get_image_collections()
+        
         self.finish(json.dumps(response))
         
 
