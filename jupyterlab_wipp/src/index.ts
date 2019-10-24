@@ -34,8 +34,6 @@ function activate(
 
   // Show dialogs and register notebooks
   function registerByPath(path: string): void {
-    path = '/home/jovyan/' + path; //append default path
-
     // Launch dialog form to collect notebook name and description
     showDialog(
       {
