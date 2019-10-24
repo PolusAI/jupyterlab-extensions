@@ -40,6 +40,7 @@ class wipp:
 
     def register_notebook(self, notebook_path, name, description):
         notebooks_api_route = os.path.join(self.api_route, 'notebooks')
+        notebook_path = os.path.join(os.environ['HOME'], notebook_path) #append default path
 
         #Generate random ObjectID for notebook
         object_id = gen_random_object_id()
