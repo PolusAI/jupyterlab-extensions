@@ -2,6 +2,7 @@ import { JupyterFrontEnd, JupyterFrontEndPlugin, ILabShell } from '@jupyterlab/a
 import { ICommandPalette, showDialog, Dialog } from '@jupyterlab/apputils'
 import { IMainMenu } from '@jupyterlab/mainmenu'
 import { INotebookTracker } from '@jupyterlab/notebook'
+import { IConsoleTracker } from '@jupyterlab/console';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 // import { Widget } from '@phosphor/widgets';
 import { WippSidebar } from './sidebar';
@@ -26,7 +27,8 @@ function activate(
   mainMenu: IMainMenu,
   notebookTracker: INotebookTracker,
   factory: IFileBrowserFactory,
-  labShell: ILabShell
+  labShell: ILabShell,
+  consoleTracker: IConsoleTracker,
 ): void {
   console.log('JupyterLab extension jupyterlab_wipp is activated!');
 
@@ -99,7 +101,7 @@ function activate(
   });
 
   // Create the WIPP sidebar panel
-  const sidebar = new WippSidebar();
+  const sidebar = new WippSidebar(app, notebookTracker, consoleTracker);
   sidebar.id = 'wipp-labextension:plugin';
   sidebar.title.iconClass = 'wipp-WippLogo jp-SideBar-tabIcon';
   sidebar.title.caption = 'WIPP';
