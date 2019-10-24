@@ -31,9 +31,12 @@ class WippImageCollection():
 class wipp:
 
     def __init__(self):
-        self.api_route = 'http://wipp-backend:8080/api'
+        # WIPP UI URL -- env variable required
         self.wipp_ui_url = os.getenv('WIPP_UI_URL') #i.e. http://wipp-ui.ci.aws.labshare.org/notebooks/
-        self.notebooks_path = '/opt/shared/wipp/temp/notebooks'
+
+        # Other configurable variables: if no env variable provided, take default value
+        self.api_route = os.getenv('WIPP_API_INTERNAL_URL') if "WIPP_API_INTERNAL_URL" in os.environ else 'http://wipp-backend:8080/api'
+        self.notebooks_path = os.getenv('WIPP_NOTEBOOKS_PATH') if "WIPP_NOTEBOOKS_PATH" in os.environ else "/opt/shared/wipp/temp/notebooks"
 
     def register_notebook(self, notebook_path, name, description):
         notebooks_api_route = os.path.join(self.api_route, 'notebooks')
