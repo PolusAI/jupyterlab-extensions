@@ -1,3 +1,7 @@
+import { JupyterFrontEnd } from '@jupyterlab/application';
+import { INotebookTracker, NotebookActions, NotebookPanel } from '@jupyterlab/notebook'
+import { ConsolePanel, IConsoleTracker } from '@jupyterlab/console';
+import { CodeEditor } from '@jupyterlab/codeeditor';
 import { Widget, PanelLayout } from '@phosphor/widgets';
 import { ServerConnection } from '@jupyterlab/services';
 import { URLExt } from '@jupyterlab/coreutils';
@@ -41,7 +45,11 @@ export class WippSidebar extends Widget {
     /**
      * Create a new WIPP sidebar.
      */
-    constructor() {
+    constructor(
+      app: JupyterFrontEnd,
+      notebookTracker: INotebookTracker,
+      consoleTracker: IConsoleTracker,
+    ) {
         super();
         this.addClass('wipp-WippSidebar');
         let layout = (this.layout = new PanelLayout());
@@ -51,9 +59,10 @@ export class WippSidebar extends Widget {
         const settings = ServerConnection.makeSettings();
         const requestUrl = URLExt.join(settings.baseUrl, '/wipp/imageCollections');
 
+        // Display results of API request
         ApiRequest<IWippImageCollection[]>(requestUrl, {}, settings)
         .then((objectArray) => {
-            let fieldTitles: string[] = ['Name', 'ID', '# of images', 'Total size'];
+            let fieldTitles: string[] = ['Name', 'ID', '# of images', 'Total size', ''];
 
             const wrapper = new Widget();
             wrapper.addClass('wipp-WippSidebar-table');
@@ -86,6 +95,23 @@ export class WippSidebar extends Widget {
                 var td = document.createElement('td');
                 td.appendChild(document.createTextNode(object.imagesTotalSize.toString()));
                 tr.appendChild(td);
+                var td = document.createElement('td');
+                var button = document.createElement("button");
+                button.innerHTML = "Add code";
+                button.addEventListener ("click", function() {
+                  const id = object.id;
+                  console.log(id);
+
+                  //Inject the code in the editor
+                  const editor = getCurrentEditor(
+                    app,
+                    notebookTracker,
+                    consoleTracker
+                  );
+                  insertInputPath(editor, "'/opt/shared/wipp/collections/"+id+"/images/'");
+                });
+                td.appendChild(button);
+                tr.appendChild(td);
 
                 tbdy.appendChild(tr);    
             });
@@ -98,4 +124,53 @@ export class WippSidebar extends Widget {
     }
 
     private _table: HTMLTableElement;
+}
+
+
+/**
+   * Insert collection input path.
+   */
+  export function insertInputPath(
+    editor: CodeEditor.IEditor,
+    collection_path: string
+  ): void {
+    const cursor = editor.getCursorPosition();
+    const offset = editor.getOffsetAt(cursor);
+    const code = `input_path = ${collection_path}`;
+    editor.model.value.insert(offset, code);
+  }
+
+/**
+ * Get the currently focused editor in the application,
+ * checking both notebooks and consoles.
+ * In the case of a notebook, it creates a new cell above the currently
+ * active cell and then returns that.
+ */
+export function getCurrentEditor(
+  app: JupyterFrontEnd,
+  notebookTracker: INotebookTracker,
+  consoleTracker: IConsoleTracker
+): CodeEditor.IEditor | null | undefined {
+  // Get a handle on the most relevant kernel,
+  // whether it is attached to a notebook or a console.
+  let current = app.shell.currentWidget;
+  let editor: CodeEditor.IEditor | null | undefined;
+  if (current && notebookTracker.has(current)) {
+    NotebookActions.insertAbove((current as NotebookPanel).content);
+    const cell = (current as NotebookPanel).content.activeCell;
+    editor = cell && cell.editor;
+  } else if (current && consoleTracker.has(current)) {
+    const cell = (current as ConsolePanel).console.promptCell;
+    editor = cell && cell.editor;
+  } else if (notebookTracker.currentWidget) {
+    const current = notebookTracker.currentWidget;
+    NotebookActions.insertAbove(current.content);
+    const cell = current.content.activeCell;
+    editor = cell && cell.editor;
+  } else if (consoleTracker.currentWidget) {
+    const current = consoleTracker.currentWidget;
+    const cell = current.console.promptCell;
+    editor = cell && cell.editor;
+  }
+  return editor;
 }
