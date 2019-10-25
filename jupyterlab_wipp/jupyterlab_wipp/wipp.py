@@ -32,7 +32,7 @@ class wipp:
 
     def __init__(self):
         # WIPP UI URL -- env variable required
-        self.wipp_ui_url = os.getenv('WIPP_UI_URL') #i.e. http://wipp-ui.ci.aws.labshare.org/notebooks/
+        self.wipp_ui_url = os.getenv('WIPP_UI_URL')
         self.notebooks_ui_url = os.path.join(self.wipp_ui_url, 'notebooks/')
         self.imagescollections_ui_url = os.path.join(self.wipp_ui_url, 'images-collections/')
         self.imagescollection_ui_url = os.path.join(self.wipp_ui_url, 'images-collection/')
