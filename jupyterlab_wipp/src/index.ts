@@ -4,12 +4,10 @@ import { IMainMenu } from '@jupyterlab/mainmenu'
 import { INotebookTracker } from '@jupyterlab/notebook'
 import { IConsoleTracker } from '@jupyterlab/console';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-// import { Widget } from '@phosphor/widgets';
 import { WippSidebar } from './sidebar';
 
 import { NotebookInfoForm } from './notebookInfoBox';
 import { WippRegister } from './wippRegister';
-// import { wippTabStyle } from './componentsStyle/WippStyle';
 
 
 export interface INotebookInfo {
@@ -114,7 +112,7 @@ function activate(
 const extension: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_wipp',
   autoStart: true,
-  requires: [ICommandPalette, IMainMenu, INotebookTracker, IFileBrowserFactory, ILabShell],
+  requires: [ICommandPalette, IMainMenu, INotebookTracker, IFileBrowserFactory, ILabShell, IConsoleTracker],
   activate: activate
 };
 

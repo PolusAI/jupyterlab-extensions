@@ -15,6 +15,15 @@ class InfoCheckHandler(WippHandler):
             'data': 'This is /wipp endpoint!'
         }))
 
+class WippUiUrls(WippHandler):
+    def get(self):
+        self.finish(json.dumps({
+            'root': self.wipp.wipp_ui_url,
+            'notebooks': self.wipp.notebooks_ui_url,
+            'imagescollections': self.wipp.imagescollections_ui_url,
+            'imagescollection': self.wipp.imagescollection_ui_url
+        }))
+
 
 class WippRegisterNotebook(WippHandler):
     def post(self):
@@ -45,6 +54,7 @@ class WippImageCollections(WippHandler):
 def setup_handlers(web_app):
     handlers = [
         ('/wipp/info', InfoCheckHandler),
+        ('/wipp/ui_urls', WippUiUrls),
         ('/wipp/register', WippRegisterNotebook),
         ('/wipp/imageCollections', WippImageCollections)
     ]
