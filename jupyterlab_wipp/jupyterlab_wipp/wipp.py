@@ -33,6 +33,9 @@ class wipp:
     def __init__(self):
         # WIPP UI URL -- env variable required
         self.wipp_ui_url = os.getenv('WIPP_UI_URL') #i.e. http://wipp-ui.ci.aws.labshare.org/notebooks/
+        self.notebooks_ui_url = os.path.join(self.wipp_ui_url, 'notebooks/')
+        self.imagescollections_ui_url = os.path.join(self.wipp_ui_url, 'images-collections/')
+        self.imagescollection_ui_url = os.path.join(self.wipp_ui_url, 'images-collection/')
 
         # Other configurable variables: if no env variable provided, take default value
         self.api_route = os.getenv('WIPP_API_INTERNAL_URL') if "WIPP_API_INTERNAL_URL" in os.environ else 'http://wipp-backend:8080/api'
@@ -68,7 +71,7 @@ class wipp:
             response_json = response.json()
             
             #Append workflow URL information
-            response_json["url"] = self.wipp_ui_url
+            response_json["url"] = self.notebooks_ui_url
 
             result["info"] = response_json
         elif response.status_code == 400:

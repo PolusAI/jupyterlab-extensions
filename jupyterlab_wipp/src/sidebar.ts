@@ -5,7 +5,7 @@ import { CodeEditor } from '@jupyterlab/codeeditor';
 import { Widget, PanelLayout } from '@phosphor/widgets';
 import { ServerConnection } from '@jupyterlab/services';
 import { URLExt } from '@jupyterlab/coreutils';
-//import { Drag } from '@phosphor/dragdrop';
+import { Cell } from '@jupyterlab/cells';
 
 function ApiRequest<T>(
     url: string,
@@ -53,16 +53,22 @@ export class WippSidebar extends Widget {
         super();
         this.addClass('wipp-WippSidebar');
         let layout = (this.layout = new PanelLayout());
-        //layout.addWidget(this._dashboard);
+
+        const settings = ServerConnection.makeSettings();
+        var requestUrl = URLExt.join(settings.baseUrl, '/wipp/ui_urls');
+
+        var imagescollection_url: string;
+        // Return results of API request
+        ApiRequest<any>(requestUrl, {}, settings)
+        .then(response => { imagescollection_url = response.imagescollection; })
 
         // Make request to the backend API
-        const settings = ServerConnection.makeSettings();
-        const requestUrl = URLExt.join(settings.baseUrl, '/wipp/imageCollections');
+        requestUrl = URLExt.join(settings.baseUrl, '/wipp/imageCollections');
 
         // Display results of API request
         ApiRequest<IWippImageCollection[]>(requestUrl, {}, settings)
         .then((objectArray) => {
-            let fieldTitles: string[] = ['Name', 'ID', '# of images', 'Total size', ''];
+            let fieldTitles: string[] = ['Name', '# of images', 'Total size', ''];
 
             const wrapper = new Widget();
             wrapper.addClass('wipp-WippSidebar-table');
@@ -84,31 +90,36 @@ export class WippSidebar extends Widget {
                 let tr = document.createElement('tr');
 
                 var td = document.createElement('td');
-                td.appendChild(document.createTextNode(object.name));
-                tr.appendChild(td);
-                var td = document.createElement('td');
-                td.appendChild(document.createTextNode(object.id));
+                // var name = document.createTextNode(object.name);
+                
+                var name = document.createElement('a');
+                name.href = imagescollection_url + object.id;
+                name.target = '_blank';
+                name.appendChild(document.createTextNode(object.name));
+
+                td.appendChild(name);
                 tr.appendChild(td);
                 var td = document.createElement('td');
                 td.appendChild(document.createTextNode(object.numberOfImages.toString()));
                 tr.appendChild(td);
                 var td = document.createElement('td');
-                td.appendChild(document.createTextNode(object.imagesTotalSize.toString()));
+                var sizeof = (bytes: number) => {
+                  if (bytes == 0) { return "0.00 B"; }
+                  var e = Math.floor(Math.log(bytes) / Math.log(1024));
+                  return (bytes/Math.pow(1024, e)).toFixed(0)+' '+' KMGTP'.charAt(e)+'B';
+                }
+                td.appendChild(document.createTextNode(sizeof(object.imagesTotalSize)));
                 tr.appendChild(td);
                 var td = document.createElement('td');
                 var button = document.createElement("button");
-                button.innerHTML = "Add code";
+                button.innerHTML = "Import";
                 button.addEventListener ("click", function() {
-                  const id = object.id;
-                  console.log(id);
-
                   //Inject the code in the editor
-                  const editor = getCurrentEditor(
-                    app,
-                    notebookTracker,
-                    consoleTracker
+                  const editor = getCurrentEditor(app,notebookTracker,consoleTracker
                   );
-                  insertInputPath(editor, "'/opt/shared/wipp/collections/"+id+"/images/'");
+                  if (editor){
+                    insertInputPath(editor, "'/opt/shared/wipp/collections/"+object.id+"/images/'");
+                  };
                 });
                 td.appendChild(button);
                 tr.appendChild(td);
@@ -151,26 +162,16 @@ export function getCurrentEditor(
   notebookTracker: INotebookTracker,
   consoleTracker: IConsoleTracker
 ): CodeEditor.IEditor | null | undefined {
-  // Get a handle on the most relevant kernel,
+  // Get a handle on the most relevant editor,
   // whether it is attached to a notebook or a console.
   let current = app.shell.currentWidget;
-  let editor: CodeEditor.IEditor | null | undefined;
-  if (current && notebookTracker.has(current)) {
+  var cell: Cell;
+  if (current && notebookTracker.has(current)) { //when editing notebook
     NotebookActions.insertAbove((current as NotebookPanel).content);
-    const cell = (current as NotebookPanel).content.activeCell;
-    editor = cell && cell.editor;
-  } else if (current && consoleTracker.has(current)) {
-    const cell = (current as ConsolePanel).console.promptCell;
-    editor = cell && cell.editor;
-  } else if (notebookTracker.currentWidget) {
-    const current = notebookTracker.currentWidget;
-    NotebookActions.insertAbove(current.content);
-    const cell = current.content.activeCell;
-    editor = cell && cell.editor;
-  } else if (consoleTracker.currentWidget) {
-    const current = consoleTracker.currentWidget;
-    const cell = current.console.promptCell;
-    editor = cell && cell.editor;
+    cell = (current as NotebookPanel).content.activeCell;
+    cell.model.metadata.set('tags', ["parameters"]); //set special metadata for Notebook executor plugin
+  } else if (current && consoleTracker.has(current)) { //when using code console
+    cell = (current as ConsolePanel).console.promptCell;
   }
-  return editor;
+  return cell && cell.editor;
 }
