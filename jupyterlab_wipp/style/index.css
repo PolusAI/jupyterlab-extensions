@@ -1,0 +1,20 @@
+.wipp-WippLogo {
+    background-image: url(logo-wipp.svg);
+}
+
+.wipp-WippSidebar {
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    overflow: auto;
+  }
+
+.wipp-WippSidebar-table {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 8px;
+    padding: 0;
+    list-style-type: none;
+  }
