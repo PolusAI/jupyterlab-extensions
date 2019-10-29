@@ -1,6 +1,6 @@
 # jupyterlab_wipp
 
-WIPP integration with JupyterLab
+[WIPP](https://github.com/usnistgov/wipp) integration with JupyterLab
 
 
 ## Requirements
@@ -13,7 +13,7 @@ WIPP integration with JupyterLab
 pip install jupyterlab-wipp
 jupyter serverextension enable --py jupyterlab_wipp
 jupyter labextension install jupyterlab_wipp
-export WIPP_UI_URL=http://wipp-ui.ci.aws.labshare.org/notebooks/
+export WIPP_UI_URL=""
 ```
 
 ## Contributing
@@ -52,11 +52,10 @@ jlpm watch
 jupyter lab --watch
 ```
 
-Before starting the JupyterLab, you are required to set the environment variable `WIPP_UI_URL` to point to Notebooks in WIPP, i.e. http://wipp-ui.ci.aws.labshare.org/notebooks/
+Before starting the JupyterLab, the environment variable `WIPP_UI_URL` must be set to point to WIPP.
 
 ### Uninstall
 
 ```bash
 jupyter labextension uninstall jupyterlab_wipp
 ```
-
