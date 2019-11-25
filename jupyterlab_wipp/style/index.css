@@ -115,7 +115,6 @@
   }
 
 .wipp-WippSidebar-switcher-item button.normal {
-    height: var(--dask-launch-button-height);
     color: #000000;
     background-color: var(--jp-layout-color3);
     border: 1px solid var(--jp-layout-color3);
@@ -123,7 +122,6 @@
   }
 
 .wipp-WippSidebar-switcher-item button.selected {
-    height: var(--dask-launch-button-height);
     color: #000000;
     background-color: #94c7c4;
     border: 1px solid #94c7c4;
