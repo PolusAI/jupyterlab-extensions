@@ -18,7 +18,7 @@ def gen_random_object_id():
     rest = binascii.b2a_hex(os.urandom(8)).decode('ascii')
     return timestamp + rest
 
-class WippImageCollection():
+class WippCollection():
     def __init__(self, json):
         self.json = json
         
@@ -36,6 +36,7 @@ class wipp:
         self.notebooks_ui_url = os.path.join(self.wipp_ui_url, 'notebooks/')
         self.imagescollections_ui_url = os.path.join(self.wipp_ui_url, 'images-collections/')
         self.imagescollection_ui_url = os.path.join(self.wipp_ui_url, 'images-collection/')
+        self.csvcollections_ui_url = os.path.join(self.wipp_ui_url, 'csv-collections/')
 
         # Other configurable variables: if no env variable provided, take default value
         self.api_route = os.getenv('WIPP_API_INTERNAL_URL') if "WIPP_API_INTERNAL_URL" in os.environ else 'http://wipp-backend:8080/api'
@@ -87,10 +88,10 @@ class wipp:
             return (total_pages, page_size)
 
     def get_image_collections_page(self, index):
-        r = requests.get(os.path.join(self.api_route, 'imagesCollections', f'?page={index}'))
+        r = requests.get(os.path.join(self.api_route, f'imagesCollections?page={index}'))
         if r.status_code==200:
             collections_page = r.json()['_embedded']['imagesCollections']
-            return [WippImageCollection(collection) for collection in collections_page]
+            return [WippCollection(collection) for collection in collections_page]
     
     def get_image_collections_all_pages(self):
         total_pages, _ = self.get_image_collections_summary()
@@ -99,7 +100,66 @@ class wipp:
 
     def get_image_collections(self):
         return [collection.json for collection in sum(self.get_image_collections_all_pages(), [])]
-        
 
+    def search_image_collections_summary(self, name):
+        r = requests.get(os.path.join(self.api_route, f'imagesCollections/search/findByNameContainingIgnoreCase?name={name}'))
+        if r.status_code==200:
+            total_pages = r.json()['page']['totalPages']
+            page_size = r.json()['page']['size']
+            
+            return (total_pages, page_size)
+    
+    def search_image_collection_page(self, name, index):
+        r = requests.get(os.path.join(self.api_route, f'imagesCollections/search/findByNameContainingIgnoreCase?name={name}&page={index}'))
+        if r.status_code==200:
+            collections_page = r.json()['_embedded']['imagesCollections']
+            return [WippCollection(collection) for collection in collections_page]
 
+    def search_image_collections_all_pages(self, name):
+        total_pages, _ = self.search_image_collections_summary(name)
+        return [self.search_image_collection_page(name, page) for page in range(total_pages)]
+
+    def search_image_collections(self, name):
+        return [collection.json for collection in sum(self.search_image_collections_all_pages(name), [])]
+
+    def get_csv_collections_summary(self):
+        r = requests.get(os.path.join(self.api_route, 'csvCollections'))
+        if r.status_code==200:
+            total_pages = r.json()['page']['totalPages']
+            page_size = r.json()['page']['size']
+            
+            return (total_pages, page_size)
+    
+    def get_csv_collections_page(self, index):
+        r = requests.get(os.path.join(self.api_route, f'csvCollections?page={index}'))
+        if r.status_code==200:
+            collections_page = r.json()['_embedded']['csvCollections']
+            return [WippCollection(collection) for collection in collections_page]
+
+    def get_csv_collections_all_pages(self):
+        total_pages, _ = self.get_csv_collections_summary()
+        return [self.get_csv_collections_page(page) for page in range(total_pages)]
         
+    def get_csv_collections(self):
+        return [collection.json for collection in sum(self.get_csv_collections_all_pages(), [])]
+
+    def search_csv_collections_summary(self, name):
+        r = requests.get(os.path.join(self.api_route, f'csvCollections/search/findByNameContainingIgnoreCase?name={name}'))
+        if r.status_code==200:
+            total_pages = r.json()['page']['totalPages']
+            page_size = r.json()['page']['size']
+            
+            return (total_pages, page_size)
+
+    def search_csv_collection_page(self, name, index):
+        r = requests.get(os.path.join(self.api_route, f'csvCollections/search/findByNameContainingIgnoreCase?name={name}&page={index}'))
+        if r.status_code==200:
+            collections_page = r.json()['_embedded']['csvCollections']
+            return [WippCollection(collection) for collection in collections_page]
+
+    def search_csv_collections_all_pages(self, name):
+        total_pages, _ = self.search_csv_collections_summary(name)
+        return [self.search_csv_collection_page(name, page) for page in range(total_pages)]
+
+    def search_csv_collections(self, name):
+        return [collection.json for collection in sum(self.search_csv_collections_all_pages(name), [])]
