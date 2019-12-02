@@ -9,7 +9,10 @@ import { URLExt } from '@jupyterlab/coreutils';
 import { Cell } from '@jupyterlab/cells';
 import { Signal } from '@phosphor/signaling';
 
-import React, { Component } from 'react';
+import { IGenericCollection } from './types'
+import { GenericTableWidget } from './components/tableWidget'
+
+import React from 'react';
 
 function ApiRequest<T>(
     url: string,
@@ -33,11 +36,7 @@ export interface ITableSignal {
   collection_url_prefix: string;
 }
 
-// Generic interface for any type of WIPP Collections
-export interface IGenericCollection {
-  id: string,
-  [key: string]: any
-}
+
 
 // Interface for WIPP Image Collections
 export interface IWippImageCollection extends IGenericCollection {
@@ -125,55 +124,56 @@ export class WippSidebar extends Widget {
     }
 
     private swithchCollectionType(choice: number){
-      if (choice==1){ // Show Image Collections
-        this._search_collection_type_url = '/wipp/imageCollections/search';
-        this._get_collection_type_url = '/wipp/imageCollections';
-        
-        var app = this.app;
-        var notebookTracker = this.notebookTracker;
-        var consoleTracker = this.consoleTracker;
+      var app = this.app;
+      var notebookTracker = this.notebookTracker;
+      var consoleTracker = this.consoleTracker;
 
-        // define function for pasting code to current editor
-        this.handleClick = function handleClick(id: string) {
-          const editor = getCurrentEditor(app, notebookTracker, consoleTracker);
-          if (editor){
-            insertInputPath(editor, "'/opt/shared/wipp/collections/" + id + "/images/'");
-          };
+      var file_path_prefix: string;
+      var file_path_suffix: string;
+
+      switch(choice){
+        case 1: { // Show Image Collections
+          this._search_collection_type_url = '/wipp/imageCollections/search';
+          this._get_collection_type_url = '/wipp/imageCollections';
+          file_path_prefix = "'/opt/shared/wipp/collections/";
+          file_path_suffix = "/images/'";
+
+          // specify table header
+          this._tableHeader = [['name', 'Name'], ['numberOfImages', '# of images'], ['imagesTotalSize', 'Total size'], ['creationDate', 'Creation date']];
+
+          // set search bar placeholder
+          this._search_placeholder = 'SEARCH IMAGE COLLECTIONS';
+
+          // set collection UI url prefix
+          this._collection_url_prefix = this._imagescollection_url;
+
+          break;
         }
+        case 2: { // Show CSV Collections
+          this._search_collection_type_url = '/wipp/csvCollections/search';
+          this._get_collection_type_url = '/wipp/csvCollections';
+          file_path_prefix = "'/opt/shared/wipp/csv-collections/";
+          file_path_suffix = "'";
+          
+          // specify table header
+          this._tableHeader = [['name', 'Name'], ['creationDate', 'Creation date']];
 
-        // specify table header
-        this._tableHeader = [['name', 'Name'], ['numberOfImages', '# of images'], ['imagesTotalSize', 'Total size'], ['creationDate', 'Creation date']];
+          // set search bar placeholder
+          this._search_placeholder = 'SEARCH CSV COLLECTIONS';
 
-        // set search bar placeholder
-        this._search_placeholder = 'SEARCH IMAGE COLLECTIONS';
+          // set collection UI url prefix
+          this._collection_url_prefix = this._csvcollections_url;
 
-        // set collection UI url prefix
-        this._collection_url_prefix = this._imagescollection_url;
+          break;
+        }
       }
-      else if (choice==2){ // Show CSV Collections
-        this._search_collection_type_url = '/wipp/csvCollections/search';
-        this._get_collection_type_url = '/wipp/csvCollections';
 
-        var app = this.app;
-        var notebookTracker = this.notebookTracker;
-        var consoleTracker = this.consoleTracker;
-
-        // define function for pasting code to current editor
-        this.handleClick = function handleClick(id: string) {
-          const editor = getCurrentEditor(app, notebookTracker, consoleTracker);
-          if (editor){
-            insertInputPath(editor, "'/opt/shared/wipp/csv-collections/" + id + "'");
-          };
-        }
-
-        // specify table header
-        this._tableHeader = [['name', 'Name'], ['creationDate', 'Creation date']];
-
-        // set search bar placeholder
-        this._search_placeholder = 'SEARCH CSV COLLECTIONS';
-
-        // set collection UI url prefix
-        this._collection_url_prefix = this._csvcollections_url;
+      // define function for pasting code to current editor
+      this.handleClick = function handleClick(id: string) {
+        const editor = getCurrentEditor(app, notebookTracker, consoleTracker);
+        if (editor){
+          insertInputPath(editor, file_path_prefix + id + file_path_suffix);
+        };
       }
 
       // Update search bar
@@ -366,7 +366,6 @@ class SearchWidget extends Widget {
     // Search button
     const searchButton = new ToolbarButton({
       iconClassName: 'wipp-SearchIcon jp-Icon jp-Icon-16',
-      // onClick: searchFunction,
       onClick: async () => {
         updateWidget(this._searchBar.value);
       }
@@ -421,173 +420,3 @@ export function getCurrentEditor(
   }
   return cell && cell.editor;
 }
-
-/**
- * Props for the generic table row React component
- */
-interface IGenericTableRowComponentProps<T> {
-  el: T;
-  headers: [keyof T, string][];
-  collectionUrl: string;
-  injectCode: (id: string) => void;
-}
-  
-/**
- * Props for the table header React component
- */
-export interface IGenericTableHeaderComponentProps<T> {
-  headers: [keyof T, string][];
-  tableSortedKey: keyof T;
-  tableSortedDirection: boolean;
-  sortFunction: (key: keyof T) => void;
-}
-
-type IGenericTableProps<T> = {
-  ar: T[];
-  tableHeader: [keyof T, string][];
-  collectionUrl: string;
-  codeInjector: (id: string) => void;
-}
-
-type IGenericTableState<T> = {
-  tableSortedKey: keyof T;
-  tableSortedDirection: boolean;
-}
-
-/*
-* React Component for table header
-*/
-export function TableHeaderComponent<T> (props: IGenericTableHeaderComponentProps<T>) {
-  const tableHeaders = props.headers.map((value) => {
-
-    return (
-        // Column headers are clickable and will sort by that column on click
-        <th onClick={evt => {
-            props.sortFunction(value[0]);
-            evt.stopPropagation();
-        }}>
-          <span> {value[1]} </span>
-          {(value[0]==props.tableSortedKey && props.tableSortedDirection==true) && <span className="wipp-WippSidebar-table-header-sorted-ascending"> </span> }
-          {(value[0]==props.tableSortedKey && props.tableSortedDirection==false) && <span className="wipp-WippSidebar-table-header-sorted-descending"> </span> }
-        </th>
-    )
-      
-  })
-  
-  return (
-    <tr> 
-      {tableHeaders}
-      {/* Extra column for import buttons with an empty header */}
-      <th className="wipp-WippSidebar-table-header-import-column"></th> 
-    </tr>
-  );
-}
-  
-/**
- * React Component for table row containing single imageCollection
- */
-export function TableRowComponent(props: IGenericTableRowComponentProps<IGenericCollection>) {
-  const {el, headers, collectionUrl, injectCode} = props;
-
-  // function to convert imagecollection size to human-readable format
-  const sizeof = (bytes: number) => {
-    if (bytes == 0) { return "0.00 B"; }
-    var e = Math.floor(Math.log(bytes) / Math.log(1024));
-    return (bytes/Math.pow(1024, e)).toFixed(0)+' '+' KMGTP'.charAt(e)+'B';
-  }
-
-  // Convert creation timestamp to human-readable format
-  var date = new Date(el.creationDate);
-
-  var allElsTemplates = {
-    name: <td> <a href={collectionUrl + el.id} target="_blank"> {el.name} </a> </td>, //name of collection
-    numberOfImages: <td className="wipp-WippSidebar-table-element"> {el.numberOfImages} </td>,
-    imagesTotalSize: <td className="wipp-WippSidebar-table-element"> {sizeof(el.imagesTotalSize)} </td>,
-    creationDate: <td className="wipp-WippSidebar-table-element"> {date.toLocaleString()} </td>, // Date of collection creation
-  }
-  
-  var els = headers.map((value) =>  {
-    if (value[0]=='name') return allElsTemplates.name;
-    if (value[0]=='numberOfImages') return allElsTemplates.numberOfImages;
-    if (value[0]=='imagesTotalSize') return allElsTemplates.imagesTotalSize;
-    if (value[0]=='creationDate') return allElsTemplates.creationDate;
-  } );
-    
-  
-  // return tr element
-  return (
-    <tr>
-      {els}
-      {/* Import button column element */}
-      <td>
-        <button 
-          type="button"
-          className="bp3-button bp3-minimal jp-ToolbarButtonComponent minimal jp-Button"
-          onClick={evt => {
-            injectCode(el.id);
-            evt.stopPropagation();
-          }}>
-            <span className="wipp-ImportIcon jp-Icon jp-Icon-16"></span>
-          </button>
-      </td>
-      
-    </tr>
-  )
-}
-  
-  
-// Generic class for different types of tables (ImageCollection, CsvCollection, etc)
-export class GenericTableWidget<T> extends Component<IGenericTableProps<IGenericCollection>, IGenericTableState<IGenericCollection>> {
-  constructor(props: IGenericTableProps<IGenericCollection>){
-    super(props);
-
-    this.state = {
-      tableSortedKey: 'creationDate', 
-      tableSortedDirection: true
-    };
-  }
-
-  // Apply sort to WIPP Collections Array
-  // Update the React State
-  sort(key: keyof IGenericCollection) {
-    var ar = this.props.ar;
-    var direction = this.state.tableSortedDirection;
-    
-    if (key == this.state.tableSortedKey){
-      direction = !direction;
-    }
-
-    ar.sort(function(a, b){
-      var x = a[key]; var y = b[key];
-      if (direction===true) {
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-      }
-      else if (direction===false) {
-        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-      }
-    });
-
-    this.setState({tableSortedDirection: direction, tableSortedKey: key});
-  }
-
-  render() {
-    // Generate headers and rows of the table
-    const tableHeaders = <TableHeaderComponent headers={this.props.tableHeader} tableSortedKey={this.state.tableSortedKey} tableSortedDirection={this.state.tableSortedDirection} sortFunction={key => this.sort(key)} />;
-    const tableRows = this.props.ar.map((e) => <TableRowComponent key={e.id} el={e} headers={this.props.tableHeader} collectionUrl={this.props.collectionUrl} injectCode={this.props.codeInjector} />);
-    
-    
-    // Assemble headers and rows in the full table
-    return (
-      <div>
-        <table className='wipp-WippSidebar-table'>
-          <thead>
-            {tableHeaders}
-          </thead>
-          <tbody>
-            {tableRows}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-};
