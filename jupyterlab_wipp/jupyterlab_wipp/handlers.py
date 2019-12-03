@@ -17,6 +17,9 @@ class InfoCheckHandler(WippHandler):
 
 class WippUiUrls(WippHandler):
     def get(self):
+        """
+        GET request handler, returns relevant WIPP UI URLs
+        """
         self.finish(json.dumps({
             'root': self.wipp.wipp_ui_url,
             'notebooks': self.wipp.notebooks_ui_url,
@@ -46,6 +49,7 @@ class WippRegisterNotebook(WippHandler):
 class WippImageCollections(WippHandler):
     def get(self):
         """
+        GET request handler, returns an array of WIPP Image Collections
         """
         response = self.wipp.get_image_collections()
         
@@ -54,7 +58,8 @@ class WippImageCollections(WippHandler):
 class WippImageCollectionsSearch(WippHandler):
     def post(self):
         """
-        POST request handler, registers notebook in WIPP
+        POST request handler
+        Returns an array of WIPP Image Collection which have requested string in the name 
 
         Input format:
             {
@@ -69,6 +74,7 @@ class WippImageCollectionsSearch(WippHandler):
 class WippCsvCollections(WippHandler):
     def get(self):
         """
+        GET request handler, returns an array of WIPP Csv Collections
         """
         response = self.wipp.get_csv_collections()
         
@@ -77,7 +83,8 @@ class WippCsvCollections(WippHandler):
 class WippCsvCollectionsSearch(WippHandler):
     def post(self):
         """
-        POST request handler, registers notebook in WIPP
+        POST request handler
+        Returns an array of WIPP Csv Collection which have requested string in the name 
 
         Input format:
             {

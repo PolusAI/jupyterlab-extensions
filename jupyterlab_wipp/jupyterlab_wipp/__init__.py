@@ -1,5 +1,5 @@
 from jupyterlab_wipp.handlers import setup_handlers
-from jupyterlab_wipp.wipp import wipp
+from jupyterlab_wipp.wipp import Wipp
 
 
 def _jupyter_server_extension_paths():
@@ -16,7 +16,7 @@ def load_jupyter_server_extension(nb_app):
         Notebook application instance
     """
 
-    w = wipp()
+    w = Wipp()
     nb_app.web_app.settings["wipp"] = w
     setup_handlers(nb_app.web_app)
     nb_app.log.info(f'Registered jupyterlab_wipp extension at URL path /wipp')
