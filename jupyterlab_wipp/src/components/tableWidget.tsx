@@ -45,21 +45,21 @@ export function TableRowComponent(props: IGenericTableRowComponentProps<IGeneric
   // function to convert imagecollection size to human-readable format
   const sizeof = (bytes: number) => {
     if (bytes == 0) { return "0.00 B"; }
-    var e = Math.floor(Math.log(bytes) / Math.log(1024));
+    const e = Math.floor(Math.log(bytes) / Math.log(1024));
     return (bytes / Math.pow(1024, e)).toFixed(0) + ' ' + ' KMGTP'.charAt(e) + 'B';
   }
 
   // Convert creation timestamp to human-readable format
-  var date = new Date(el.creationDate);
+  const date = new Date(el.creationDate);
 
-  var allElsTemplates = {
+  const allElsTemplates = {
     name: <td> <a href={collectionUrl + el.id} target="_blank"> {el.name} </a> </td>, //name of collection
     numberOfImages: <td className="wipp-WippSidebar-table-element"> {el.numberOfImages} </td>,
     imagesTotalSize: <td className="wipp-WippSidebar-table-element"> {sizeof(el.imagesTotalSize)} </td>,
     creationDate: <td className="wipp-WippSidebar-table-element"> {date.toLocaleString()} </td>, // Date of collection creation
   }
 
-  var els = headers.map((value) => {
+  const els = headers.map((value) => {
     if (value[0] == 'name') return allElsTemplates.name;
     if (value[0] == 'numberOfImages') return allElsTemplates.numberOfImages;
     if (value[0] == 'imagesTotalSize') return allElsTemplates.imagesTotalSize;
@@ -102,15 +102,16 @@ export class GenericTableWidget<T> extends Component<IGenericTableProps<IGeneric
   // Apply sort to WIPP Collections Array
   // Update the React State
   sort(key: keyof IGenericCollection) {
-    var ar = this.props.ar;
-    var direction = this.state.tableSortedDirection;
+    let ar = this.props.ar;
+    let direction = this.state.tableSortedDirection;
 
     if (key == this.state.tableSortedKey) {
       direction = !direction;
     }
 
     ar.sort(function (a, b) {
-      var x = a[key]; var y = b[key];
+      const x = a[key]; 
+      const y = b[key];
       if (direction === true) {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
       }

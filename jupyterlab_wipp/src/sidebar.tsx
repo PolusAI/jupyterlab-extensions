@@ -91,12 +91,12 @@ export class WippSidebar extends Widget {
     }
 
     private swithchCollectionType(choice: number){
-      var app = this.app;
-      var notebookTracker = this.notebookTracker;
-      var consoleTracker = this.consoleTracker;
+      let app = this.app;
+      let notebookTracker = this.notebookTracker;
+      let consoleTracker = this.consoleTracker;
 
-      var file_path_prefix: string;
-      var file_path_suffix: string;
+      let file_path_prefix: string;
+      let file_path_suffix: string;
 
       switch(choice){
         case 1: { // Show Image Collections
@@ -155,7 +155,7 @@ export class WippSidebar extends Widget {
 
     private async _getUiUrls() {
       const settings = ServerConnection.makeSettings();
-      var requestUrl = URLExt.join(settings.baseUrl, '/wipp/ui_urls');
+      let requestUrl = URLExt.join(settings.baseUrl, '/wipp/ui_urls');
 
       // Return results of API request
       ApiRequest<any>(requestUrl, {}, settings)
@@ -170,7 +170,7 @@ export class WippSidebar extends Widget {
       const settings = ServerConnection.makeSettings();
 
       // Create request URL
-      var requestUrl = URLExt.join(settings.baseUrl, this._get_collection_type_url);
+      let requestUrl = URLExt.join(settings.baseUrl, this._get_collection_type_url);
       
       // Display results of API request
       ApiRequest<IGenericCollection[]>(requestUrl, {}, settings)
@@ -187,13 +187,13 @@ export class WippSidebar extends Widget {
 
     private async _searchCollections(name: string){
       const settings = ServerConnection.makeSettings();
-      var requestUrl = URLExt.join(settings.baseUrl, this._search_collection_type_url);
+      let requestUrl = URLExt.join(settings.baseUrl, this._search_collection_type_url);
 
       // Make request to the backend API
-      var request = {
+      const request = {
         name: name,
       };
-      var fullRequest = {
+      const fullRequest = {
           method: 'POST',
           body: JSON.stringify(request)
       };
@@ -263,7 +263,7 @@ export function getCurrentEditor(
   // Get a handle on the most relevant editor,
   // whether it is attached to a notebook or a console.
   let current = app.shell.currentWidget;
-  var cell: Cell;
+  let cell: Cell;
   if (current && notebookTracker.has(current)) { //when editing notebook
     NotebookActions.insertAbove((current as NotebookPanel).content);
     cell = (current as NotebookPanel).content.activeCell;

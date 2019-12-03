@@ -14,10 +14,10 @@ export class SwitcherWidget extends Widget {
         const switchPanel = new Widget();
 
 
-        var ul = document.createElement('ul');
+        let ul = document.createElement('ul');
         ul.className = 'wipp-WippSidebar-switcher-list';
 
-        var li1 = document.createElement('li');
+        let li1 = document.createElement('li');
         li1.className = 'wipp-WippSidebar-switcher-item';
 
         this._imageCollectionsButton = document.createElement('button');
@@ -33,7 +33,7 @@ export class SwitcherWidget extends Widget {
         li1.appendChild(this._imageCollectionsButton);
         ul.appendChild(li1);
 
-        var li2 = document.createElement('li');
+        let li2 = document.createElement('li');
         li2.className = 'wipp-WippSidebar-switcher-item';
 
         this._csvCollectionsButton = document.createElement('button');
