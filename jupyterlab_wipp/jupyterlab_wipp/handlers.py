@@ -41,19 +41,28 @@ class WippRegisterNotebook(WippHandler):
               'description': 'Image segmentation notebook'
             }
         """
+
         data = json.loads(self.request.body.decode("utf-8"))
-        response = self.wipp.register_notebook(data["path"], data["name"], data["description"])
-        
-        self.finish(json.dumps(response))
+        if all(key in data for key in ("path","name","description")):
+            try:
+                response = self.wipp.register_notebook(data["path"], data["name"], data["description"])
+                self.finish(json.dumps(response))
+            except:
+                self.write_error(500)
+        else:
+            self.write_error(400)
 
 class WippImageCollections(WippHandler):
     def get(self):
         """
         GET request handler, returns an array of WIPP Image Collections
         """
-        response = self.wipp.get_image_collections()
         
-        self.finish(json.dumps(response))
+        try:
+            response = self.wipp.get_image_collections()
+            self.finish(json.dumps(response))
+        except:
+            self.write_error(500)
 
 class WippImageCollectionsSearch(WippHandler):
     def post(self):
@@ -66,19 +75,28 @@ class WippImageCollectionsSearch(WippHandler):
               'name': 'collection-abc',
             }
         """
+
         data = json.loads(self.request.body.decode("utf-8"))
-        response = self.wipp.search_image_collections(data["name"])
+        if "name" in data.keys():
+            try:
+                response = self.wipp.search_image_collections(data["name"])
+                self.finish(json.dumps(response))
+            except:
+                self.write_error(500)
+        else:
+            self.write_error(400)
         
-        self.finish(json.dumps(response))
 
 class WippCsvCollections(WippHandler):
     def get(self):
         """
         GET request handler, returns an array of WIPP Csv Collections
         """
-        response = self.wipp.get_csv_collections()
-        
-        self.finish(json.dumps(response))
+        try:
+            response = self.wipp.get_csv_collections()
+            self.finish(json.dumps(response))
+        except:
+            self.write(500)
 
 class WippCsvCollectionsSearch(WippHandler):
     def post(self):
@@ -91,10 +109,16 @@ class WippCsvCollectionsSearch(WippHandler):
               'name': 'collection-abc',
             }
         """
+
         data = json.loads(self.request.body.decode("utf-8"))
-        response = self.wipp.search_csv_collections(data["name"])
-        
-        self.finish(json.dumps(response))
+        if "name" in data.keys():
+            try:
+                response = self.wipp.search_csv_collections(data["name"])
+                self.finish(json.dumps(response))
+            except:
+                self.write_error(500)
+        else:
+            self.write_error(400)
         
 
 def setup_handlers(web_app):
