@@ -4,13 +4,15 @@ import { ConsolePanel, IConsoleTracker } from '@jupyterlab/console';
 import { CodeEditor } from '@jupyterlab/codeeditor';
 import { Widget, PanelLayout } from '@phosphor/widgets';
 import { ServerConnection } from '@jupyterlab/services';
-import { ToolbarButton, ReactWidget, UseSignal } from '@jupyterlab/apputils';
+import { ReactWidget, UseSignal } from '@jupyterlab/apputils';
 import { URLExt } from '@jupyterlab/coreutils';
 import { Cell } from '@jupyterlab/cells';
 import { Signal } from '@phosphor/signaling';
 
-import { IGenericCollection } from './types'
+import { IGenericCollection, ITableSignal } from './types'
 import { GenericTableWidget } from './components/tableWidget'
+import { SearchWidget } from './components/searchWidget'
+import { SwitcherWidget } from './components/collectionTypeSwitcherWidget'
 
 import React from 'react';
 
@@ -28,41 +30,6 @@ function ApiRequest<T>(
       return response.json();
     });
   }
-
-export interface ITableSignal {
-  collections_array: IGenericCollection[],
-  code_injector: (id: string) => void;
-  tableHeader: [keyof IGenericCollection, string][];
-  collection_url_prefix: string;
-}
-
-
-
-// Interface for WIPP Image Collections
-export interface IWippImageCollection extends IGenericCollection {
-  id: string, 
-  name: string,
-  creationDate: string,
-  sourceJob: string,
-  locked: boolean,
-  pattern: any,
-  numberOfImages: number,
-  imagesTotalSize: number,
-  numberImportingImages: number,
-  numberOfImportErrors: number,
-  numberOfMetadataFiles: number,
-  metadataFilesTotalSize: number,
-  _links: Object
-}
-
-// Interface for WIPP CSV Collections
-export interface IWippCsvCollection extends IGenericCollection {
-  id: string, 
-  name: string,
-  creationDate: string,
-  sourceJob: string,
-  _links: Object
-}
 
 /**
  * Sidebar widget for displaying WIPP image collections.
@@ -268,120 +235,6 @@ export class WippSidebar extends Widget {
     private _tableState: ITableSignal;
     private _valueChanged = new Signal<this, ITableSignal>(this);
 }
-
-/**
- * Switcher widget for choosing WIPP Collection type to explore
- */
-class SwitcherWidget extends Widget {
-  constructor(
-    switchType: (type: number) => void
-  ) {
-    super();
-
-    const layout = (this.layout = new PanelLayout());
-
-    const switchPanel = new Widget();
-    
-
-    var ul=document.createElement('ul');
-    ul.className = 'wipp-WippSidebar-switcher-list';
-
-    var li1 = document.createElement('li');
-    li1.className = 'wipp-WippSidebar-switcher-item';
-    
-    this._imageCollectionsButton = document.createElement('button');
-    this._imageCollectionsButton.className = 'selected';
-    this._imageCollectionsButton.value = 'Image Collections';
-    this._imageCollectionsButton.onclick = () => {
-      this._imageCollectionsButton.className = 'selected';
-      this._csvCollectionsButton.className = 'normal';
-      switchType(1);
-    };
-    this._imageCollectionsButton.innerText = 'Image Collections';
-
-    li1.appendChild(this._imageCollectionsButton);
-    ul.appendChild(li1);
-
-    var li2 = document.createElement('li');
-    li2.className = 'wipp-WippSidebar-switcher-item';
-
-    this._csvCollectionsButton = document.createElement('button');
-    this._csvCollectionsButton.className = 'normal';
-    this._csvCollectionsButton.value = 'CSV Collections';
-    this._csvCollectionsButton.onclick = () => {
-      this._csvCollectionsButton.className = 'selected';
-      this._imageCollectionsButton.className = 'normal';
-      switchType(2);
-    };
-    this._csvCollectionsButton.innerText = 'CSV Collections';
-    
-    li2.appendChild(this._csvCollectionsButton);
-    ul.appendChild(li2);
-
-    switchPanel.node.appendChild(ul);
-    layout.addWidget(switchPanel);
-  }
-
-  private _imageCollectionsButton: HTMLButtonElement;
-  private _csvCollectionsButton: HTMLButtonElement;
-}
-
-
-/**
- * Search widget on top of WIPP Panel.
- */
-class SearchWidget extends Widget {
-  constructor(
-      placeholder: () => string,
-      updateWidget: (arg0: string) => void
-  ){
-    super();
-    this._getPlaceholder = placeholder;
-
-    this.addClass('wipp-WippSidebar-search-layout');
-    const layout = (this.layout = new PanelLayout());
-    
-    // Search input bar for imageCollections
-    const searchBar = new Widget();
-    searchBar.addClass('wipp-WippSidebar-search');
-    this._searchBar = document.createElement('input');
-    this._searchBar.placeholder = this._getPlaceholder();
-    this._searchBar.oninput = async () => {
-      updateWidget(this._searchBar.value);
-    }
-    searchBar.node.appendChild(this._searchBar);
-    layout.addWidget(searchBar);
-
-    // Clear search bar button
-    const clearButton = new ToolbarButton({
-      tooltip: 'CLEAR SEARCH BAR:',
-      iconClassName: 'wipp-ClearIcon jp-Icon jp-Icon-16',
-      onClick: async () => {
-        updateWidget("");
-        this._searchBar.value = "";
-      }
-    });
-    layout.addWidget(clearButton);
-
-    // Search button
-    const searchButton = new ToolbarButton({
-      iconClassName: 'wipp-SearchIcon jp-Icon jp-Icon-16',
-      onClick: async () => {
-        updateWidget(this._searchBar.value);
-      }
-    });
-    layout.addWidget(searchButton);
-  }
-
-  onUpdateRequest() {
-    this._searchBar.value = "";
-    this._searchBar.placeholder = this._getPlaceholder();
-  }
-
-  private _searchBar: HTMLInputElement;
-  private _getPlaceholder: () => string;
-}
-
 
 /**
    * Insert WIPP Collection path code into editor
