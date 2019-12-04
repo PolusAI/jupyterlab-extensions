@@ -17,11 +17,15 @@ class InfoCheckHandler(WippHandler):
 
 class WippUiUrls(WippHandler):
     def get(self):
+        """
+        GET request handler, returns relevant WIPP UI URLs
+        """
         self.finish(json.dumps({
             'root': self.wipp.wipp_ui_url,
             'notebooks': self.wipp.notebooks_ui_url,
             'imagescollections': self.wipp.imagescollections_ui_url,
-            'imagescollection': self.wipp.imagescollection_ui_url
+            'imagescollection': self.wipp.imagescollection_ui_url,
+            'csvcollections': self.wipp.csvcollections_ui_url
         }))
 
 
@@ -37,18 +41,84 @@ class WippRegisterNotebook(WippHandler):
               'description': 'Image segmentation notebook'
             }
         """
+
         data = json.loads(self.request.body.decode("utf-8"))
-        response = self.wipp.register_notebook(data["path"], data["name"], data["description"])
-        
-        self.finish(json.dumps(response))
+        if all(key in data for key in ("path","name","description")):
+            try:
+                response = self.wipp.register_notebook(data["path"], data["name"], data["description"])
+                self.finish(json.dumps(response))
+            except:
+                self.write_error(500)
+        else:
+            self.write_error(400)
 
 class WippImageCollections(WippHandler):
     def get(self):
         """
+        GET request handler, returns an array of WIPP Image Collections
         """
-        response = self.wipp.get_image_collections()
         
-        self.finish(json.dumps(response))
+        try:
+            response = self.wipp.get_image_collections()
+            self.finish(json.dumps(response))
+        except:
+            self.write_error(500)
+
+class WippImageCollectionsSearch(WippHandler):
+    def post(self):
+        """
+        POST request handler
+        Returns an array of WIPP Image Collection which have requested string in the name 
+
+        Input format:
+            {
+              'name': 'collection-abc',
+            }
+        """
+
+        data = json.loads(self.request.body.decode("utf-8"))
+        if "name" in data.keys():
+            try:
+                response = self.wipp.search_image_collections(data["name"])
+                self.finish(json.dumps(response))
+            except:
+                self.write_error(500)
+        else:
+            self.write_error(400)
+        
+
+class WippCsvCollections(WippHandler):
+    def get(self):
+        """
+        GET request handler, returns an array of WIPP Csv Collections
+        """
+        try:
+            response = self.wipp.get_csv_collections()
+            self.finish(json.dumps(response))
+        except:
+            self.write(500)
+
+class WippCsvCollectionsSearch(WippHandler):
+    def post(self):
+        """
+        POST request handler
+        Returns an array of WIPP Csv Collection which have requested string in the name 
+
+        Input format:
+            {
+              'name': 'collection-abc',
+            }
+        """
+
+        data = json.loads(self.request.body.decode("utf-8"))
+        if "name" in data.keys():
+            try:
+                response = self.wipp.search_csv_collections(data["name"])
+                self.finish(json.dumps(response))
+            except:
+                self.write_error(500)
+        else:
+            self.write_error(400)
         
 
 def setup_handlers(web_app):
@@ -56,7 +126,10 @@ def setup_handlers(web_app):
         ('/wipp/info', InfoCheckHandler),
         ('/wipp/ui_urls', WippUiUrls),
         ('/wipp/register', WippRegisterNotebook),
-        ('/wipp/imageCollections', WippImageCollections)
+        ('/wipp/imageCollections', WippImageCollections),
+        ('/wipp/imageCollections/search', WippImageCollectionsSearch),
+        ('/wipp/csvCollections', WippCsvCollections),
+        ('/wipp/csvCollections/search', WippCsvCollectionsSearch)
     ]
     base_url = web_app.settings['base_url']
     handlers = [(url_path_join(base_url, x[0]), x[1]) for x in handlers]
