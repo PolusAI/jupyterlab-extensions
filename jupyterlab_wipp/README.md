@@ -1,4 +1,4 @@
-# jupyterlab_wipp
+# Jupyterlab WIPP extension
 
 [WIPP](https://github.com/usnistgov/wipp) integration with JupyterLab
 
@@ -14,7 +14,15 @@ pip install jupyterlab-wipp
 jupyter serverextension enable --py jupyterlab_wipp
 jupyter labextension install jupyterlab_wipp
 export WIPP_UI_URL=""
+export WIPP_API_INTERNAL_URL=""
+export WIPP_NOTEBOOKS_PATH=""
 ```
+
+The last three steps are required environment variables. 
+
+- `WIPP_UI_URL` is the WIPP frontend base URL which will be used to open collection pages.
+- `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster)
+- `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder
 
 ## Contributing
 
