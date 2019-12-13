@@ -50,7 +50,7 @@ export function TableRowComponent(props: IGenericTableRowComponentProps<IGeneric
   }
 
   // Convert creation timestamp to human-readable format
-  const date = new Date(el.creationDate);
+  const date = new Date(el.creationDate.replace(/\b\+0000/g, ''));
 
   const allElsTemplates = {
     name: <td> <a href={collectionUrl + el.id} target="_blank"> {el.name} </a> </td>, //name of collection
