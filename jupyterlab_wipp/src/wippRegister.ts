@@ -1,5 +1,5 @@
 import { Spinner } from '@jupyterlab/apputils';
-import { Widget } from '@phosphor/widgets';
+import { Widget } from '@lumino/widgets';
 import { ServerConnection } from '@jupyterlab/services';
 import { URLExt } from '@jupyterlab/coreutils';
 

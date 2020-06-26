@@ -1,4 +1,4 @@
-import { Widget, PanelLayout } from '@phosphor/widgets';
+import { Widget, PanelLayout } from '@lumino/widgets';
 
 /**
  * Switcher widget for choosing WIPP Collection type to explore

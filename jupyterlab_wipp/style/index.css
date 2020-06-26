@@ -44,14 +44,6 @@
     line-height: 28px;
   }
 
-.wipp-ClearIcon {
-    background-image: var(--jp-icon-close);
-  }
-
-.wipp-SearchIcon {
-    background-image: var(--jp-icon-search);
-  }
-
 .wipp-ImportIcon {
     background-image: var(--jp-icon-add);
   }
