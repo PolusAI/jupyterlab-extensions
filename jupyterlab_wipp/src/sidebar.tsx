@@ -2,12 +2,12 @@ import { JupyterFrontEnd } from '@jupyterlab/application';
 import { INotebookTracker, NotebookActions, NotebookPanel } from '@jupyterlab/notebook'
 import { ConsolePanel, IConsoleTracker } from '@jupyterlab/console';
 import { CodeEditor } from '@jupyterlab/codeeditor';
-import { Widget, PanelLayout } from '@phosphor/widgets';
+import { Widget, PanelLayout } from '@lumino/widgets';
 import { ServerConnection } from '@jupyterlab/services';
 import { ReactWidget, UseSignal } from '@jupyterlab/apputils';
 import { URLExt } from '@jupyterlab/coreutils';
 import { Cell } from '@jupyterlab/cells';
-import { Signal } from '@phosphor/signaling';
+import { Signal } from '@lumino/signaling';
 
 import { IGenericCollection, ITableSignal } from './types'
 import { GenericTableWidget } from './components/tableWidget'

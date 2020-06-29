@@ -1,5 +1,6 @@
-import { Widget, PanelLayout } from '@phosphor/widgets';
+import { Widget, PanelLayout } from '@lumino/widgets';
 import { ToolbarButton } from '@jupyterlab/apputils';
+import { searchIcon, closeIcon } from '@jupyterlab/ui-components';
 
 /**
  * Search widget on top of WIPP Panel.
@@ -29,7 +30,7 @@ export class SearchWidget extends Widget {
         // Clear search bar button
         const clearButton = new ToolbarButton({
             tooltip: 'CLEAR SEARCH BAR:',
-            iconClassName: 'wipp-ClearIcon jp-Icon jp-Icon-16',
+            icon: closeIcon,
             onClick: async () => {
                 updateWidget("");
                 this._searchBar.value = "";
@@ -39,7 +40,7 @@ export class SearchWidget extends Widget {
 
         // Search button
         const searchButton = new ToolbarButton({
-            iconClassName: 'wipp-SearchIcon jp-Icon jp-Icon-16',
+            icon: searchIcon,
             onClick: async () => {
                 updateWidget(this._searchBar.value);
             }
