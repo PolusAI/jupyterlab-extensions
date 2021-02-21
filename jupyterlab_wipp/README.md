@@ -5,7 +5,8 @@
 
 ## Requirements
 
-* JupyterLab >= 1.0.0 
+* JupyterLab >= 3.0.0
+(Old version is compatible with JupyterLab 2.x) 
 
 ## Install
 

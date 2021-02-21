@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab_wipp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "WIPP integration with JupyterLab",
   "keywords": [
     "jupyter",
@@ -31,11 +31,12 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^2.1.2",
-    "@jupyterlab/console": "^2.1.2",
-    "@jupyterlab/filebrowser": "^2.1.2",
-    "@jupyterlab/mainmenu": "^2.1.1",
-    "@jupyterlab/notebook": "^2.1.2"
+    "@jupyterlab/builder": "^3.0.2",
+    "@jupyterlab/application": "^3.0.0",
+    "@jupyterlab/console": "^3.0.0",
+    "@jupyterlab/filebrowser": "^3.0.0",
+    "@jupyterlab/mainmenu": "^3.0.0",
+    "@jupyterlab/notebook": "^3.0.0"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",
