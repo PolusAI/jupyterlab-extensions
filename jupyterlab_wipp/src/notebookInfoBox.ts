@@ -11,10 +11,7 @@ export class NotebookInfoForm extends Widget
 
   constructor() {
     super();
-    this.node.appendChild(this.createBody());
-  }
-
-  private createBody(): HTMLElement {
+    // this.node.appendChild(this.createBody());
     const node = document.createElement('div');
     const text = document.createElement('span');
     this._name = document.createElement('input');
@@ -38,8 +35,36 @@ export class NotebookInfoForm extends Widget
     node.appendChild(this._description);
     node.appendChild(this._openInWipp);
     node.appendChild(label);
-    return node;
+
+    this.node.appendChild(node);
   }
+
+  // private createBody(): HTMLElement {
+  //   const node = document.createElement('div');
+  //   const text = document.createElement('span');
+  //   this._name = document.createElement('input');
+  //   this._description = document.createElement('input');
+  //   this._openInWipp = document.createElement('input');
+  //   this._openInWipp.type = "checkbox"
+  //   this._openInWipp.id = "open-in-wipp"
+  //   this._openInWipp.checked = true;
+
+  //   node.className = 'jp-RedirectForm';
+  //   text.textContent = 'Enter notebook name and short description';
+  //   this._name.placeholder = 'Notebook name';
+  //   this._description.placeholder = 'Short description';
+
+  //   const label = document.createElement('label');
+  //   label.htmlFor = "open-in-wipp";
+  //   label.appendChild(document.createTextNode('Show in WIPP')); 
+
+  //   node.appendChild(text);
+  //   node.appendChild(this._name);
+  //   node.appendChild(this._description);
+  //   node.appendChild(this._openInWipp);
+  //   node.appendChild(label);
+  //   return node;
+  // }
 
   /**
    * Returns the input value.

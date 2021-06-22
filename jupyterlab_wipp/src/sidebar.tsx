@@ -3,11 +3,9 @@ import { INotebookTracker, NotebookActions, NotebookPanel } from '@jupyterlab/no
 import { ConsolePanel, IConsoleTracker } from '@jupyterlab/console';
 import { CodeEditor } from '@jupyterlab/codeeditor';
 import { Widget, PanelLayout } from '@lumino/widgets';
-import { ServerConnection } from '@jupyterlab/services';
 import { ReactWidget, UseSignal } from '@jupyterlab/apputils';
-import { URLExt } from '@jupyterlab/coreutils';
-import { Cell } from '@jupyterlab/cells';
 import { Signal } from '@lumino/signaling';
+import { requestAPI } from './handler';
 
 import { IGenericCollection, ITableSignal } from './types'
 import { GenericTableWidget } from './components/tableWidget'
@@ -15,21 +13,6 @@ import { SearchWidget } from './components/searchWidget'
 import { SwitcherWidget } from './components/collectionTypeSwitcherWidget'
 
 import React from 'react';
-
-function ApiRequest<T>(
-    url: string,
-    request: Object | null,
-    settings: ServerConnection.ISettings
-  ): Promise<T> {
-    return ServerConnection.makeRequest(url, request, settings).then(response => {
-      if (response.status !== 200) {
-        return response.json().then(data => {
-          throw new ServerConnection.ResponseError(response, data.message);
-        });
-      }
-      return response.json();
-    });
-  }
 
 /**
  * Sidebar widget for displaying WIPP image collections.
@@ -76,10 +59,10 @@ export class WippSidebar extends Widget {
         this._table = ReactWidget.create (
           <UseSignal signal={this._valueChanged} initialArgs={this._tableState}>
             {(_, oa) => <GenericTableWidget
-              ar={oa.collections_array}
-              codeInjector={oa.code_injector}
-              tableHeader={oa.tableHeader}
-              collectionUrl={oa.collection_url_prefix}
+              ar={oa!.collections_array}
+              codeInjector={oa!.code_injector}
+              tableHeader={oa!.tableHeader}
+              collectionUrl={oa!.collection_url_prefix}
             ></GenericTableWidget>}
           </UseSignal>
         )
@@ -100,8 +83,8 @@ export class WippSidebar extends Widget {
 
       switch(choice){
         case 1: { // Show Image Collections
-          this._search_collection_type_url = '/wipp/imageCollections/search';
-          this._get_collection_type_url = '/wipp/imageCollections';
+          this._search_collection_type_url = 'imageCollections/search';
+          this._get_collection_type_url = 'imageCollections';
           file_path_prefix = "'/opt/shared/wipp/collections/";
           file_path_suffix = "/images/'";
 
@@ -117,8 +100,8 @@ export class WippSidebar extends Widget {
           break;
         }
         case 2: { // Show CSV Collections
-          this._search_collection_type_url = '/wipp/csvCollections/search';
-          this._get_collection_type_url = '/wipp/csvCollections';
+          this._search_collection_type_url = 'csvCollections/search';
+          this._get_collection_type_url = 'csvCollections';
           file_path_prefix = "'/opt/shared/wipp/csv-collections/";
           file_path_suffix = "'";
           
@@ -154,26 +137,17 @@ export class WippSidebar extends Widget {
     }
 
     private async _getUiUrls() {
-      const settings = ServerConnection.makeSettings();
-      let requestUrl = URLExt.join(settings.baseUrl, '/wipp/ui_urls');
-
       // Return results of API request
-      ApiRequest<any>(requestUrl, {}, settings)
+      requestAPI<any>('ui_urls', {})
       .then(response => { 
         this._imagescollection_url = response.imagescollection;
         this._csvcollections_url = response.csvcollections;
       })
     }
 
-    private async _getAllCollections(){
-      // Set up request settings
-      const settings = ServerConnection.makeSettings();
-
-      // Create request URL
-      let requestUrl = URLExt.join(settings.baseUrl, this._get_collection_type_url);
-      
+    private async _getAllCollections(){      
       // Display results of API request
-      ApiRequest<IGenericCollection[]>(requestUrl, {}, settings)
+      requestAPI<IGenericCollection[]>(this._get_collection_type_url, {})
       .then((objectArray) => {
           // Update internal variable
           this._objectArray = objectArray;
@@ -186,9 +160,6 @@ export class WippSidebar extends Widget {
     }
 
     private async _searchCollections(name: string){
-      const settings = ServerConnection.makeSettings();
-      let requestUrl = URLExt.join(settings.baseUrl, this._search_collection_type_url);
-
       // Make request to the backend API
       const request = {
         name: name,
@@ -197,7 +168,7 @@ export class WippSidebar extends Widget {
           method: 'POST',
           body: JSON.stringify(request)
       };
-      ApiRequest<IGenericCollection[]>(requestUrl, fullRequest, settings)
+      requestAPI<IGenericCollection[]>(this._search_collection_type_url, fullRequest)
       .then((objectArray) => {
         if(JSON.stringify(objectArray) == JSON.stringify(this._objectArray)){
           return;
@@ -220,13 +191,13 @@ export class WippSidebar extends Widget {
     private app: JupyterFrontEnd;
     private notebookTracker: INotebookTracker;
     private consoleTracker: IConsoleTracker;
-    private _get_collection_type_url: string;
-    private _search_collection_type_url: string;
+    private _get_collection_type_url!: string;
+    private _search_collection_type_url!: string;
     private _search: SearchWidget;
     private _switcher: SwitcherWidget;
     private _table: ReactWidget;
-    private _imagescollection_url: string;
-    private _csvcollections_url: string;
+    private _imagescollection_url!: string;
+    private _csvcollections_url!: string;
     private _collection_url_prefix: string = '';
     private _objectArray: IGenericCollection[] = [];
     private _tableHeader: [keyof IGenericCollection, string][] = [];
@@ -262,14 +233,18 @@ export function getCurrentEditor(
 ): CodeEditor.IEditor | null | undefined {
   // Get a handle on the most relevant editor,
   // whether it is attached to a notebook or a console.
-  let current = app.shell.currentWidget;
-  let cell: Cell;
+  let current = app.shell.currentWidget!;
+  let editor: CodeEditor.IEditor | null | undefined;
   if (current && notebookTracker.has(current)) { //when editing notebook
     NotebookActions.insertAbove((current as NotebookPanel).content);
-    cell = (current as NotebookPanel).content.activeCell;
-    cell.model.metadata.set('tags', ["parameters"]); //set special metadata for Notebook executor plugin
+    const cell = (current as NotebookPanel).content.activeCell;
+    if (cell) {
+      cell.model.metadata.set('tags', ["parameters"]); //set special metadata for Notebook executor plugin
+    }
+    editor = cell && cell.editor;
   } else if (current && consoleTracker.has(current)) { //when using code console
-    cell = (current as ConsolePanel).console.promptCell;
+    const cell = (current as ConsolePanel).console.promptCell;
+    editor = cell && cell.editor;
   }
-  return cell && cell.editor;
+  return editor;
 }

@@ -1,22 +1,43 @@
-from jupyterlab_wipp.handlers import setup_handlers
-from jupyterlab_wipp.wipp import Wipp
+import json
+from pathlib import Path
 
+from ._version import __version__
 
-def _jupyter_server_extension_paths():
+HERE = Path(__file__).parent.resolve()
+
+with (HERE / "labextension" / "package.json").open() as fid:
+    data = json.load(fid)
+
+def _jupyter_labextension_paths():
     return [{
-        'module': 'jupyterlab_wipp'
+        "src": "labextension",
+        "dest": data["name"]
     }]
 
 
-def load_jupyter_server_extension(nb_app):
+
+from .handlers import setup_handlers
+from .wipp import Wipp
+
+
+def _jupyter_server_extension_points():
+    return [{
+        "module": "jupyterlab_wipp"
+    }]
+
+
+def _load_jupyter_server_extension(server_app):
     """Registers the API handler to receive HTTP requests from the frontend extension.
+
     Parameters
     ----------
-    nb_app: notebook.notebookapp.NotebookApp
-        Notebook application instance
+    server_app: jupyterlab.labapp.LabApp
+        JupyterLab application instance
     """
+    server_app.web_app.settings["wipp"] = Wipp()
+    setup_handlers(server_app.web_app)
+    server_app.log.info("Registered jupyterlab_wipp extension at URL path /wipp")
 
-    w = Wipp()
-    nb_app.web_app.settings["wipp"] = w
-    setup_handlers(nb_app.web_app)
-    nb_app.log.info(f'Registered jupyterlab_wipp extension at URL path /wipp')
+# For backward compatibility with notebook server - useful for Binder/JupyterHub
+load_jupyter_server_extension = _load_jupyter_server_extension
+

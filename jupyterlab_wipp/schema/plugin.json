@@ -1,0 +1,8 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "jupyterlab_wipp",
+  "description": "jupyterlab_wipp settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}
