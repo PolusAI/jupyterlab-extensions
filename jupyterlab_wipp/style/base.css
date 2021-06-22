@@ -119,3 +119,10 @@
     border: 1px solid #94c7c4;
     text-transform: uppercase;
   }
+
+input[type='checkbox'] {
+  appearance: checkbox;
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+  height: auto;
+}
