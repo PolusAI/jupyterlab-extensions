@@ -20,12 +20,14 @@ class WippHandler(APIHandler):
 
 
 class InfoCheckHandler(WippHandler):
+    @tornado.web.authenticated
     def get(self):
         self.finish(json.dumps({
             'data': 'This is /wipp endpoint!'
         }))
 
 class WippUiUrls(WippHandler):
+    @tornado.web.authenticated
     def get(self):
         """
         GET request handler, returns relevant WIPP UI URLs
@@ -40,6 +42,7 @@ class WippUiUrls(WippHandler):
 
 
 class WippRegisterNotebook(WippHandler):
+    @tornado.web.authenticated
     def post(self):
         """
         POST request handler, registers notebook in WIPP
@@ -63,6 +66,7 @@ class WippRegisterNotebook(WippHandler):
             self.write_error(400)
 
 class WippImageCollections(WippHandler):
+    @tornado.web.authenticated
     def get(self):
         """
         GET request handler, returns an array of WIPP Image Collections
@@ -75,6 +79,7 @@ class WippImageCollections(WippHandler):
             self.write_error(500)
 
 class WippImageCollectionsSearch(WippHandler):
+    @tornado.web.authenticated
     def post(self):
         """
         POST request handler
@@ -98,6 +103,7 @@ class WippImageCollectionsSearch(WippHandler):
         
 
 class WippCsvCollections(WippHandler):
+    @tornado.web.authenticated
     def get(self):
         """
         GET request handler, returns an array of WIPP Csv Collections
@@ -109,6 +115,7 @@ class WippCsvCollections(WippHandler):
             self.write(500)
 
 class WippCsvCollectionsSearch(WippHandler):
+    @tornado.web.authenticated
     def post(self):
         """
         POST request handler
