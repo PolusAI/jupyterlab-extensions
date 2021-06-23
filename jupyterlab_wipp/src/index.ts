@@ -4,7 +4,6 @@ import { IMainMenu } from '@jupyterlab/mainmenu'
 import { INotebookTracker } from '@jupyterlab/notebook'
 import { IConsoleTracker } from '@jupyterlab/console';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-// import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { requestAPI } from './handler';
 import { NotebookInfoForm } from './notebookInfoBox';
 import { WippRegister } from './wippRegister';
@@ -23,11 +22,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_wipp:plugin',
   autoStart: true,
   requires: [ICommandPalette, IMainMenu, INotebookTracker, IFileBrowserFactory, ILabShell, IConsoleTracker],
-  // optional: [ISettingRegistry],
   activate: (
     app: JupyterFrontEnd, 
     palette: ICommandPalette,
-    // settingRegistry: ISettingRegistry | null,
     mainMenu: IMainMenu,
     notebookTracker: INotebookTracker,
     factory: IFileBrowserFactory,
@@ -35,17 +32,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
     consoleTracker: IConsoleTracker
   ) => {
     console.log('JupyterLab extension jupyterlab_wipp is activated!');
-
-    // if (settingRegistry) {
-    //   settingRegistry
-    //     .load(plugin.id)
-    //     .then(settings => {
-    //       console.log('jupyterlab_wipp settings loaded:', settings.composite);
-    //     })
-    //     .catch(reason => {
-    //       console.error('Failed to load settings for jupyterlab_wipp.', reason);
-    //     });
-    // }
 
     requestAPI<any>('get_example')
       .then(data => {
