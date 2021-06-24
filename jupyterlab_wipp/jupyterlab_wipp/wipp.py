@@ -38,7 +38,7 @@ class Wipp:
         Constructor does not take any arguments directly, but rather reads them from environment variables
         """
         # WIPP UI URL -- env variable required
-        self.wipp_ui_url = os.getenv('WIPP_UI_URL')
+        self.wipp_ui_url = os.getenv('WIPP_UI_URL') if "WIPP_UI_URL" in os.environ else ''
         self.notebooks_ui_url = os.path.join(self.wipp_ui_url, 'notebooks/')
         self.imagescollections_ui_url = os.path.join(self.wipp_ui_url, 'images-collections/')
         self.imagescollection_ui_url = os.path.join(self.wipp_ui_url, 'images-collection/')
