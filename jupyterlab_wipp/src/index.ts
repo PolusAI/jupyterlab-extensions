@@ -68,8 +68,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
           app.commands.addCommand(registerContextMenuCommandID, {
             label: 'Register in WIPP',
             iconClass: 'jp-MaterialIcon jp-LinkIcon',
-            isVisible: () => true,
-            // isVisible: () => factory.tracker.currentWidget!.selectedItems().next()!.type === 'notebook',
+            isVisible: () => factory.tracker.currentWidget!.selectedItems().next()!.type === 'notebook',
             execute: () => registerByPath(factory.tracker.currentWidget!.selectedItems().next()!.path)
           });
 
