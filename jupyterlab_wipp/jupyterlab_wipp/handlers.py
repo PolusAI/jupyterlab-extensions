@@ -3,16 +3,6 @@ from jupyter_server.utils import url_path_join
 import tornado
 import json
 
-class RouteHandler(APIHandler):
-    # The following decorator should be present on all verb methods (head, get, post,
-    # patch, put, delete, options) to ensure only authorized user can request the
-    # Jupyter server
-    @tornado.web.authenticated
-    def get(self):
-        self.finish(json.dumps({
-            "data": "This is /wipp/get_example endpoint!"
-        }))
-
 class WippHandler(APIHandler):
     @property
     def wipp(self):
@@ -22,9 +12,8 @@ class WippHandler(APIHandler):
 class InfoCheckHandler(WippHandler):
     @tornado.web.authenticated
     def get(self):
-        self.finish(json.dumps({
-            'data': 'This is /wipp endpoint!'
-        }))
+        response = self.wipp.check_api_is_live()
+        self.finish(json.dumps(response))
 
 class WippUiUrls(WippHandler):
     @tornado.web.authenticated
@@ -140,7 +129,6 @@ class WippCsvCollectionsSearch(WippHandler):
 
 def setup_handlers(web_app):
     handlers = [
-        ("/wipp/get_example", RouteHandler),
         ('/wipp/info', InfoCheckHandler),
         ('/wipp/ui_urls', WippUiUrls),
         ('/wipp/register', WippRegisterNotebook),

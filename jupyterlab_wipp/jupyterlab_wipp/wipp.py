@@ -48,6 +48,18 @@ class Wipp:
         self.api_route = os.getenv('WIPP_API_INTERNAL_URL') if "WIPP_API_INTERNAL_URL" in os.environ else 'http://wipp-backend:8080/api'
         self.notebooks_path = os.getenv('WIPP_NOTEBOOKS_PATH') if "WIPP_NOTEBOOKS_PATH" in os.environ else "/opt/shared/wipp/temp/notebooks"
 
+    def check_api_is_live(self):
+        try:
+            r = requests.get(self.api_route, timeout=1)
+        except:
+            return {"code": 500, "data": "WIPP API is not available, so JupyterLab-WIPP extension will not be loaded"}
+        
+        if r.status_code==200:
+            if '_links' in r.json():
+                return {"code": 200, "data": "JupyterLab-WIPP extension is loaded"}
+        
+        
+
     def register_notebook(self, notebook_path, name, description):
         """Register Notebook in WIPP
 
