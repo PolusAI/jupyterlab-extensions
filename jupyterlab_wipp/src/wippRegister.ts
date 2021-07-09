@@ -67,7 +67,7 @@ export class WippRegister extends Widget{
         this.spinner.dispose();
 
         // Print the response for debug
-        console.log(response);
+        console.debug(response);
 
         // Throw exception for API error
         if (response.code !== 200) {

@@ -34,7 +34,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // Run initial health check on backend handlers and check WIPP API is available
     requestAPI<any>('info')
       .then(response => {
-        console.log(response.data);
+        console.debug(response.data);
         if (response.code == 200){
           // Show dialogs and register notebooks
           function registerByPath(path: string): void {
@@ -47,11 +47,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
             ).then(
               result => {
                 if (!result.button.accept) {
-                  console.log('Notebook registering cancelled by user.');
+                  console.debug('Notebook registering cancelled by user.');
                   return;
                 }
                 const info = result.value!;
-                console.log(`Form accepted. Name: ${info.name}. Description: ${info.description}`);
+                console.debug(`Form accepted. Name: ${info.name}. Description: ${info.description}`);
 
                 // Launch WippRegister dialog
                 showDialog({
@@ -113,9 +113,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         }
       })
       .catch(reason => {
-        console.error(
-          `The jupyterlab_wipp server extension appears to be missing.\n${reason}`
-        );
+        throw new Error(`The jupyterlab_wipp server extension appears to be missing.\n${reason}`);
       });
   }
 };
