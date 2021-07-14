@@ -115,7 +115,7 @@ export class GenericTableWidget<T> extends Component<IGenericTableProps<IGeneric
       if (direction === true) {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
       }
-      else if (direction === false) {
+      else {
         return ((x > y) ? -1 : ((x < y) ? 1 : 0));
       }
     });

@@ -1,7 +1,7 @@
-from notebook.base.handlers import APIHandler
-from notebook.utils import url_path_join
+from jupyter_server.base.handlers import APIHandler
+from jupyter_server.utils import url_path_join
+import tornado
 import json
-
 
 class WippHandler(APIHandler):
     @property
@@ -10,12 +10,13 @@ class WippHandler(APIHandler):
 
 
 class InfoCheckHandler(WippHandler):
+    @tornado.web.authenticated
     def get(self):
-        self.finish(json.dumps({
-            'data': 'This is /wipp endpoint!'
-        }))
+        response = self.wipp.check_api_is_live()
+        self.finish(json.dumps(response))
 
 class WippUiUrls(WippHandler):
+    @tornado.web.authenticated
     def get(self):
         """
         GET request handler, returns relevant WIPP UI URLs
@@ -30,6 +31,7 @@ class WippUiUrls(WippHandler):
 
 
 class WippRegisterNotebook(WippHandler):
+    @tornado.web.authenticated
     def post(self):
         """
         POST request handler, registers notebook in WIPP
@@ -53,6 +55,7 @@ class WippRegisterNotebook(WippHandler):
             self.write_error(400)
 
 class WippImageCollections(WippHandler):
+    @tornado.web.authenticated
     def get(self):
         """
         GET request handler, returns an array of WIPP Image Collections
@@ -65,6 +68,7 @@ class WippImageCollections(WippHandler):
             self.write_error(500)
 
 class WippImageCollectionsSearch(WippHandler):
+    @tornado.web.authenticated
     def post(self):
         """
         POST request handler
@@ -88,6 +92,7 @@ class WippImageCollectionsSearch(WippHandler):
         
 
 class WippCsvCollections(WippHandler):
+    @tornado.web.authenticated
     def get(self):
         """
         GET request handler, returns an array of WIPP Csv Collections
@@ -99,6 +104,7 @@ class WippCsvCollections(WippHandler):
             self.write(500)
 
 class WippCsvCollectionsSearch(WippHandler):
+    @tornado.web.authenticated
     def post(self):
         """
         POST request handler
@@ -119,7 +125,7 @@ class WippCsvCollectionsSearch(WippHandler):
                 self.write_error(500)
         else:
             self.write_error(400)
-        
+
 
 def setup_handlers(web_app):
     handlers = [
@@ -131,8 +137,9 @@ def setup_handlers(web_app):
         ('/wipp/csvCollections', WippCsvCollections),
         ('/wipp/csvCollections/search', WippCsvCollectionsSearch)
     ]
-    base_url = web_app.settings['base_url']
+
+    base_url = web_app.settings["base_url"]
     handlers = [(url_path_join(base_url, x[0]), x[1]) for x in handlers]
 
-    host_pattern = '.*$'
+    host_pattern = ".*$"
     web_app.add_handlers(host_pattern, handlers)

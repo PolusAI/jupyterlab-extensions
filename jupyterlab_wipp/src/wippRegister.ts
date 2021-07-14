@@ -1,22 +1,6 @@
 import { Spinner } from '@jupyterlab/apputils';
 import { Widget } from '@lumino/widgets';
-import { ServerConnection } from '@jupyterlab/services';
-import { URLExt } from '@jupyterlab/coreutils';
-
-function ApiRequest<T>(
-    url: string,
-    request: Object | null,
-    settings: ServerConnection.ISettings
-  ): Promise<T> {
-    return ServerConnection.makeRequest(url, request, settings).then(response => {
-      if (response.status !== 200) {
-        return response.json().then(data => {
-          throw new ServerConnection.ResponseError(response, data.message);
-        });
-      }
-      return response.json();
-    });
-  }
+import { requestAPI } from './handler';
 
 export class WippRegister extends Widget{
     body: HTMLElement;
@@ -59,10 +43,6 @@ export class WippRegister extends Widget{
      * Executes the backend service API to register notebook in WIPP and handles response and errors.
      */
     private registerNotebook() {
-        // Make request to Jupyter API
-        const settings = ServerConnection.makeSettings();
-        const requestUrl = URLExt.join(settings.baseUrl, '/wipp/register');
-
         // Make request to the backend API
         var request = {
             path: this.path,
@@ -74,7 +54,7 @@ export class WippRegister extends Widget{
             body: JSON.stringify(request)
         };
 
-        ApiRequest<any>(requestUrl, fullRequest, settings)
+        requestAPI<any>('register', fullRequest)
         .then(response => {
             this.handleResponse(response);
           })
@@ -85,9 +65,6 @@ export class WippRegister extends Widget{
         // Remove spinner from dialog
         this.node.removeChild(this.spinner.node);
         this.spinner.dispose();
-
-        // Print the response for debug
-        console.log(response);
 
         // Throw exception for API error
         if (response.code !== 200) {

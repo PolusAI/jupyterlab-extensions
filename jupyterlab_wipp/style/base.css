@@ -1,0 +1,128 @@
+.wipp-WippLogo {
+    background-image: url(logo-wipp.svg);
+}
+
+.wipp-WippSidebar {
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    overflow: auto;
+  }
+
+.wipp-WippSidebar-search {
+    background-color: var(--jp-input-active-background);
+    border: var(--jp-border-width) solid var(--jp-border-color2);
+    flex: 1 1 auto;
+    height: 30px;
+    padding: 0px 12px;
+    margin: 0 4px 0 0;
+  }
+
+.wipp-WippSidebar-search:focus-within {
+    border: var(--jp-border-width) solid var(--md-blue-500);
+    box-shadow: inset 0 0 4px var(--md-blue-300);
+  }
+
+.wipp-WippSidebar-search-layout {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  background-color: var(--jp-layout-color1);
+  border-bottom: 1px solid var(--jp-border-color2);
+  box-shadow: var(--jp-toolbar-box-shadow);
+  z-index: 2;
+}
+
+.wipp-WippSidebar-search input {
+    background: transparent;
+    float: left;
+    border: none;
+    outline: none;
+    font-size: var(--jp-ui-font-size1);
+    color: var(--jp-ui-font-color0);
+    width: calc(100% - 30px);
+    line-height: 28px;
+  }
+
+.wipp-ImportIcon {
+    background-image: var(--jp-icon-add);
+  }
+
+.wipp-WippSidebar-table-div {
+    display: inherit;
+    justify-content: center;
+    margin: 8px;
+    padding: 0;
+    list-style-type: none;
+  }
+
+.wipp-WippSidebar-table {
+    table-layout: auto;
+    width: 100%;
+}
+
+.wipp-WippSidebar-table-header-import-column {
+  width: 30px;
+}
+
+.wipp-WippSidebar-table-header-sorted-ascending {
+  height: 13px;
+  width: 13px;
+  background-size: 18px;
+  display: inline-block;
+  background-image: var(--jp-icon-caretup);
+}
+
+.wipp-WippSidebar-table-header-sorted-descending {
+  height: 13px;
+  width: 13px;
+  background-size: 18px;
+  display: inline-block;
+  background-image: var(--jp-icon-caretdown);
+}
+
+.wipp-WippSidebar-table-element {
+  text-align: center;
+ }
+
+.wipp-WippSidebar-switcher-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 8px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.wipp-WippSidebar-switcher-item {
+    margin: 4px;
+    white-space: nowrap;
+  }
+
+.wipp-WippSidebar-switcher-item button {
+    font-size: var(--jp-ui-font-size0);
+    line-height: 24px;
+    padding: 0px 8px;
+  }
+
+.wipp-WippSidebar-switcher-item button.normal {
+    color: #000000;
+    background-color: var(--jp-layout-color3);
+    border: 1px solid var(--jp-layout-color3);
+    text-transform: uppercase;
+  }
+
+.wipp-WippSidebar-switcher-item button.selected {
+    color: #000000;
+    background-color: #94c7c4;
+    border: 1px solid #94c7c4;
+    text-transform: uppercase;
+  }
+
+input[type='checkbox'] {
+  appearance: checkbox;
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+  height: auto;
+}
