@@ -96,6 +96,17 @@ By default, the `jlpm run build` command generates the source maps for this exte
 jupyter lab build --minimize=False
 ```
 
+### Manually build and upload release
+
+To manually build and publish prebuilt extension bundle, run the following commands (`jupyter_packaging` and `twine` are required)
+
+```bash
+pip install -e .
+python setup.py sdist bdist_wheel
+twine check dist/*
+twine upload dist/*
+```
+
 ### Development uninstall
 
 ```bash
