@@ -5,6 +5,16 @@ import json
 from pathlib import Path
 
 import setuptools
+try:
+    from jupyter_packaging import get_data_files, npm_builder, wrap_installers
+    try:
+        import jupyterlab
+    except ImportError as e:
+        print("`jupyterlab` is missing. Install it with pip or conda.")
+        raise e
+except ImportError as e:
+    print("`jupyter-packaging` is missing. Install it with pip or conda.")
+    raise e
 
 HERE = Path(__file__).parent.resolve()
 
@@ -23,7 +33,8 @@ labext_name = "jupyterlab_wipp"
 
 data_files_spec = [
     ("share/jupyter/labextensions/%s" % labext_name, str(lab_path), "**"),
-    ("share/jupyter/labextensions/%s" % labext_name, str(HERE), "install.json"),("etc/jupyter/jupyter_server_config.d",
+    ("share/jupyter/labextensions/%s" % labext_name, str(HERE), "install.json"),
+    ("etc/jupyter/jupyter_server_config.d",
      "jupyter-config/server-config", "jupyterlab_wipp.json"),
     # For backward compatibility with notebook server
     ("etc/jupyter/jupyter_notebook_config.d",
@@ -36,6 +47,10 @@ long_description = (HERE / "README.md").read_text()
 # Get the package info from package.json
 pkg_json = json.loads((HERE / "package.json").read_bytes())
 
+post_develop = npm_builder(
+    build_cmd="install:extension", source_dir="src", build_dir=lab_path
+)
+
 setup_args = dict(
     name=name,
     version=pkg_json["version"],
@@ -47,6 +62,7 @@ setup_args = dict(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
+    data_files=get_data_files(data_files_spec),
     install_requires=[
         "jupyter_server>=1.6,<2"
     ],
@@ -65,21 +81,8 @@ setup_args = dict(
         "Programming Language :: Python :: 3.9",
         "Framework :: Jupyter",
     ],
+    cmdclass=wrap_installers(post_develop=post_develop, ensured_targets=ensured_targets)
 )
-
-try:
-    from jupyter_packaging import (
-        wrap_installers,
-        npm_builder,
-        get_data_files
-    )
-    post_develop = npm_builder(
-        build_cmd="install:extension", source_dir="src", build_dir=lab_path
-    )
-    setup_args['cmdclass'] = wrap_installers(post_develop=post_develop, ensured_targets=ensured_targets)
-    setup_args['data_files'] = get_data_files(data_files_spec)
-except ImportError as e:
-    pass
 
 if __name__ == "__main__":
     setuptools.setup(**setup_args)
