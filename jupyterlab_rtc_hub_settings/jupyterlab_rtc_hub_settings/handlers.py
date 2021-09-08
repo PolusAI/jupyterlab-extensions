@@ -3,14 +3,7 @@ import json
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
 import tornado
-from .log import get_logger
 
-class RouteHandler(APIHandler):
-    @tornado.web.authenticated
-    def get(self):
-        self.finish(json.dumps({
-            "data": "This is /jupyterlab-rtc-hub-settings/get_example endpoint!"
-        }))
 
 class HubSharingSettingsHandler(APIHandler):
     @property
@@ -47,8 +40,6 @@ class HubSharingGetUsersHandler(HubSharingSettingsHandler):
         """
 
         data = json.loads(self.request.body.decode("utf-8"))
-        get_logger().debug("POST request received")
-        get_logger().debug(data)
         try:
             self.hub_sharing_settings.set_users_status(data)
             response = self.hub_sharing_settings.get_users_status()
@@ -59,7 +50,6 @@ class HubSharingGetUsersHandler(HubSharingSettingsHandler):
 
 def setup_handlers(web_app):
     handlers = [
-        ('/jupyterlab-rtc-hub-settings/get_example', RouteHandler),
         ('/jupyterlab-rtc-hub-settings/users', HubSharingGetUsersHandler)
     ]
 

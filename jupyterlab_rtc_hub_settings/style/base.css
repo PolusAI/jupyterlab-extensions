@@ -1,3 +1,20 @@
 .rtc-hub-settings-SharingSettingsLogo {
     background-image: url(sharing_settings.svg);
 }
+
+.rtc-hub-settings-Toolbar-layout {
+    border-bottom: var(--jp-border-width) solid var(--jp-border-color2);
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    font-size: var(--jp-ui-font-size0);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0px;
+    padding: 8px 12px;
+    text-transform: uppercase;
+  }
+
+.rtc-hub-settings-Toolbar-spacer {
+    flex: 1 1 auto;
+  }

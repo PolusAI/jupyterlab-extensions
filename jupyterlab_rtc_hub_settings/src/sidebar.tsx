@@ -22,7 +22,7 @@ export class SharingSettingsSidebar extends Widget {
         let layout = (this.layout = new PanelLayout());
 
         // Add Toolbar widget
-        let toolbar = ReactWidget.create(<ToolbarWidget onRefresh={() => { this._getUsers() }} />);
+        let toolbar = new ToolbarWidget(() => { this._getUsers() });
         layout.addWidget(toolbar);
 
         // Add Users table widget

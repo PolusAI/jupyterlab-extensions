@@ -8,7 +8,3 @@ export type IUsersTableProps = {
     updateUsers: (users: IUserStatus[]) => void,
     refreshUsers: () => void;
 }
-
-export interface IToolbarProps {
-    onRefresh: () => void;
-}

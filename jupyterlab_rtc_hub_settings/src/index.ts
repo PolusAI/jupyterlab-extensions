@@ -21,8 +21,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     sidebar.title.caption = 'Sharing settings';
 
     // Register sidebar panel with JupyterLab
-    labShell.add(sidebar, 'left', { rank: 200 });
-
+    labShell.add(sidebar, 'left', { rank: 600 });
 
   }
 };
