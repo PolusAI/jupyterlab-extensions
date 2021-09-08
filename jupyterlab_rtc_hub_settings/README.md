@@ -9,17 +9,40 @@ This extension is composed of a Python package named `jupyterlab_rtc_hub_setting
 for the server extension and a NPM package named `jupyterlab_rtc_hub_settings`
 for the frontend extension.
 
+The extension only works with specifically configured JupyterHub (>2.0, requires RBAC). The extension assumes that JupyterHub spawner passed the JupyterHub API key to the environment variable `JUPYTERHUB_API_TOKEN` with a scope `all`, e.g.
+```py
+{
+    'name': 'server',
+    'scopes': ['all'],
+}
+```
+Also, the extension assumes that sharing groups and roles have been created for each JupyterHub user with the following names:
+- Empty group `server_sharing_{user}`: keeps the list of all users with which I'm sharing my Jupyter server. This is the group that you will see and modify in the extension. Members of the group will have a box checked next to their name
+- Group editing role `server_sharing_{user}_group_editing_role`. This roles allows extension to modify the above group on behalf of the user
+```
+{
+    'name': f'server_sharing_{user}_group_editing_role',
+    'description': f'Edit server_sharing_{user} group',
+    'scopes': [f'groups!group=server_sharing_{user}'],
+    'users': [f'{user}']
+}
+```
+- Sharing role `server_sharing_{user}_role`. Strictly speaking is not required for the extension to work, but is enabling the server access for users specified in `server_sharing_{user}`
+
+The example JupyterHub configuration will be provided soon.
+
 
 ## Requirements
 
 * JupyterLab >= 3.0
+
 
 ## Install
 
 To install the extension, execute:
 
 ```bash
-pip install jupyterlab_rtc_hub_settings
+pip install jupyterlab-rtc-hub-settings
 ```
 
 ## Uninstall
@@ -27,7 +50,7 @@ pip install jupyterlab_rtc_hub_settings
 To remove the extension, execute:
 
 ```bash
-pip uninstall jupyterlab_rtc_hub_settings
+pip uninstall jupyterlab-rtc-hub-settings
 ```
 
 
@@ -93,7 +116,7 @@ jupyter lab build --minimize=False
 ```bash
 # Server extension must be manually disabled in develop mode
 jupyter server extension disable jupyterlab_rtc_hub_settings
-pip uninstall jupyterlab_rtc_hub_settings
+pip uninstall jupyterlab-rtc-hub-settings
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
