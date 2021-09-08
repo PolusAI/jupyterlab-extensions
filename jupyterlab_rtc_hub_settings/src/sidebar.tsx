@@ -16,7 +16,7 @@ export class SharingSettingsSidebar extends Widget {
     constructor() {
         super();
 
-        this.addClass('wipp-WippSidebar');
+        this.addClass('rtc-hub-settings-SharingSettingsSidebar');
 
         // Define widget layout
         let layout = (this.layout = new PanelLayout());
@@ -36,7 +36,7 @@ export class SharingSettingsSidebar extends Widget {
                 }
             </UseSignal>
         )
-        table.addClass('wipp-WippSidebar-table-div');
+        table.addClass('rtc-hub-settings-SharingSettingsSidebar-table-div');
         layout.addWidget(table);
     }
 

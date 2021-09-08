@@ -33,7 +33,7 @@ export class UsersTableWidget extends Component<IUsersTableProps, IUsersTablePro
         // Assemble headers and rows in the full table
         return (
             <div>
-                <table className='wipp-WippSidebar-table'>
+                <table className='rtc-hub-settings-SharingSettingsSidebar-table'>
                     <tbody>
                         {tableRows}
                     </tbody>
