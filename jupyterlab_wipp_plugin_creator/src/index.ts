@@ -6,9 +6,16 @@ import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { Creator_Sidebar } from './sidebar';
 import { IStateDB } from '@jupyterlab/statedb'
 import { ExtensionConstants } from './extensionConstants';
+import { LabIcon } from '@jupyterlab/ui-components';
+import logoSvg from '../style/logo.svg';
 
+const logoIcon = new LabIcon({
+  name: 'wipp-plugin-builder:logo',
+  svgstr: logoSvg
+});
 
 let filepaths: string[] = [];
+
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_wipp_plugin_creator:plugin',
   autoStart: true,
@@ -57,7 +64,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     // Create the WIPP sidebar panel
     const sidebar = new Creator_Sidebar(app, notebookTracker, consoleTracker, state);
     sidebar.id = 'wipp-labextension:plugin';
-    sidebar.title.iconClass = 'wipp-pluginCreatorLogo jp-SideBar-tabIcon';
+    sidebar.title.icon = logoIcon;
     sidebar.title.caption = 'WIPP Plugin Creator';
     labShell.add(sidebar, 'left', { rank: 200 });
 

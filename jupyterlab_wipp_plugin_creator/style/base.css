@@ -1,7 +1,3 @@
-.wipp-pluginCreatorLogo {
-    background-image: url(logo.svg);
-}
-
 .wipp-pluginCreatorSidebar {
     background: var(--jp-layout-color1);
     color: var(--jp-ui-font-color1);
