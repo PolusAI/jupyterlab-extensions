@@ -32,7 +32,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
     })
 
-    // Add context menu command, right click file browser to register mark files to be converted to plugin
+    // Add context menu command, right click file browser to register marked files to be converted to plugin
     var filepath = ''
     const addFileToPluginContextMenuCommandID = 'wipp-plugin-creator-add-context-menu';
     app.commands.addCommand(addFileToPluginContextMenuCommandID, {
@@ -53,7 +53,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
         })
       }
     })
-    state.list().then(response => { console.log(response) })
 
     // Create the WIPP sidebar panel
     const sidebar = new Creator_Sidebar(app, state);
