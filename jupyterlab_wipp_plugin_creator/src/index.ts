@@ -1,7 +1,4 @@
 import { JupyterFrontEnd, JupyterFrontEndPlugin, ILabShell } from '@jupyterlab/application';
-import { IMainMenu } from '@jupyterlab/mainmenu'
-import { INotebookTracker } from '@jupyterlab/notebook'
-import { IConsoleTracker } from '@jupyterlab/console';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { Creator_Sidebar } from './sidebar';
 import { IStateDB } from '@jupyterlab/statedb'
@@ -19,14 +16,11 @@ let filepaths: string[] = [];
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_wipp_plugin_creator:plugin',
   autoStart: true,
-  requires: [IMainMenu, INotebookTracker, IFileBrowserFactory, ILabShell, IConsoleTracker, IStateDB],
+  requires: [IFileBrowserFactory, ILabShell, IStateDB],
   activate: (
     app: JupyterFrontEnd,
-    mainMenu: IMainMenu,
-    notebookTracker: INotebookTracker,
     factory: IFileBrowserFactory,
     labShell: ILabShell,
-    consoleTracker: IConsoleTracker,
     state: IStateDB
   ) => {
 
@@ -62,7 +56,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     state.list().then(response => { console.log(response) })
 
     // Create the WIPP sidebar panel
-    const sidebar = new Creator_Sidebar(app, notebookTracker, consoleTracker, state);
+    const sidebar = new Creator_Sidebar(app, state);
     sidebar.id = 'wipp-labextension:plugin';
     sidebar.title.icon = logoIcon;
     sidebar.title.caption = 'WIPP Plugin Creator';

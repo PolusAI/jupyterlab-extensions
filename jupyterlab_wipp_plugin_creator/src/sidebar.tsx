@@ -1,3 +1,4 @@
+import { JupyterFrontEnd } from '@jupyterlab/application';
 import { Widget, PanelLayout } from '@lumino/widgets';
 import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
 import { ToolbarButton } from '@jupyterlab/apputils';
@@ -11,6 +12,7 @@ export class Creator_Sidebar extends Widget {
    * Create a new WIPP plugin creator sidebar.
    */
   constructor(
+    app: JupyterFrontEnd,
     state: IStateDB
   ) {
     super();
