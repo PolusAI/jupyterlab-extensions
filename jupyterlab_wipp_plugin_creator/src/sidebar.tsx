@@ -127,8 +127,7 @@ export class Creator_Sidebar extends Widget {
 
   //Sidebar constructor ends
   submit() {
-    console.log('Files: ', this._addFileWidget.getValue())
-    console.log('Form: ', this._form.getValue())
+
 
     //Create API request on submit
     let formvalue = this._form.getValue()
@@ -145,13 +144,15 @@ export class Creator_Sidebar extends Widget {
       };
       requestAPI<any>('createplugin', fullRequest)
         .then(response => {
-          console.log('Handle json object sent:')
-          console.log(response)
+          console.log('POST request sent.')
         })
         .catch(() => console.log('There is an error making POST CreatePlugin API request.'));
     }
 
-    else { console.log(`Schema form data returns with an error`); console.log(formvalue.errors) }
+    else {
+      console.log(`Schema form data returns with an error`);
+      console.log(formvalue.errors)
+    }
 
   }
 
