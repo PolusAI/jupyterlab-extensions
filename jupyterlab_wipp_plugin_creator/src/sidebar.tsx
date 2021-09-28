@@ -5,7 +5,7 @@ import { Widget, PanelLayout } from '@lumino/widgets';
 import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
 import { ToolbarButton } from '@jupyterlab/apputils';
 import { runIcon } from '@jupyterlab/ui-components';
-import { AddedFileWidget } from './addedFilesWidget'
+import { AddedFilesWidget } from './addedFilesWidget'
 import { IStateDB } from '@jupyterlab/statedb'
 import { requestAPI } from './handler';
 
@@ -104,7 +104,7 @@ export class Creator_Sidebar extends Widget {
       }
     };
 
-    this._addFileWidget = new AddedFileWidget(state)
+    this._addFileWidget = new AddedFilesWidget(state)
     layout.addWidget(this._addFileWidget);
 
     const formData: any = {
@@ -155,6 +155,6 @@ export class Creator_Sidebar extends Widget {
 
   }
 
-  private _addFileWidget: AddedFileWidget;
+  private _addFileWidget: AddedFilesWidget;
   private _form: SchemaForm;
 }

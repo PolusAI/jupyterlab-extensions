@@ -38,7 +38,7 @@ def _load_jupyter_server_extension(server_app):
     # Initialize and save Wipp object to key
     server_app.web_app.settings["wipp-plugin-creator"] = Wipp()
     setup_handlers(server_app.web_app)
-    server_app.log.info("Registered HelloWorld extension at URL path /jupyterlab-plugin-creator")
+    server_app.log.info("Registered the extension at URL path /jupyterlab_wipp_plugin_creator")
     
 
 # For backward compatibility with notebook server - useful for Binder/JupyterHub

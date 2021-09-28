@@ -1,10 +1,10 @@
 import { Widget } from '@lumino/widgets';
 import { IStateDB } from '@jupyterlab/statedb'
 import { ExtensionConstants } from './extensionConstants';
-import {Message} from '@lumino/messaging';
-// import { requestAPI } from './handler';
+import { Message } from '@lumino/messaging';
 
-export class AddedFileWidget extends Widget {
+
+export class AddedFilesWidget extends Widget {
     constructor(state: IStateDB) {
         super();
         this._state = state;

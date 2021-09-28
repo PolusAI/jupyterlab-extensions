@@ -17,7 +17,7 @@ export async function requestAPI<T>(
   const settings = ServerConnection.makeSettings();
   const requestUrl = URLExt.join(
     settings.baseUrl,
-    'jupyterlab-plugin-creator', // API Namespace
+    'jupyterlab_wipp_plugin_creator', // API Namespace
     endPoint
   );
 

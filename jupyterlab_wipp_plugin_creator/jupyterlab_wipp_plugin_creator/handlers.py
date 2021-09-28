@@ -132,7 +132,7 @@ class CreatePlugin(WippHandler):
 
 
 def setup_handlers(web_app):
-    handlers = [("/jupyterlab-plugin-creator/createplugin", CreatePlugin)]
+    handlers = [("/jupyterlab_wipp_plugin_creator/createplugin", CreatePlugin)]
 
     base_url = web_app.settings["base_url"]
     handlers = [(url_path_join(base_url, x[0]), x[1]) for x in handlers]
