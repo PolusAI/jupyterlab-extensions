@@ -53,9 +53,9 @@ jobs:
         jlpm run eslint:check
         python -m pip install .
 
-        jupyter server extension list 2>&1 | grep -ie "jupyterlab_plugin_creator.*OK"
+        jupyter server extension list 2>&1 | grep -ie "jupyterlab_wipp_plugin_creator.*OK"
 
-        jupyter labextension list 2>&1 | grep -ie "jupyterlab_plugin_creator.*OK"
+        jupyter labextension list 2>&1 | grep -ie "jupyterlab_wipp_plugin_creator.*OK"
         python -m jupyterlab.browser_check
 
         check-manifest -v
@@ -94,5 +94,5 @@ jobs:
         sudo rm -rf $(which node)
         pip install myextension.tar.gz
         pip install jupyterlab
-        jupyter labextension list 2>&1 | grep -ie "jupyterlab_plugin_creator.*OK"
+        jupyter labextension list 2>&1 | grep -ie "jupyterlab_wipp_plugin_creator.*OK"
         python -m jupyterlab.browser_check --no-chrome-test

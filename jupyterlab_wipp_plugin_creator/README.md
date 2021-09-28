@@ -1,11 +1,11 @@
-# jupyterlab_plugin_creator
+# jupyterlab_wipp_plugin_creator
 
-![Github Actions Status](https://github.com/Kingstonshaw/jupyterlab_plugin_creator/workflows/Build/badge.svg)
+![Github Actions Status](https://github.com/Kingstonshaw/jupyterlab_wipp_plugin_creator/workflows/Build/badge.svg)
 
 Create wipp plugin by containerizing local code in various languages,  automate the Plugin generation and testing process using both static analysis and templates. 
 
-This extension is composed of a Python package named `jupyterlab_plugin_creator`
-for the server extension and a NPM package named `jupyterlab_plugin_creator`
+This extension is composed of a Python package named `jupyterlab_wipp_plugin_creator`
+for the server extension and a NPM package named `jupyterlab_wipp_plugin_creator`
 for the frontend extension.
 
 
@@ -18,7 +18,7 @@ for the frontend extension.
 To install the extension, execute:
 
 ```bash
-pip install jupyterlab_plugin_creator
+pip install jupyterlab_wipp_plugin_creator
 ```
 
 ## Uninstall
@@ -26,7 +26,7 @@ pip install jupyterlab_plugin_creator
 To remove the extension, execute:
 
 ```bash
-pip uninstall jupyterlab_plugin_creator
+pip uninstall jupyterlab_wipp_plugin_creator
 ```
 
 
@@ -59,13 +59,13 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the jupyterlab_plugin_creator directory
+# Change directory to the jupyterlab_wipp_plugin_creator directory
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
 jupyter labextension develop . --overwrite
 # Server extension must be manually installed in develop mode
-jupyter server extension enable jupyterlab_plugin_creator
+jupyter server extension enable jupyterlab_wipp_plugin_creator
 # Rebuild extension Typescript source after making changes
 jlpm run build
 ```
@@ -103,13 +103,13 @@ jupyter lab build --minimize=False
 
 ```bash
 # Server extension must be manually disabled in develop mode
-jupyter server extension disable jupyterlab_plugin_creator
-pip uninstall jupyterlab_plugin_creator
+jupyter server extension disable jupyterlab_wipp_plugin_creator
+pip uninstall jupyterlab_wipp_plugin_creator
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
-folder is located. Then you can remove the symlink named `jupyterlab_plugin_creator` within that folder.
+folder is located. Then you can remove the symlink named `jupyterlab_wipp_plugin_creator` within that folder.
 
 ### Packaging the extension
 

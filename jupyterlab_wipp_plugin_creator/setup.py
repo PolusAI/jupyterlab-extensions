@@ -1,5 +1,5 @@
 """
-jupyterlab_plugin_creator setup
+jupyterlab_wipp_plugin_creator setup
 """
 import json
 import sys
@@ -10,7 +10,7 @@ import setuptools
 HERE = Path(__file__).parent.resolve()
 
 # The name of the project
-name = "jupyterlab_plugin_creator"
+name = "jupyterlab_wipp_plugin_creator"
 
 lab_path = (HERE / name.replace("-", "_") / "labextension")
 
@@ -20,16 +20,16 @@ ensured_targets = [
     str(lab_path / "static/style.js")
 ]
 
-labext_name = "jupyterlab_plugin_creator"
+labext_name = "jupyterlab_wipp_plugin_creator"
 
 data_files_spec = [
     ("share/jupyter/labextensions/%s" % labext_name, str(lab_path.relative_to(HERE)), "**"),
     ("share/jupyter/labextensions/%s" % labext_name, str("."), "install.json"),
     ("etc/jupyter/jupyter_server_config.d",
-     "jupyter-config/server-config", "jupyterlab_plugin_creator.json"),
+     "jupyter-config/server-config", "jupyterlab_wipp_plugin_creator.json"),
     # For backward compatibility with notebook server
     ("etc/jupyter/jupyter_notebook_config.d",
-     "jupyter-config/nb-config", "jupyterlab_plugin_creator.json"),
+     "jupyter-config/nb-config", "jupyterlab_wipp_plugin_creator.json"),
 ]
 
 long_description = (HERE / "README.md").read_text()
@@ -58,7 +58,7 @@ setup_args = dict(
     platforms="Linux, Mac OS X, Windows",
     keywords=["Jupyter", "JupyterLab", "JupyterLab3"],
     classifiers=[
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",

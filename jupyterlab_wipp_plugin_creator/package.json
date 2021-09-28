@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/Kingstonshaw/jupyterlab-extensions/issues"
   },
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "author": {
     "name": "Will Xiao",
     "email": "Will.Xiao@axleinfo.com"
@@ -35,7 +35,7 @@
     "build:lib": "tsc",
     "clean": "jlpm run clean:lib",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
-    "clean:labextension": "rimraf jupyterlab_plugin_creator/labextension",
+    "clean:labextension": "rimraf jupyterlab_wipp_plugin_creator/labextension",
     "clean:all": "jlpm run clean:lib && jlpm run clean:labextension",
     "eslint": "eslint . --ext .ts,.tsx --fix",
     "eslint:check": "eslint . --ext .ts,.tsx",
@@ -82,12 +82,12 @@
           "pip"
         ],
         "base": {
-          "name": "jupyterlab_plugin_creator"
+          "name": "jupyterlab_wipp_plugin_creator"
         }
       }
     },
     "extension": true,
-    "outputDir": "jupyterlab_plugin_creator/labextension"
+    "outputDir": "jupyterlab_wipp_plugin_creator/labextension"
   },
   "jupyter-releaser": {
     "hooks": {

@@ -23,7 +23,7 @@ from .handlers import setup_handlers
 
 def _jupyter_server_extension_points():
     return [{
-        "module": "jupyterlab_plugin_creator"
+        "module": "jupyterlab_wipp_plugin_creator"
     }]
 
 
