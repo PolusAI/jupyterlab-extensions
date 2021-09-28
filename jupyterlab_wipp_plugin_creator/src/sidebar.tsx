@@ -3,9 +3,10 @@ import { Widget, PanelLayout } from '@lumino/widgets';
 import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
 import { ToolbarButton } from '@jupyterlab/apputils';
 import { runIcon } from '@jupyterlab/ui-components';
-import { IStateDB } from '@jupyterlab/statedb'
-import { AddedFilesWidget } from './addedFilesWidget'
+import { IStateDB } from '@jupyterlab/statedb';
+import { AddedFilesWidget } from './addedFilesWidget';
 import { requestAPI } from './handler';
+import schemaForm from "./rjsfSchemaForm.json";
 
 export class Creator_Sidebar extends Widget {
   /**
@@ -26,79 +27,8 @@ export class Creator_Sidebar extends Widget {
     title.node.appendChild(h1);
     layout.addWidget(title);
 
-    const schema = {
-      title: "Plugin Info",
-      type: "object",
-      properties: {
-        name: {
-          type: "string",
-          title: "Name",
-          default: ""
-        },
-        version: {
-          type: "string",
-          title: "Version",
-          default: ""
-        },
-        requirements: {
-          type: "array",
-          items: {
-            type: "string"
-          },
-          title: "Requirements"
-        },
-        inputs: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              name: {
-                type: "string",
-                title: "Name"
-              },
-              description: {
-                type: "string",
-                title: "Description"
-              },
-              inputType: {
-                type: "string",
-                enum: ["collection", "csvCollection", "notebook", "pyramid", "genericData", "stitchingVector"]
-              },
-              required: {
-                type: "boolean",
-                title: "Required"
-              }
-            }
-          },
-          title: "Inputs"
-        },
-        outputs: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              name: {
-                type: "string",
-                title: "Name"
-              },
-              description: {
-                type: "string",
-                title: "Description"
-              },
-              inputType: {
-                type: "string",
-                enum: ["collection", "csvCollection", "notebook", "pyramid", "genericData", "stitchingVector"]
-              },
-              required: {
-                type: "boolean",
-                title: "Required"
-              }
-            }
-          },
-          title: "Outputs"
-        }
-      }
-    };
+    //necessary or plugin will not activate
+    const schema = schemaForm
 
     this._addFileWidget = new AddedFilesWidget(state)
     layout.addWidget(this._addFileWidget);
