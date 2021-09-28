@@ -1,9 +1,9 @@
 import { JupyterFrontEnd, JupyterFrontEndPlugin, ILabShell } from '@jupyterlab/application';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
-import { Creator_Sidebar } from './sidebar';
 import { IStateDB } from '@jupyterlab/statedb'
-import { ExtensionConstants } from './extensionConstants';
 import { LabIcon } from '@jupyterlab/ui-components';
+import { ExtensionConstants } from './extensionConstants';
+import { Creator_Sidebar } from './sidebar';
 import logoSvg from '../style/logo.svg';
 
 const logoIcon = new LabIcon({

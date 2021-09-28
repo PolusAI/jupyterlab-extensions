@@ -1,7 +1,7 @@
 import { Widget } from '@lumino/widgets';
 import { IStateDB } from '@jupyterlab/statedb'
-import { ExtensionConstants } from './extensionConstants';
 import { Message } from '@lumino/messaging';
+import { ExtensionConstants } from './extensionConstants';
 
 
 export class AddedFilesWidget extends Widget {
