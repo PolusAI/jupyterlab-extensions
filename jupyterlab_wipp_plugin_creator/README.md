@@ -29,14 +29,17 @@ To install the extension, execute:
 
 ```bash
 pip install jupyterlab_wipp_plugin_creator
+export WIPP_UI_URL="https://wipp-ui.ci.aws.labshare.org"
+export WIPP_API_INTERNAL_URL="http://wipp-ui.ci.aws.labshare.org/api/"
+export WIPP_NOTEBOOKS_PATH="/home/jovyan/notebooks/"
+export PLUGIN_TEMP_LOCATION= must enter here your choice of temprorary folder
 ```
 
 The last steps are required environment variables from the terminal if not using from CI. Choose a local temporary directory where you want your manifest and code of your plugin to be staged.
 
-export WIPP_UI_URL="https://wipp-ui.ci.aws.labshare.org"
-export WIPP_API_INTERNAL_URL="http://wipp-ui.ci.aws.labshare.org/api/"
-export WIPP_NOTEBOOKS_PATH="/home/jovyan/notebooks/"
-export PLUGIN_TEMP_LOCATION= 
+- `WIPP_UI_URL` is the WIPP frontend base URL which will be used to open collection pages.
+- `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster)
+- `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder
 
 ## Uninstall
 
