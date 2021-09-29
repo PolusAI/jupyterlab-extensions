@@ -3,6 +3,7 @@ import os
 import subprocess
 import random
 import string
+from wipp_client.wipp import gen_random_object_id
 
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
@@ -43,10 +44,10 @@ class CreatePlugin(WippHandler):
         """
 
         pwd = os.getcwd()
-        # Not Cryptographically secure
-        randomname = "".join(
-            random.choices(string.ascii_uppercase + string.digits, k=10)
-        )
+
+        # Random ID follows MongoDB format
+        randomname= gen_random_object_id()
+
         tempenv = os.getenv("PLUGIN_TEMP_LOCATION")
         # if ENV exists
         if tempenv:

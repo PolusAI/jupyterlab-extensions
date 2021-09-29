@@ -58,7 +58,6 @@ export class Creator_Sidebar extends Widget {
   //Sidebar constructor ends
   submit() {
 
-
     //Create API request on submit
     let formvalue = this._form.getValue()
     let request = {
