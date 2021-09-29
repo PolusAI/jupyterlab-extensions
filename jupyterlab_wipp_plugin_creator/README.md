@@ -32,6 +32,7 @@ pip install jupyterlab_wipp_plugin_creator
 ```
 
 The last steps are required environment variables from the terminal if not using from CI. Choose a local temporary directory where you want your manifest and code of your plugin to be staged.
+
 export WIPP_UI_URL="https://wipp-ui.ci.aws.labshare.org"
 export WIPP_API_INTERNAL_URL="http://wipp-ui.ci.aws.labshare.org/api/"
 export WIPP_NOTEBOOKS_PATH="/home/jovyan/notebooks/"
