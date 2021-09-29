@@ -8,7 +8,11 @@ from wipp_client.wipp import gen_random_object_id
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
 import tornado
+# import logging
+from .log import get_logger
 
+logger = get_logger()
+# logger.setLevel(logging.INFO)
 
 class WippHandler(APIHandler):
     @property
@@ -48,24 +52,27 @@ class CreatePlugin(WippHandler):
         # Random ID follows MongoDB format
         randomname= gen_random_object_id()
 
-        tempenv = os.getenv("PLUGIN_TEMP_LOCATION")
+        pluginOutputPath = os.getenv("PLUGIN_TEMP_LOCATION")
         # if ENV exists
-        if tempenv:
-            os.chdir(tempenv)
-            print(f"New directory {randomname} is created!")
+        if pluginOutputPath:
+            os.chdir(pluginOutputPath)
+
+            logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
+
         else:
+            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = ..' to set ")
             # if path doesn't exist
             if not os.path.isdir("temp"):
-                print(f" creating ./temp in {os.getcwd()}... ")
+                logger.info(f"Creating ./temp in {os.getcwd()}... ")
                 os.makedirs("temp")
             os.chdir("temp")
-            print(
-                f"Env variable PLUGIN_TEMP_LOCATION not found, creating new directory temp/{randomname}!"
-            )
+            logger.info(f"Env variable PLUGIN_TEMP_LOCATION not found, creating new directory temp/{randomname}!")
+
         os.makedirs(f"{randomname}")
         os.chdir(f"{randomname}")
         randomfolderpath = os.getcwd()
-        print("Random folder name created: ", randomfolderpath)
+        logger.info("Random folder name created: ", randomfolderpath)
+
 
         # Read POST request
         data = json.loads(self.request.body.decode("utf-8"))
@@ -110,7 +117,7 @@ class CreatePlugin(WippHandler):
                 )
 
         except Exception as e:
-            print("Error writing files: ", e)
+            logger.error(f"Error writing files.", exc_info=e)
             self.write_error(500)
 
         # Copy files to temp location
@@ -122,12 +129,13 @@ class CreatePlugin(WippHandler):
                 for filepath in filepaths:
                     cmds.append(filepath)
                 cmds.append(randomfolderpath)
-                print(cmds)
+                logger.info(cmds)
                 # Run the `cp file1 file2 file3 ./tempfolder` command
                 copyfilescmd = subprocess.run(cmds)
-                print("copy command return code: ", copyfilescmd.returncode)
+                logger.info(f"Copy command return code: {copyfilescmd.returncode}")
+
         except Exception as e:
-            print("error when running copy command", e)
+            logger.error(f"Error when running copy command.", exc_info=e)
         # change back to previous working dir
         os.chdir(pwd)
 
