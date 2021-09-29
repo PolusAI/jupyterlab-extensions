@@ -56,23 +56,15 @@ class CreatePlugin(WippHandler):
         # if ENV exists
         if pluginOutputPath:
             os.chdir(pluginOutputPath)
-
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
+            os.makedirs(f"{randomname}")
+            os.chdir(f"{randomname}")
+            randomfolderpath = os.getcwd()
+            logger.info("Random folder name created: ", randomfolderpath)
 
         else:
-            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = ..' to set ")
-            # if path doesn't exist
-            if not os.path.isdir("temp"):
-                logger.info(f"Creating ./temp in {os.getcwd()}... ")
-                os.makedirs("temp")
-            os.chdir("temp")
-            logger.info(f"Env variable PLUGIN_TEMP_LOCATION not found, creating new directory temp/{randomname}!")
-
-        os.makedirs(f"{randomname}")
-        os.chdir(f"{randomname}")
-        randomfolderpath = os.getcwd()
-        logger.info("Random folder name created: ", randomfolderpath)
-
+            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set. Terminating..")
+            quit()
 
         # Read POST request
         data = json.loads(self.request.body.decode("utf-8"))
