@@ -1,8 +1,6 @@
 import { JupyterFrontEnd } from '@jupyterlab/application';
 import { Widget, PanelLayout } from '@lumino/widgets';
 import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
-import { ToolbarButton } from '@jupyterlab/apputils';
-import { runIcon } from '@jupyterlab/ui-components';
 import { IStateDB } from '@jupyterlab/statedb';
 import { AddedFilesWidget } from './addedFilesWidget';
 import { requestAPI } from './handler';
@@ -18,6 +16,7 @@ export class Creator_Sidebar extends Widget {
   ) {
     super();
     this.addClass('wipp-pluginCreatorSidebar');
+
     // Define Widget layout
     let layout = (this.layout = new PanelLayout());
 
@@ -44,11 +43,16 @@ export class Creator_Sidebar extends Widget {
     this._form = new SchemaForm(schema, { formData: formData });
     layout.addWidget(this._form);
 
-    const refreshButton = new ToolbarButton({
-      icon: runIcon,
-      onClick: () => { this.submit() }
-    });
-    layout.addWidget(refreshButton);
+    const runButtonWidget = new Widget()
+
+    const runButton = document.createElement('button');
+    runButton.className = 'run';
+    runButton.onclick = () => {
+      this.submit()
+    }
+    runButton.innerText = "Create Plugin"
+    runButtonWidget.node.appendChild(runButton)
+    layout.addWidget(runButtonWidget)
   }
 
   //Sidebar constructor ends

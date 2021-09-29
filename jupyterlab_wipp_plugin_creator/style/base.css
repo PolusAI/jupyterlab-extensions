@@ -5,50 +5,10 @@
     overflow: auto;
   }
 
-.wipp-pluginCreatorSidebar-text-layout{
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    background-color: var(--jp-layout-color1);
-    border-bottom: 1px solid var(--jp-border-color2);
-    box-shadow: var(--jp-toolbar-box-shadow);
-    z-index: 2;
-}
-
-.wipp-pluginCreatorSidebar-text
+.wipp-pluginCreatorSidebar button.run
 {
-    background-color: var(--jp-input-active-background);
-    border: var(--jp-border-width) solid var(--jp-border-color2);
-    flex: 1 1 auto;
-    height: 30px;
-    padding: 0px 12px;
-    margin: 0 20px 0 0;
-}
-
-.wipp-pluginCreatorSidebar-textheaders
-{
-    color: white;
-    margin: 0 4px 0 0;
-    font-size: 10px;
-}
-
-.collapsible-button
-{
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-}
-
-.collapsible-content
-{
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    background-color: #f1f1f1;
+    color: #000000;
+    background-color: #94c7c4;
+    border: 1px solid #94c7c4;
+    text-transform: uppercase;
 }
