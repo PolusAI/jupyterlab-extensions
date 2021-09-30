@@ -1,6 +1,7 @@
 import json
 import os
-import subprocess
+
+from shutil import copy2
 import random
 import string
 from wipp_client.wipp import gen_random_object_id
@@ -59,8 +60,8 @@ class CreatePlugin(WippHandler):
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
             os.makedirs(f"{randomname}")
             os.chdir(f"{randomname}")
-            randomfolderpath = os.getcwd()
-            logger.info("Random folder name created: ", randomfolderpath)
+            pluginOutputPath = os.getcwd()
+            logger.info("Random folder name created: ", pluginOutputPath)
 
         else:
             logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set. Terminating..")
@@ -112,19 +113,14 @@ class CreatePlugin(WippHandler):
             logger.error(f"Error writing files.", exc_info=e)
             self.write_error(500)
 
-        # Copy files to temp location
-        # format cp Src_file1 Src_file2 Src_file3 Dest_directory
+        # Copy files to temp location with shutil
+        # Copy2 is like copy but preserves metadata
         try:
             if filepaths:
                 os.chdir(pwd)
-                cmds = ["cp"]
                 for filepath in filepaths:
-                    cmds.append(filepath)
-                cmds.append(randomfolderpath)
-                logger.info(cmds)
-                # Run the `cp file1 file2 file3 ./tempfolder` command
-                copyfilescmd = subprocess.run(cmds)
-                logger.info(f"Copy command return code: {copyfilescmd.returncode}")
+                    copy2(filepath, pluginOutputPath)
+                logger.info(f"Copy command completed")
 
         except Exception as e:
             logger.error(f"Error when running copy command.", exc_info=e)
