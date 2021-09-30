@@ -32,6 +32,13 @@ const plugin: JupyterFrontEndPlugin<void> = {
       }
     })
 
+    // Create the WIPP sidebar panel
+    const sidebar = new Creator_Sidebar(app, state);
+    sidebar.id = 'wipp-labextension:plugin';
+    sidebar.title.icon = logoIcon;
+    sidebar.title.caption = 'WIPP Plugin Creator';
+    labShell.add(sidebar, 'left', { rank: 200 });
+
     // Add context menu command, right click file browser to register marked files to be converted to plugin
     var filepath = ''
     const addFileToPluginContextMenuCommandID = 'wipp-plugin-creator-add-context-menu';
@@ -53,14 +60,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
         })
       }
     })
-
-    // Create the WIPP sidebar panel
-    const sidebar = new Creator_Sidebar(app, state);
-    sidebar.id = 'wipp-labextension:plugin';
-    sidebar.title.icon = logoIcon;
-    sidebar.title.caption = 'WIPP Plugin Creator';
-    labShell.add(sidebar, 'left', { rank: 200 });
-
 
     // Add command to context menu
     const selectorItem = '.jp-DirListing-item[data-isdir]';
