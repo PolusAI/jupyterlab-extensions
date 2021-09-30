@@ -1,0 +1,13 @@
+FROM {{userImage}}
+COPY VERSION /
+
+ARG DATA_DIR="/data"
+RUN mkdir -p /opt/executables \
+    && mkdir ${DATA_DIR}/outputs
+
+COPY src /opt/executables
+RUN pip3 install -r requirements.txt --no-cache-dir
+
+WORKDIR /opt/executables
+
+ENTRYPOINT \["python3", "main.py"\]

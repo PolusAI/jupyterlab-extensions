@@ -2,14 +2,14 @@ import json
 import os
 
 from shutil import copy2
-import random
-import string
 from wipp_client.wipp import gen_random_object_id
 
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
 from .log import get_logger
 import tornado
+
+from jinja2 import Template
 
 logger = get_logger()
 # logger.setLevel(logging.INFO)
@@ -86,30 +86,16 @@ class CreatePlugin(WippHandler):
             with open("requirements.txt", "w") as f2:
                 for req in requirements:
                     f2.write(f"{req}\n")
-            with open("Dockerfile", "w") as f3:
-                # writelines only accept a sequence, str[]
-                # \\\n\ first two \\ are escape plus single \ needed in docker file, \n new line and then 4th backslash
-                # for the python inline line continuation, hence the ugly indent is necessary for correctly formatting dockerfile
-                f3.writelines(
-                    [
-                        f"FROM python",
-                        "\n",
-                        "COPY VERSION /\n",
-                        "\n",
-                        'ARG EXEC_DIR="/opt/executables"\n',
-                        'ARG DATA_DIR="/data"\n',
-                        "RUN mkdir -p ${EXEC_DIR} \\\n\
-    && mkdir -p ${DATA_DIR}/inputs \\\n\
-    && mkdir ${DATA_DIR}/outputs\n\n",
-                        "COPY src ${EXEC_DIR}/\n",
-                        "RUN pip3 install -r requirements.txt --no-cache-dir\n\n",
-                        "WORKDIR ${EXEC_DIR}\n\n",
-                        f'ENTRYPOINT \["python3", "main.py"\]',
-                    ]
-                )
+            os.chdir(pwd + '/jupyterlab_wipp_plugin_creator')
+            template = Template(open('dockerfile.j2').read())
+            template.stream(userImage= "python").dump(pluginOutputPath + '/Dockerfile')
+            logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
+
 
         except Exception as e:
-            logger.error(f"Error writing files.", exc_info=e)
+            logger.error(f"Error writing files", exc_info=e)
+            # when error change back to root working dir
+            os.chdir(pwd)
             self.write_error(500)
 
         # Copy files to temp location with shutil
@@ -120,11 +106,14 @@ class CreatePlugin(WippHandler):
                 for filepath in filepaths:
                     copy2(filepath, pluginOutputPath)
                 logger.info(f"Copy command completed")
+            else:
+                logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
 
         except Exception as e:
             logger.error(f"Error when running copy command.", exc_info=e)
-        # change back to previous working dir
-        os.chdir(pwd)
+            os.chdir(pwd)
+
+       
 
 
 def setup_handlers(web_app):
