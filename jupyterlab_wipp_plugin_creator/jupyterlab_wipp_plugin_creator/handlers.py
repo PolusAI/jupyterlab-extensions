@@ -86,8 +86,10 @@ class CreatePlugin(WippHandler):
             with open("requirements.txt", "w") as f2:
                 for req in requirements:
                     f2.write(f"{req}\n")
+            # Read from Jinja2 template
             os.chdir(pwd + '/jupyterlab_wipp_plugin_creator')
             template = Template(open('dockerfile.j2').read())
+            # Generate dockerfile with user inputs, hardcoded for the time being
             template.stream(userImage= "python").dump(pluginOutputPath + '/Dockerfile')
             logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
 
