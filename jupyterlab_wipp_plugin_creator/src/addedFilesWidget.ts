@@ -8,8 +8,8 @@ export class AddedFilesWidget extends Widget {
     constructor(state: IStateDB) {
         super();
         this._state = state;
-        this._addedfilediv = document.createElement('p');
-        this.node.appendChild(this._addedfilediv);
+        this._addedFileDiv = document.createElement('p');
+        this.node.appendChild(this._addedFileDiv);
 
         let button = document.createElement('button');
         button.innerHTML = 'Update list of files';
@@ -21,24 +21,24 @@ export class AddedFilesWidget extends Widget {
 
     onUpdateRequest(msg: Message): void {
         this._state.fetch(ExtensionConstants.dbkey).then(response => {
-            this._addedfilenames = response as string[];
+            this._addedFileNames = response as string[];
             
             let text = 'Added Files: <br>';
-            if (this._addedfilenames) {
-                for (let i = 0; i < this._addedfilenames.length; i++) {
-                    text += this._addedfilenames[i] + "<br>";
+            if (this._addedFileNames) {
+                for (let i = 0; i < this._addedFileNames.length; i++) {
+                    text += this._addedFileNames[i] + "<br>";
                 }
             }
             
-            this._addedfilediv.innerHTML = text;
+            this._addedFileDiv.innerHTML = text;
         });
     }
 
     public getValue(): string[] {
-        return this._addedfilenames;
+        return this._addedFileNames;
     }
 
     private _state: IStateDB;
-    private _addedfilenames: string[] = [];
-    private _addedfilediv: HTMLDivElement;
+    private _addedFileNames: string[] = [];
+    private _addedFileDiv: HTMLDivElement;
 }

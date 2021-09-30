@@ -3,7 +3,7 @@ import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { IStateDB } from '@jupyterlab/statedb'
 import { LabIcon } from '@jupyterlab/ui-components';
 import { ExtensionConstants } from './extensionConstants';
-import { Creator_Sidebar } from './sidebar';
+import { CreatorSidebar } from './sidebar';
 import logoSvg from '../style/logo.svg';
 
 const logoIcon = new LabIcon({
@@ -33,7 +33,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     })
 
     // Create the WIPP sidebar panel
-    const sidebar = new Creator_Sidebar(app, state);
+    const sidebar = new CreatorSidebar(app, state);
     sidebar.id = 'wipp-labextension:plugin';
     sidebar.title.icon = logoIcon;
     sidebar.title.caption = 'WIPP Plugin Creator';

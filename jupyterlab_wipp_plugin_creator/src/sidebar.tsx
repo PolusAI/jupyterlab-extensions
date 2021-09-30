@@ -6,7 +6,7 @@ import { AddedFilesWidget } from './addedFilesWidget';
 import { requestAPI } from './handler';
 import schemaForm from "./rjsfSchemaForm.json";
 
-export class Creator_Sidebar extends Widget {
+export class CreatorSidebar extends Widget {
   /**
    * Create a new WIPP plugin creator sidebar.
    */
@@ -59,13 +59,13 @@ export class Creator_Sidebar extends Widget {
   submit() {
 
     //Create API request on submit
-    let formvalue = this._form.getValue()
+    let formValue = this._form.getValue()
     let request = {
-      formdata: formvalue.formData,
+      formdata: formValue.formData,
       addedfilepaths: this._addFileWidget.getValue()
     };
 
-    if (formvalue.errors !== null) {
+    if (formValue.errors !== null) {
 
       var fullRequest = {
         method: 'POST',
@@ -80,7 +80,7 @@ export class Creator_Sidebar extends Widget {
 
     else {
       console.log(`Schema form data returns with an error`);
-      console.log(formvalue.errors)
+      console.log(formValue.errors)
     }
 
   }

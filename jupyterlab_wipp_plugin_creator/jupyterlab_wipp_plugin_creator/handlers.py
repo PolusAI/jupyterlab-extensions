@@ -8,9 +8,8 @@ from wipp_client.wipp import gen_random_object_id
 
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
-import tornado
-# import logging
 from .log import get_logger
+import tornado
 
 logger = get_logger()
 # logger.setLevel(logging.INFO)
@@ -51,15 +50,15 @@ class CreatePlugin(WippHandler):
         pwd = os.getcwd()
 
         # Random ID follows MongoDB format
-        randomname= gen_random_object_id()
+        randomId = gen_random_object_id()
 
         pluginOutputPath = os.getenv("PLUGIN_TEMP_LOCATION")
         # if ENV exists
         if pluginOutputPath:
             os.chdir(pluginOutputPath)
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
-            os.makedirs(f"{randomname}")
-            os.chdir(f"{randomname}")
+            os.makedirs(f"{randomId}")
+            os.chdir(f"{randomId}")
             pluginOutputPath = os.getcwd()
             logger.info("Random folder name created: ", pluginOutputPath)
 
@@ -75,7 +74,7 @@ class CreatePlugin(WippHandler):
 
         # Separate requirements key in the formdata form rest to write plugin.json and requirements.txt separately
         form.pop("requirements")
-        form["containerId"] = "polusai/generated-plugins:" + randomname
+        form["containerId"] = "polusai/generated-plugins:" + randomId
 
         # register plugin manifest to wipp CI
         self.wipp.register_plugin(form)
