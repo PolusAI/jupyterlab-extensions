@@ -7,8 +7,6 @@ from wipp_client.wipp import gen_random_object_id
 
 from jinja2 import Template
 
-from __future__ import print_function
-import time
 import kubernetes.client
 import kubernetes.config
 from kubernetes.client.rest import ApiException
