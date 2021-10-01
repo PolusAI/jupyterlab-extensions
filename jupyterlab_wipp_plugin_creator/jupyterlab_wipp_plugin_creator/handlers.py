@@ -4,12 +4,20 @@ import os
 from shutil import copy2
 from wipp_client.wipp import gen_random_object_id
 
+
+from jinja2 import Template
+
+from __future__ import print_function
+import time
+import kubernetes.client
+import kubernetes.config
+from kubernetes.client.rest import ApiException
+from pprint import pprint
+
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
 from .log import get_logger
 import tornado
-
-from jinja2 import Template
 
 logger = get_logger()
 # logger.setLevel(logging.INFO)
@@ -115,8 +123,81 @@ class CreatePlugin(WippHandler):
             logger.error(f"Error when running copy command.", exc_info=e)
             os.chdir(pwd)
 
-       
-
+        # Create Argojob to build container via Kubernetes Client
+        kubernetes.config.load_incluster_config()
+        # Global definition strings
+        group = 'argoproj.io' # str | The custom resource's group name
+        version = 'v1alpha1' # str | The custom resource's version
+        namespace = 'default' # str | The custom resource's namespace
+        plural = 'workflows' # str | The custom resource's plural name. For TPRs this would be lowercase plural kind.
+        
+        def setup_k8s_api():
+            """
+            Common actions to setup Kubernetes API access to Argo workflows
+            """
+            kubernetes.config.load_incluster_config() #Only works inside of JupyterLab Pod
+            
+            return kubernetes.client.CustomObjectsApi()
+        
+        api_instance = setup_k8s_api()
+        body = {
+            "apiVersion": "argoproj.io/v1alpha1",
+            "kind": "Workflow",
+            "metadata": {
+                "generateName": "kanikotest-"
+            },
+            "spec": {
+                "entrypoint": "kaniko",
+                "volumes": [
+                    {
+                        "name": "kaniko-secret",
+                        "secret": {
+                            "secretName": "labshare-docker",
+                            "items": [
+                                {
+                                    "key": ".dockerconfigjson",
+                                    "path": "config.json"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "workdir",
+                        "persistentVolumeClaim": {
+                            "claimName": "wipp-pv-claim"
+                        }
+                    }
+                ],
+                "templates": [
+                    {
+                        "name": "kaniko",
+                        "container": {
+                            "image": "gcr.io/kaniko-project/executor:latest",
+                            "args": [
+                                "--dockerfile=/workspace/temp/plugins/dockerfile",
+                                "--context=dir://workspace",
+                                "--destination=polusai/generated-plugins:test-234"
+                            ],
+                            "volumeMounts": [
+                                {
+                                    "name": "kaniko-secret",
+                                    "mountPath": "/kaniko/.docker"
+                                },
+                                {
+                                    "name": "workdir",
+                                    "mountPath": "/workspace"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+        try:
+            api_response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
+            pprint(api_response)
+        except ApiException as e:
+            print("Exception when calling CustomObjectsApi->create_namespaced_custom_object: %s\n" % e)
 
 def setup_handlers(web_app):
     handlers = [("/jupyterlab_wipp_plugin_creator/createplugin", CreatePlugin)]
