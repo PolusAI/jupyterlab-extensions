@@ -62,11 +62,11 @@ class CreatePlugin(WippHandler):
         # if ENV exists
         if pluginOutputPath:
             os.chdir(pluginOutputPath)
-            logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
+            logger.error(f"ENV variable exists, output path set to {pluginOutputPath}.")
             os.makedirs(f"{randomId}")
             os.chdir(f"{randomId}")
             pluginOutputPath = os.getcwd()
-            logger.info("Random folder name created: ", pluginOutputPath)
+            logger.error("Random folder name created: ", pluginOutputPath)
 
         else:
             logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set. Terminating..")
@@ -97,7 +97,7 @@ class CreatePlugin(WippHandler):
             template = Template(open('dockerfile.j2').read())
             # Generate dockerfile with user inputs, hardcoded for the time being
             template.stream(userImage= "python").dump(pluginOutputPath + '/Dockerfile')
-            logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
+            logger.error(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
 
 
         except Exception as e:
@@ -113,7 +113,7 @@ class CreatePlugin(WippHandler):
                 os.chdir(pwd)
                 for filepath in filepaths:
                     copy2(filepath, pluginOutputPath)
-                logger.info(f"Copy command completed")
+                logger.error(f"Copy command completed")
             else:
                 logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
 
