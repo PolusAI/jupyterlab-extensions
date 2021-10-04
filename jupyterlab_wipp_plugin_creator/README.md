@@ -33,8 +33,6 @@ export WIPP_NOTEBOOKS_PATH="enter notebook home path"
 export PLUGIN_TEMP_LOCATION= must enter here your choice of temprorary folder
 ```
 
-The last steps are required environment variables from the terminal if not using from CI. Choose a local temporary directory where you want your manifest and code of your plugin to be staged.
-
 - `WIPP_UI_URL` is the WIPP frontend base URL which will be used to open collection pages.
 - `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster)
 - `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder
