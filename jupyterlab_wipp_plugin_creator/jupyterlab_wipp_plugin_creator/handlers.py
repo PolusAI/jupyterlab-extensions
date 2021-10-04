@@ -64,7 +64,8 @@ class CreatePlugin(WippHandler):
 
         else:
             logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set. Terminating..")
-            quit()
+            self.write_error(500)
+            return
 
         # Read POST request
         data = json.loads(self.request.body.decode("utf-8"))
