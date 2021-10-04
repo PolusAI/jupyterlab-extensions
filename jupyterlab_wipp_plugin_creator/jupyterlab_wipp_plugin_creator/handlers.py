@@ -51,7 +51,7 @@ class CreatePlugin(WippHandler):
         # Random ID follows MongoDB format
         randomId = gen_random_object_id()
 
-        pluginOutputPath = os.getenv("PLUGIN_TEMP_LOCATION")
+        pluginOutputPath = os.getenv("PLUGIN_TEMP_PATH")
         # if ENV exists
         if pluginOutputPath:
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
@@ -60,7 +60,7 @@ class CreatePlugin(WippHandler):
             logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
-            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set.")
+            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_PATH = '...' to set.")
             self.write_error(500)
             return
 
