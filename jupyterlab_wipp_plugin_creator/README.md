@@ -56,6 +56,18 @@ jupyter labextension list
 
 ## Contributing
 
+### Architecture
+
+Current features:
+
+- Right click on file 'Add to WIPP' to mark code to mark code for containerization.
+- On click of 'Create Plugin' button, Post API request containing user input is sent over to the backend.
+- Session persistent frontend database to store paths to marked files using IStateDB.
+- Create plugin.json, dockerfile, requirements.txt based on inputs.
+- Register plugin automatically on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
+- Create temp staging folder with random ID and copy selected codes inside.
+
+
 ### Development install
 
 Note: You will need NodeJS to build the extension package.
@@ -121,14 +133,3 @@ folder is located. Then you can remove the symlink named `jupyterlab_wipp_plugin
 ### Packaging the extension
 
 See [RELEASE](RELEASE.md)
-
-### Architecture
-
-Current features:
-
-- Right click on file 'Add to WIPP' to mark code to mark code for containerization.
-- On click of 'Create Plugin' button, Post API request containing user input is sent over to the backend.
-- Session persistent frontend database to store paths to marked files using IStateDB.
-- Create plugin.json, dockerfile, requirements.txt based on inputs.
-- Register plugin automatically on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
-- Create temp staging folder with random ID and copy selected codes inside.
