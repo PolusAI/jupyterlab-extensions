@@ -3,15 +3,6 @@
 <!-- Create wipp plugin by containerizing local code in various languages,  automate the Plugin generation and testing process using both static analysis and templates.  -->
 Enter your plugin information, select the code you wish to containerize, create WIPP plugin automatically.
 
-Current features:
-
-- Right click on file 'Add to WIPP' to mark code to mark code for containerization.
-- On click of 'Create Plugin' button, Post API request containing user input is sent over to the backend.
-- Session persistent frontend database to store paths to marked files using IStateDB.
-- Create plugin.json, dockerfile, requirements.txt based on inputs.
-- Register plugin automatically on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
-- Create temp staging folder with random ID and copy selected codes inside.
-
 This extension is composed of a Python package named `jupyterlab_wipp_plugin_creator`
 for the server extension and a NPM package named `jupyterlab_wipp_plugin_creator`
 for the frontend extension.
@@ -132,3 +123,14 @@ folder is located. Then you can remove the symlink named `jupyterlab_wipp_plugin
 ### Packaging the extension
 
 See [RELEASE](RELEASE.md)
+
+### Architecture
+
+Current features:
+
+- Right click on file 'Add to WIPP' to mark code to mark code for containerization.
+- On click of 'Create Plugin' button, Post API request containing user input is sent over to the backend.
+- Session persistent frontend database to store paths to marked files using IStateDB.
+- Create plugin.json, dockerfile, requirements.txt based on inputs.
+- Register plugin automatically on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
+- Create temp staging folder with random ID and copy selected codes inside.

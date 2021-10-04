@@ -47,7 +47,7 @@ class CreatePlugin(WippHandler):
             }
 
         """
-        
+
         # Random ID follows MongoDB format
         randomId = gen_random_object_id()
 
@@ -57,10 +57,10 @@ class CreatePlugin(WippHandler):
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
             pluginOutputPath = os.path.join(pluginOutputPath, f"{randomId}")
             os.makedirs(f"{pluginOutputPath}")
-            logger.info("Random folder name created: ", pluginOutputPath)
+            logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
-            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set. Terminating..")
+            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set.")
             self.write_error(500)
             return
 
@@ -81,7 +81,6 @@ class CreatePlugin(WippHandler):
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/
         rootDirPath = os.path.dirname(os.path.abspath(backendDirPath))
-
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
         manifestPath = os.path.join(pluginOutputPath, "plugin.json")
         reqsPath = os.path.join(pluginOutputPath, "requirements.txt")
