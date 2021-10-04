@@ -1,7 +1,5 @@
 # JupyterLab WIPP Plugin Creator extension
 
-<!-- ![Github Actions Status](https://github.com/Kingstonshaw/jupyterlab_wipp_plugin_creator/workflows/Build/badge.svg) -->
-
 <!-- Create wipp plugin by containerizing local code in various languages,  automate the Plugin generation and testing process using both static analysis and templates.  -->
 Enter your plugin information, select the code you wish to containerize, create WIPP plugin automatically.
 
