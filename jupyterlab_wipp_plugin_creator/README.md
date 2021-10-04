@@ -27,9 +27,9 @@ To install the extension, execute:
 
 ```bash
 pip install jupyterlab_wipp_plugin_creator
-export WIPP_UI_URL="https://wipp-ui.ci.aws.labshare.org"
-export WIPP_API_INTERNAL_URL="http://wipp-ui.ci.aws.labshare.org/api/"
-export WIPP_NOTEBOOKS_PATH="/home/jovyan/notebooks/"
+export WIPP_UI_URL="enter wipp ui url"
+export WIPP_API_INTERNAL_URL="enter wipp api url"
+export WIPP_NOTEBOOKS_PATH="enter notebook home path"
 export PLUGIN_TEMP_LOCATION= must enter here your choice of temprorary folder
 ```
 
