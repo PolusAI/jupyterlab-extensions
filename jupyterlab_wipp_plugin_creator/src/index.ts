@@ -33,7 +33,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     })
 
     // Create the WIPP sidebar panel
-    const sidebar = new CreatorSidebar(app, state);
+    const sidebar = new CreatorSidebar(state);
     sidebar.id = 'wipp-labextension:plugin';
     sidebar.title.icon = logoIcon;
     sidebar.title.caption = 'WIPP Plugin Creator';
