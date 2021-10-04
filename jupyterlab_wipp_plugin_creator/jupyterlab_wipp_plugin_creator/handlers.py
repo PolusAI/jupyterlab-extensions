@@ -90,7 +90,7 @@ class CreatePlugin(WippHandler):
             os.chdir(pwd + '/jupyterlab_wipp_plugin_creator')
             template = Template(open('dockerfile.j2').read())
             # Generate dockerfile with user inputs, hardcoded for the time being
-            template.stream(userImage= "python").dump(pluginOutputPath + '/Dockerfile')
+            template.stream(baseImage= "python").dump(pluginOutputPath + '/Dockerfile')
             logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
 
 
