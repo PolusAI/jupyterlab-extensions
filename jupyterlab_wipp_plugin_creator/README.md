@@ -32,6 +32,7 @@ export WIPP_API_INTERNAL_URL="enter wipp api url"
 export WIPP_NOTEBOOKS_PATH="enter notebook home path"
 export PLUGIN_TEMP_LOCATION= must enter here your choice of temprorary folder
 ```
+Note that all paths above should be absolute.
 
 - `WIPP_UI_URL` is the WIPP frontend base URL which will be used to open collection pages.
 - `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster).
