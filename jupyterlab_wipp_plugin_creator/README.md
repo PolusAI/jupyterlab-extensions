@@ -34,8 +34,9 @@ export PLUGIN_TEMP_LOCATION= must enter here your choice of temprorary folder
 ```
 
 - `WIPP_UI_URL` is the WIPP frontend base URL which will be used to open collection pages.
-- `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster)
-- `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder
+- `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster).
+- `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder.
+- `PLUGIN_TEMP_LOCATION` is the build folder where the codes, manifest, build dependecies are copied or generated.
 
 ## Uninstall
 
