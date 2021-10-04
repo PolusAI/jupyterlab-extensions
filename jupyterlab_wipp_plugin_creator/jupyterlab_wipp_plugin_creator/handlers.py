@@ -47,9 +47,7 @@ class CreatePlugin(WippHandler):
             }
 
         """
-
-
-
+        
         # Random ID follows MongoDB format
         randomId = gen_random_object_id()
 
@@ -122,8 +120,6 @@ class CreatePlugin(WippHandler):
             logger.error(f"Error when running copy command.", exc_info=e)
 
        
-
-
 def setup_handlers(web_app):
     handlers = [("/jupyterlab_wipp_plugin_creator/createplugin", CreatePlugin)]
 
