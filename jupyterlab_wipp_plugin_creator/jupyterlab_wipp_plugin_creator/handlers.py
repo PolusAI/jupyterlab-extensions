@@ -1,15 +1,16 @@
 import json
 import os
-
 from shutil import copy2
-from wipp_client.wipp import gen_random_object_id
 
-from jupyter_server.base.handlers import APIHandler
-from jupyter_server.utils import url_path_join
-from .log import get_logger
-import tornado
 
 from jinja2 import Template
+from jupyter_server.base.handlers import APIHandler
+from jupyter_server.utils import url_path_join
+import tornado
+
+from wipp_client.wipp import gen_random_object_id
+from .log import get_logger
+
 
 logger = get_logger()
 # logger.setLevel(logging.INFO)
@@ -82,6 +83,7 @@ class CreatePlugin(WippHandler):
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/
         rootDirPath = os.path.dirname(os.path.abspath(backendDirPath))
+
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
         manifestPath = os.path.join(pluginOutputPath, "plugin.json")
         reqsPath = os.path.join(pluginOutputPath, "requirements.txt")
