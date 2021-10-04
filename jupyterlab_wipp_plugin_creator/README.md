@@ -1,4 +1,4 @@
-# jupyterlab_wipp_plugin_creator
+# JupyterLab WIPP Plugin Creator extension
 
 <!-- ![Github Actions Status](https://github.com/Kingstonshaw/jupyterlab_wipp_plugin_creator/workflows/Build/badge.svg) -->
 
