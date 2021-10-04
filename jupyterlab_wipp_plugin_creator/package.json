@@ -7,7 +7,7 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/LabShare/jupyterlab-extensions/",
+  "homepage": "https://github.com/LabShare/jupyterlab-extensions/tree/master/jupyterlab_wipp_plugin_creator",
   "bugs": {
     "url": "https://github.com/LabShare/jupyterlab-extensions/issues"
   },
