@@ -1,8 +1,6 @@
 import json
 import os
-
 from shutil import copy2
-from wipp_client.wipp import gen_random_object_id
 
 
 from jinja2 import Template
@@ -14,8 +12,11 @@ from pprint import pprint
 
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
-from .log import get_logger
 import tornado
+
+from wipp_client.wipp import gen_random_object_id
+from .log import get_logger
+
 
 logger = get_logger()
 # logger.setLevel(logging.INFO)
@@ -53,24 +54,21 @@ class CreatePlugin(WippHandler):
 
         """
 
-        pwd = os.getcwd()
-
         # Random ID follows MongoDB format
         randomId = gen_random_object_id()
 
         pluginOutputPath = os.getenv("PLUGIN_TEMP_LOCATION")
         # if ENV exists
         if pluginOutputPath:
-            os.chdir(pluginOutputPath)
-            logger.error(f"ENV variable exists, output path set to {pluginOutputPath}.")
-            os.makedirs(f"{randomId}")
-            os.chdir(f"{randomId}")
-            pluginOutputPath = os.getcwd()
-            logger.error("Random folder name created: ", pluginOutputPath)
+            logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
+            pluginOutputPath = os.path.join(pluginOutputPath, f"{randomId}")
+            os.makedirs(f"{pluginOutputPath}")
+            logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
-            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set. Terminating..")
-            quit()
+            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_LOCATION = '...' to set.")
+            self.write_error(500)
+            return
 
         # Read POST request
         data = json.loads(self.request.body.decode("utf-8"))
@@ -85,33 +83,39 @@ class CreatePlugin(WippHandler):
         # register plugin manifest to wipp CI
         self.wipp.register_plugin(form)
 
+        # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
+        backendDirPath = os.path.dirname(os.path.realpath(__file__))
+        # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/
+        rootDirPath = os.path.dirname(os.path.abspath(backendDirPath))
+        templatePath = os.path.join(backendDirPath, "dockerfile.j2")
+        manifestPath = os.path.join(pluginOutputPath, "plugin.json")
+        reqsPath = os.path.join(pluginOutputPath, "requirements.txt")
+
         # Generate files to temp folder
         try:
-            with open("plugin.json", "w") as f1:
+            with open(manifestPath, "w") as f1:
                 f1.write(json.dumps(form))
-            with open("requirements.txt", "w") as f2:
+            with open(reqsPath, "w") as f2:
                 for req in requirements:
                     f2.write(f"{req}\n")
             # Read from Jinja2 template
-            os.chdir(pwd + '/jupyterlab_wipp_plugin_creator')
-            template = Template(open('dockerfile.j2').read())
+            template = Template(open(templatePath).read())
+
             # Generate dockerfile with user inputs, hardcoded for the time being
-            template.stream(userImage= "python").dump(pluginOutputPath + '/Dockerfile')
-            logger.error(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
+            template.stream(baseImage= "python").dump(pluginOutputPath + '/Dockerfile')
+            logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
 
 
         except Exception as e:
             logger.error(f"Error writing files", exc_info=e)
-            # when error change back to root working dir
-            os.chdir(pwd)
             self.write_error(500)
 
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
         try:
             if filepaths:
-                os.chdir(pwd)
                 for filepath in filepaths:
+                    filepath =  os.path.join(rootDirPath, filepath)
                     copy2(filepath, pluginOutputPath)
                 logger.error(f"Copy command completed")
             else:
@@ -119,7 +123,6 @@ class CreatePlugin(WippHandler):
 
         except Exception as e:
             logger.error(f"Error when running copy command.", exc_info=e)
-            os.chdir(pwd)
 
         # Create Argojob to build container via Kubernetes Client
         kubernetes.config.load_incluster_config()

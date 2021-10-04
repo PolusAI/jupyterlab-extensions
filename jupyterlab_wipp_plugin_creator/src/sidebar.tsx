@@ -1,17 +1,15 @@
-import { JupyterFrontEnd } from '@jupyterlab/application';
 import { Widget, PanelLayout } from '@lumino/widgets';
 import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
 import { IStateDB } from '@jupyterlab/statedb';
 import { AddedFilesWidget } from './addedFilesWidget';
 import { requestAPI } from './handler';
-import schemaForm from "./rjsfSchemaForm.json";
+import schemaForm from "./WippPluginSchema.json";
 
 export class CreatorSidebar extends Widget {
   /**
    * Create a new WIPP plugin creator sidebar.
    */
   constructor(
-    app: JupyterFrontEnd,
     state: IStateDB
   ) {
     super();

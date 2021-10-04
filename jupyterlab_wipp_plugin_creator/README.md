@@ -1,18 +1,7 @@
-# jupyterlab_wipp_plugin_creator
-
-<!-- ![Github Actions Status](https://github.com/Kingstonshaw/jupyterlab_wipp_plugin_creator/workflows/Build/badge.svg) -->
+# JupyterLab WIPP Plugin Creator extension
 
 <!-- Create wipp plugin by containerizing local code in various languages,  automate the Plugin generation and testing process using both static analysis and templates.  -->
 Enter your plugin information, select the code you wish to containerize, create WIPP plugin automatically.
-
-Current features:
-
-- Right click on file 'Add to WIPP' to mark code to mark code for containerization.
-- On click of 'Create Plugin' button, Post API request containing user input is sent over to the backend.
-- Session persistent frontend database to store paths to marked files using IStateDB.
-- Create plugin.json, dockerfile, requirements.txt based on inputs.
-- Register plugin automatically on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
-- Create temp staging folder with random ID and copy selected codes inside.
 
 This extension is composed of a Python package named `jupyterlab_wipp_plugin_creator`
 for the server extension and a NPM package named `jupyterlab_wipp_plugin_creator`
@@ -29,17 +18,15 @@ To install the extension, execute:
 
 ```bash
 pip install jupyterlab_wipp_plugin_creator
-export WIPP_UI_URL="https://wipp-ui.ci.aws.labshare.org"
-export WIPP_API_INTERNAL_URL="http://wipp-ui.ci.aws.labshare.org/api/"
-export WIPP_NOTEBOOKS_PATH="/home/jovyan/notebooks/"
+export WIPP_API_INTERNAL_URL="enter wipp api url"
+export WIPP_NOTEBOOKS_PATH="enter notebook home path"
 export PLUGIN_TEMP_LOCATION= must enter here your choice of temprorary folder
 ```
+Note that all paths above should be absolute.
 
-The last steps are required environment variables from the terminal if not using from CI. Choose a local temporary directory where you want your manifest and code of your plugin to be staged.
-
-- `WIPP_UI_URL` is the WIPP frontend base URL which will be used to open collection pages.
-- `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster)
-- `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder
+- `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster).
+- `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder.
+- `PLUGIN_TEMP_LOCATION` is the build folder where the codes, manifest, build dependecies are copied or generated.
 
 ## Uninstall
 
@@ -68,6 +55,18 @@ jupyter labextension list
 
 
 ## Contributing
+
+### Architecture
+
+Current features:
+
+- Right click on file 'Add to WIPP' to mark code to mark code for containerization.
+- On click of 'Create Plugin' button, Post API request containing user input is sent over to the backend.
+- Session persistent frontend database to store paths to marked files using IStateDB.
+- Create plugin.json, dockerfile, requirements.txt based on inputs.
+- Register plugin automatically on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
+- Create temp staging folder with random ID and copy selected codes inside.
+
 
 ### Development install
 
