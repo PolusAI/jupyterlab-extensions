@@ -135,6 +135,7 @@ class CreatePlugin(WippHandler):
         # Create Argojob to build container via Kubernetes Client
         # kubernetes.config.load_incluster_config()
         # Global definition strings
+        logger.info(f"Beginning to run docker container via the Kubernetes Client.")
         group = 'argoproj.io' # str | The custom resource's group name
         version = 'v1alpha1' # str | The custom resource's version
         namespace = 'default' # str | The custom resource's namespace
