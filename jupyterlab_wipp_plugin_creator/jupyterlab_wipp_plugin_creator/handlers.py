@@ -117,7 +117,7 @@ class CreatePlugin(WippHandler):
                 for filepath in filepaths:
                     filepath =  os.path.join(rootDirPath, filepath)
                     copy2(filepath, pluginOutputPath)
-                logger.error(f"Copy command completed")
+                logger.info(f"Copy command completed")
             else:
                 logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
 
