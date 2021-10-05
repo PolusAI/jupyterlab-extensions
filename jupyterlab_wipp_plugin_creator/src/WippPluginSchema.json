@@ -1,0 +1,89 @@
+{
+    "title": "Plugin Info",
+    "type": "object",
+    "properties": {
+       "name": {
+          "type": "string",
+          "title": "Name",
+          "default": ""
+       },
+       "version": {
+          "type": "string",
+          "title": "Version",
+          "default": ""
+       },
+       "requirements": {
+          "type": "array",
+          "items": {
+             "type": "string"
+          },
+          "title": "Requirements"
+       },
+       "inputs": {
+          "type": "array",
+          "items": {
+             "type": "object",
+             "properties": {
+                "name": {
+                   "type": "string",
+                   "title": "Name"
+                },
+                "description": {
+                   "type": "string",
+                   "title": "Description"
+                },
+                "inputType": {
+                   "type": "string",
+                   "enum": [
+                      "collection",
+                      "csvCollection",
+                      "notebook",
+                      "pyramid",
+                      "genericData",
+                      "stitchingVector"
+                   ]
+                },
+                "required": {
+                   "type": "boolean",
+                   "title": "Required"
+                }
+             }
+          },
+          "title": "Inputs"
+       },
+       "outputs": {
+          "type": "array",
+          "items": {
+             "type": "object",
+             "properties": {
+                "name": {
+                   "type": "string",
+                   "title": "Name"
+                },
+                "description": {
+                   "type": "string",
+                   "title": "Description"
+                },
+                "inputType": {
+                   "type": "string",
+                   "enum": [
+                      "collection",
+                      "csvCollection",
+                      "notebook",
+                      "pyramid",
+                      "genericData",
+                      "stitchingVector"
+                   ]
+                },
+                "required": {
+                   "type": "boolean",
+                   "title": "Required"
+                }
+             }
+          },
+          "title": "Outputs"
+       }
+    }
+ }
+ 
+ 

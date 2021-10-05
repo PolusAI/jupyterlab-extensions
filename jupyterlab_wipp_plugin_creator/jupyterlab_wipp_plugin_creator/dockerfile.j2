@@ -1,0 +1,10 @@
+FROM {{baseImage}}
+
+ARG DATA_DIR="/data"
+RUN mkdir -p /opt/executables \
+    && mkdir ${DATA_DIR}/outputs
+
+COPY src .
+RUN pip3 install -r requirements.txt --no-cache-dir
+
+ENTRYPOINT ["python3", "main.py"]

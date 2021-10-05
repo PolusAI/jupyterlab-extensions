@@ -1,0 +1,14 @@
+.wipp-pluginCreatorSidebar {
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    overflow: auto;
+  }
+
+.wipp-pluginCreatorSidebar button.run
+{
+    color: #000000;
+    background-color: #94c7c4;
+    border: 1px solid #94c7c4;
+    text-transform: uppercase;
+}

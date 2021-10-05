@@ -1,0 +1,7 @@
+{
+  "ServerApp": {
+    "jpserver_extensions": {
+      "jupyterlab_wipp_plugin_creator": true
+    }
+  }
+}
