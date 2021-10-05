@@ -115,7 +115,7 @@ class CreatePlugin(WippHandler):
         try:
             if filepaths:
                 for filepath in filepaths:
-                    filepath =  os.path.join(rootDirPath, filepath)
+                    filepath =  os.path.join(os.environ['HOME'], filepath)
                     copy2(filepath, pluginOutputPath)
                 logger.info(f"Copy command completed")
             else:
