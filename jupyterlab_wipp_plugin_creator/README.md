@@ -19,14 +19,12 @@ To install the extension, execute:
 ```bash
 pip install jupyterlab_wipp_plugin_creator
 export WIPP_API_INTERNAL_URL="enter wipp api url"
-export WIPP_NOTEBOOKS_PATH="enter notebook home path"
-export PLUGIN_TEMP_LOCATION= must enter here your choice of temprorary folder
+export PLUGIN_TEMP_PATH="enter the path to temprorary plugins folder"
 ```
 Note that all paths above should be absolute.
 
 - `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster).
-- `WIPP_NOTEBOOKS_PATH` is the local path to WIPP's `temp/notebooks` folder.
-- `PLUGIN_TEMP_LOCATION` is the build folder where the codes, manifest, build dependecies are copied or generated.
+- `PLUGIN_TEMP_PATH` is the local path to WIPP's `temp/plugins` folder, where the source, manifest and build dependecies are copied to.
 
 ## Uninstall
 
