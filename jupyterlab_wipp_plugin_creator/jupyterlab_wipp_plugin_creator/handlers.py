@@ -195,9 +195,9 @@ class CreatePlugin(WippHandler):
         }
         try:
             api_response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
-            pprint(api_response)
+            logger.info(api_response)
         except ApiException as e:
-            print("Exception when calling CustomObjectsApi->create_namespaced_custom_object: %s\n" % e)
+            logger.error("Exception when calling CustomObjectsApi->create_namespaced_custom_object: %s\n" % e)
 
 def setup_handlers(web_app):
     handlers = [("/jupyterlab_wipp_plugin_creator/createplugin", CreatePlugin)]
