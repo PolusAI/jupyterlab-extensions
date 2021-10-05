@@ -21,6 +21,14 @@ from .log import get_logger
 logger = get_logger()
 # logger.setLevel(logging.INFO)
 
+"""
+Common actions to setup Kubernetes API access to Argo workflows
+"""
+#Only works inside of JupyterLab Pod
+kubernetes.config.load_incluster_config() 
+api_instance = kubernetes.client.CustomObjectsApi()
+
+
 class WippHandler(APIHandler):
     @property
     def wipp(self):
@@ -125,22 +133,13 @@ class CreatePlugin(WippHandler):
             logger.error(f"Error when running copy command.", exc_info=e)
 
         # Create Argojob to build container via Kubernetes Client
-        kubernetes.config.load_incluster_config()
+        # kubernetes.config.load_incluster_config()
         # Global definition strings
         group = 'argoproj.io' # str | The custom resource's group name
         version = 'v1alpha1' # str | The custom resource's version
         namespace = 'default' # str | The custom resource's namespace
         plural = 'workflows' # str | The custom resource's plural name. For TPRs this would be lowercase plural kind.
         
-        def setup_k8s_api():
-            """
-            Common actions to setup Kubernetes API access to Argo workflows
-            """
-            kubernetes.config.load_incluster_config() #Only works inside of JupyterLab Pod
-            
-            return kubernetes.client.CustomObjectsApi()
-        
-        api_instance = setup_k8s_api()
         body = {
             "apiVersion": "argoproj.io/v1alpha1",
             "kind": "Workflow",
