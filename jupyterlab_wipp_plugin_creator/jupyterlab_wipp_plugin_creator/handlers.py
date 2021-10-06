@@ -66,7 +66,9 @@ class CreatePlugin(WippHandler):
         if pluginOutputPath:
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
             pluginOutputPath = os.path.join(pluginOutputPath, f"{randomId}")
+            srcOutputPath = os.path.join(pluginOutputPath, "src")
             os.makedirs(f"{pluginOutputPath}")
+            os.makedirs(f"{srcOutputPath}")
             logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
@@ -87,13 +89,14 @@ class CreatePlugin(WippHandler):
         # register plugin manifest to wipp CI
         self.wipp.register_plugin(form)
         logger.info("WIPP plugin register completed")
+        
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
-
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
         manifestPath = os.path.join(pluginOutputPath, "plugin.json")
         reqsPath = os.path.join(pluginOutputPath, "requirements .txt")
         dockerPath = os.path.join(pluginOutputPath, "Dockerfile")
+        
 
         # Generate files to temp folder
         try:
@@ -120,7 +123,7 @@ class CreatePlugin(WippHandler):
             if filepaths:
                 for filepath in filepaths:
                     filepath =  os.path.join(os.environ['HOME'], filepath)
-                    copy2(filepath, pluginOutputPath)
+                    copy2(filepath, srcOutputPath)
                 logger.info(f"Copy command completed")
             else:
                 logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
@@ -129,7 +132,6 @@ class CreatePlugin(WippHandler):
             logger.error(f"Error when running copy command.", exc_info=e)
 
         # Create Argojob to build container via Kubernetes Client
-        # kubernetes.config.load_incluster_config()
         # Global definition strings
         logger.info(f"Beginning to run docker container via the Kubernetes Client.")
         group = 'argoproj.io' # str | The custom resource's group name
