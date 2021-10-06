@@ -86,7 +86,7 @@ class CreatePlugin(WippHandler):
 
         # register plugin manifest to wipp CI
         self.wipp.register_plugin(form)
-
+        logger.info("WIPP plugin register completed")
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/
@@ -94,6 +94,7 @@ class CreatePlugin(WippHandler):
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
         manifestPath = os.path.join(pluginOutputPath, "plugin.json")
         reqsPath = os.path.join(pluginOutputPath, "requirements.txt")
+        dockerPath = os.path.join(pluginOutputPath, "Dockerfile")
 
         # Generate files to temp folder
         try:
@@ -106,7 +107,7 @@ class CreatePlugin(WippHandler):
             template = Template(open(templatePath).read())
 
             # Generate dockerfile with user inputs, hardcoded for the time being
-            template.stream(baseImage= "python").dump(pluginOutputPath + '/Dockerfile')
+            template.stream(baseImage= "python").dump(dockerPath)
             logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
 
 
