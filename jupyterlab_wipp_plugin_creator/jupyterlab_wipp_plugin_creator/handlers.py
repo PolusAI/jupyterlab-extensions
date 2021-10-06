@@ -19,12 +19,8 @@ from .log import get_logger
 
 
 logger = get_logger()
-# logger.setLevel(logging.INFO)
 
-"""
-Common actions to setup Kubernetes API access to Argo workflows
-"""
-#Only works inside of JupyterLab Pod
+# Load the kubernetes config and create api instance, Only works inside of JupyterLab Pod
 kubernetes.config.load_incluster_config() 
 api_instance = kubernetes.client.CustomObjectsApi()
 
