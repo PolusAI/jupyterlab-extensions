@@ -89,11 +89,10 @@ class CreatePlugin(WippHandler):
         logger.info("WIPP plugin register completed")
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
-        # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/
-        rootDirPath = os.path.dirname(os.path.abspath(backendDirPath))
+
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
         manifestPath = os.path.join(pluginOutputPath, "plugin.json")
-        reqsPath = os.path.join(pluginOutputPath, "requirements.txt")
+        reqsPath = os.path.join(pluginOutputPath, "requirements .txt")
         dockerPath = os.path.join(pluginOutputPath, "Dockerfile")
 
         # Generate files to temp folder
@@ -172,7 +171,7 @@ class CreatePlugin(WippHandler):
                         "container": {
                             "image": "gcr.io/kaniko-project/executor:latest",
                             "args": [
-                            "--dockerfile=/workspace/Dockerfile",
+                            f"--dockerfile=/workspace/temp/plugins/{randomId}/Dockerfile",
                             "--context=dir://workspace",
                             f"--destination=polusai/generated-plugins:{randomId}"
                             ],
