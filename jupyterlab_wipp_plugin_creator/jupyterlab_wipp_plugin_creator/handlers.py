@@ -141,7 +141,7 @@ class CreatePlugin(WippHandler):
             "apiVersion": "argoproj.io/v1alpha1",
             "kind": "Workflow",
             "metadata": {
-                "generateName": "kanikotest-"
+                "generateName": f"build-polus-plugin-{randomId}-",
             },
             "spec": {
                 "entrypoint": "kaniko",
@@ -171,14 +171,15 @@ class CreatePlugin(WippHandler):
                         "container": {
                             "image": "gcr.io/kaniko-project/executor:latest",
                             "args": [
-                                "--dockerfile=/workspace/temp/plugins/dockerfile",
-                                "--context=dir://workspace",
-                                "--destination=polusai/generated-plugins:test-234"
+                            "--dockerfile=/workspace/Dockerfile",
+                            "--context=dir://workspace",
+                            f"--destination=polusai/generated-plugins:{randomId}"
                             ],
                             "volumeMounts": [
                                 {
                                     "name": "kaniko-secret",
-                                    "mountPath": "/kaniko/.docker"
+                                    "mountPath": "/kaniko/.docker",
+                                    "subPath": f"temp/plugins/{randomId}"
                                 },
                                 {
                                     "name": "workdir",
