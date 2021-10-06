@@ -171,19 +171,19 @@ class CreatePlugin(WippHandler):
                         "container": {
                             "image": "gcr.io/kaniko-project/executor:latest",
                             "args": [
-                            f"--dockerfile=/workspace/temp/plugins/{randomId}/Dockerfile",
+                            f"--dockerfile=/workspace/Dockerfile",
                             "--context=dir://workspace",
                             f"--destination=polusai/generated-plugins:{randomId}"
                             ],
                             "volumeMounts": [
                                 {
                                     "name": "kaniko-secret",
-                                    "mountPath": "/kaniko/.docker",
-                                    "subPath": f"temp/plugins/{randomId}"
+                                    "mountPath": "/kaniko/.docker",  
                                 },
                                 {
                                     "name": "workdir",
-                                    "mountPath": "/workspace"
+                                    "mountPath": "/workspace",
+                                    "subPath": f"temp/plugins/{randomId}"
                                 }
                             ]
                         }
