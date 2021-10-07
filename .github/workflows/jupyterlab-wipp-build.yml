@@ -2,7 +2,9 @@ name: Build
 
 on:
   push:
-    branches: main
+    branches: master
+    paths:
+      - "jupyterlab_wipp/**"
   pull_request:
     branches: '*'
 
