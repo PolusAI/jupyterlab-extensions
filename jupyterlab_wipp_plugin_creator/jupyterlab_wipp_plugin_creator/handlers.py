@@ -62,8 +62,8 @@ class CreatePlugin(WippHandler):
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
             pluginOutputPath = os.path.join(pluginOutputPath, f"{randomId}")
             srcOutputPath = os.path.join(pluginOutputPath, "src")
-            os.makedirs(f"{pluginOutputPath}")
-            os.makedirs(f"{srcOutputPath}")
+            os.makedirs(pluginOutputPath)
+            os.makedirs(srcOutputPath)
             logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
