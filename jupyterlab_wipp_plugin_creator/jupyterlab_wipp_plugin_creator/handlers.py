@@ -124,6 +124,7 @@ class CreatePlugin(WippHandler):
 
         except Exception as e:
             logger.error(f"Error when running copy command.", exc_info=e)
+            self.write_error(500)
 
         # Create Argojob to build container via Kubernetes Client
         # Global definition strings
@@ -192,7 +193,8 @@ class CreatePlugin(WippHandler):
             api_response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
             logger.info(api_response)
         except ApiException as e:
-            logger.error("Exception when calling CustomObjectsApi->create_namespaced_custom_object: %s\n" % e)
+            logger.error("Exception when starting to build container via Kubernetes Client: %s\n" % e)
+            self.write_error(500)
 
 
 def setup_handlers(web_app):
