@@ -111,7 +111,6 @@ class CreatePlugin(WippHandler):
             logger.error(f"Error writing files", exc_info=e)
             self.write_error(500)
 
-
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
         try:
@@ -194,6 +193,7 @@ class CreatePlugin(WippHandler):
             logger.info(api_response)
         except ApiException as e:
             logger.error("Exception when calling CustomObjectsApi->create_namespaced_custom_object: %s\n" % e)
+
 
 def setup_handlers(web_app):
     handlers = [("/jupyterlab_wipp_plugin_creator/createplugin", CreatePlugin)]

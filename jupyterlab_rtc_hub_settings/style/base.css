@@ -1,0 +1,40 @@
+.rtc-hub-settings-SharingSettingsLogo {
+    background-image: url(sharing_settings.svg);
+}
+
+.rtc-hub-settings-SharingSettingsSidebar {
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    font-size: var(--jp-ui-font-size1);
+    overflow: auto;
+}
+
+.rtc-hub-settings-SharingSettingsSidebar-table {
+    table-layout: auto;
+    width: 100%;
+}
+
+.rtc-hub-settings-SharingSettingsSidebar-table-div {
+    display: inherit;
+    justify-content: center;
+    margin: 8px;
+    padding: 0;
+    list-style-type: none;
+}
+
+.rtc-hub-settings-Toolbar-layout {
+    border-bottom: var(--jp-border-width) solid var(--jp-border-color2);
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    font-size: var(--jp-ui-font-size0);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0px;
+    padding: 8px 12px;
+    text-transform: uppercase;
+}
+
+.rtc-hub-settings-Toolbar-spacer {
+    flex: 1 1 auto;
+}
