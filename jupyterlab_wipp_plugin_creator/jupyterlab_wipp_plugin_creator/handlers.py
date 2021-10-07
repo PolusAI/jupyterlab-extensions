@@ -2,10 +2,11 @@ import json
 import os
 from shutil import copy2
 
-
-from jinja2 import Template
+from kubernetes import client, config
+from kubernetes.client.rest import ApiException
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
+from jinja2 import Template
 import tornado
 
 from wipp_client.wipp import gen_random_object_id
@@ -13,7 +14,11 @@ from .log import get_logger
 
 
 logger = get_logger()
-# logger.setLevel(logging.INFO)
+
+# Load the kubernetes config and create api instance, Only works inside of JupyterLab Pod
+config.load_incluster_config() 
+api_instance = client.CustomObjectsApi()
+
 
 class WippHandler(APIHandler):
     @property
@@ -56,7 +61,9 @@ class CreatePlugin(WippHandler):
         if pluginOutputPath:
             logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
             pluginOutputPath = os.path.join(pluginOutputPath, f"{randomId}")
-            os.makedirs(f"{pluginOutputPath}")
+            srcOutputPath = os.path.join(pluginOutputPath, "src")
+            os.makedirs(pluginOutputPath)
+            os.makedirs(srcOutputPath)
             logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
@@ -76,14 +83,15 @@ class CreatePlugin(WippHandler):
 
         # register plugin manifest to wipp CI
         self.wipp.register_plugin(form)
-
+        logger.info("WIPP plugin register completed")
+        
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
-        # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/
-        rootDirPath = os.path.dirname(os.path.abspath(backendDirPath))
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
+        reqsPath = os.path.join(srcOutputPath, "requirements.txt")
         manifestPath = os.path.join(pluginOutputPath, "plugin.json")
-        reqsPath = os.path.join(pluginOutputPath, "requirements.txt")
+        dockerPath = os.path.join(pluginOutputPath, "Dockerfile")
+        
 
         # Generate files to temp folder
         try:
@@ -96,13 +104,13 @@ class CreatePlugin(WippHandler):
             template = Template(open(templatePath).read())
 
             # Generate dockerfile with user inputs, hardcoded for the time being
-            template.stream(baseImage= "python").dump(pluginOutputPath + '/Dockerfile')
+            template.stream(baseImage= "python").dump(dockerPath)
             logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
-
 
         except Exception as e:
             logger.error(f"Error writing files", exc_info=e)
             self.write_error(500)
+            return
 
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
@@ -110,15 +118,91 @@ class CreatePlugin(WippHandler):
             if filepaths:
                 for filepath in filepaths:
                     filepath =  os.path.join(os.environ['HOME'], filepath)
-                    copy2(filepath, pluginOutputPath)
+                    copy2(filepath, srcOutputPath)
                 logger.info(f"Copy command completed")
             else:
                 logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
+                self.write_error(500)
+                return
 
         except Exception as e:
             logger.error(f"Error when running copy command.", exc_info=e)
+            self.write_error(500)
+            return
 
-       
+
+        # Create Argojob to build container via Kubernetes Client
+        logger.info(f"Beginning to run docker container via the Kubernetes Client.")
+
+        # Global definition strings
+        group = 'argoproj.io' # str | The custom resource's group name
+        version = 'v1alpha1' # str | The custom resource's version
+        namespace = 'default' # str | The custom resource's namespace
+        plural = 'workflows' # str | The custom resource's plural name. For TPRs this would be lowercase plural kind.
+        
+        body = {
+            "apiVersion": "argoproj.io/v1alpha1",
+            "kind": "Workflow",
+            "metadata": {
+                "generateName": f"build-polus-plugin-{randomId}-",
+            },
+            "spec": {
+                "entrypoint": "kaniko",
+                "volumes": [
+                    {
+                        "name": "kaniko-secret",
+                        "secret": {
+                            "secretName": "labshare-docker",
+                            "items": [
+                                {
+                                    "key": ".dockerconfigjson",
+                                    "path": "config.json"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "workdir",
+                        "persistentVolumeClaim": {
+                            "claimName": "wipp-pv-claim"
+                        }
+                    }
+                ],
+                "templates": [
+                    {
+                        "name": "kaniko",
+                        "container": {
+                            "image": "gcr.io/kaniko-project/executor:latest",
+                            "args": [
+                            f"--dockerfile=/workspace/Dockerfile",
+                            "--context=dir:///workspace",
+                            f"--destination=polusai/generated-plugins:{randomId}"
+                            ],
+                            "volumeMounts": [
+                                {
+                                    "name": "kaniko-secret",
+                                    "mountPath": "/kaniko/.docker",  
+                                },
+                                {
+                                    "name": "workdir",
+                                    "mountPath": "/workspace",
+                                    "subPath": f"temp/plugins/{randomId}"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+        try:
+            api_response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
+            logger.info(api_response)
+        except ApiException as e:
+            logger.error("Exception when starting to build container via Kubernetes Client: %s\n" % e)
+            self.write_error(500)
+            return
+
+
 def setup_handlers(web_app):
     handlers = [("/jupyterlab_wipp_plugin_creator/createplugin", CreatePlugin)]
 

@@ -69,6 +69,7 @@ export class CreatorSidebar extends Widget {
         method: 'POST',
         body: JSON.stringify(request)
       };
+      
       requestAPI<any>('createplugin', fullRequest)
         .then(response => {
           console.log('POST request sent.')

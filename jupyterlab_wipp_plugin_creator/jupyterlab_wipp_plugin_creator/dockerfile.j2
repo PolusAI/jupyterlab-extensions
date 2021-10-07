@@ -2,6 +2,7 @@ FROM {{baseImage}}
 
 ARG DATA_DIR="/data"
 RUN mkdir -p /opt/executables \
+    && mkdir -p ${DATA_DIR}/inputs \
     && mkdir ${DATA_DIR}/outputs
 
 COPY src .
