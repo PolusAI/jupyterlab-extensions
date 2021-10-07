@@ -11,6 +11,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: jupyterlab_wipp
     steps:
     - name: Checkout
       uses: actions/checkout@v2
