@@ -94,7 +94,7 @@ class CreatePlugin(WippHandler):
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
         manifestPath = os.path.join(pluginOutputPath, "plugin.json")
-        reqsPath = os.path.join(pluginOutputPath, "requirements .txt")
+        reqsPath = os.path.join(srcOutputPath, "requirements .txt")
         dockerPath = os.path.join(pluginOutputPath, "Dockerfile")
         
 
