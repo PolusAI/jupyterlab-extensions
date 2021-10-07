@@ -174,7 +174,7 @@ class CreatePlugin(WippHandler):
                             "image": "gcr.io/kaniko-project/executor:latest",
                             "args": [
                             f"--dockerfile=/workspace/Dockerfile",
-                            "--context=dir://",
+                            "--context=dir:///",
                             f"--destination=polusai/generated-plugins:{randomId}"
                             ],
                             "volumeMounts": [
