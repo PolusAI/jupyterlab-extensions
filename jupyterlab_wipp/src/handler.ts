@@ -34,7 +34,10 @@ export async function requestAPI<T>(
     try {
       data = JSON.parse(data);
     } catch (error) {
-      throw new ServerConnection.ResponseError(response, 'Not a JSON response body.');
+      throw new ServerConnection.ResponseError(
+        response,
+        'Not a JSON response body.'
+      );
     }
   }
 
