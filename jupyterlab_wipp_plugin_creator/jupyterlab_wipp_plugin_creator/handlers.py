@@ -107,10 +107,10 @@ class CreatePlugin(WippHandler):
             template.stream(baseImage= "python").dump(dockerPath)
             logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
 
-
         except Exception as e:
             logger.error(f"Error writing files", exc_info=e)
             self.write_error(500)
+
 
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
@@ -129,6 +129,7 @@ class CreatePlugin(WippHandler):
         # Create Argojob to build container via Kubernetes Client
         # Global definition strings
         logger.info(f"Beginning to run docker container via the Kubernetes Client.")
+
         group = 'argoproj.io' # str | The custom resource's group name
         version = 'v1alpha1' # str | The custom resource's version
         namespace = 'default' # str | The custom resource's namespace
