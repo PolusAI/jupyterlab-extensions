@@ -110,6 +110,7 @@ class CreatePlugin(WippHandler):
         except Exception as e:
             logger.error(f"Error writing files", exc_info=e)
             self.write_error(500)
+            return
 
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
@@ -122,10 +123,12 @@ class CreatePlugin(WippHandler):
             else:
                 logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
                 self.write_error(500)
+                return
 
         except Exception as e:
             logger.error(f"Error when running copy command.", exc_info=e)
             self.write_error(500)
+            return
 
 
         # Create Argojob to build container via Kubernetes Client
@@ -197,6 +200,7 @@ class CreatePlugin(WippHandler):
         except ApiException as e:
             logger.error("Exception when starting to build container via Kubernetes Client: %s\n" % e)
             self.write_error(500)
+            return
 
 
 def setup_handlers(web_app):
