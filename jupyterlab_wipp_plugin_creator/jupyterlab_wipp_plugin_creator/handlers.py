@@ -2,8 +2,7 @@ import json
 import os
 from shutil import copy2
 
-import kubernetes.client
-import kubernetes.config
+from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
@@ -17,8 +16,8 @@ from .log import get_logger
 logger = get_logger()
 
 # Load the kubernetes config and create api instance, Only works inside of JupyterLab Pod
-kubernetes.config.load_incluster_config() 
-api_instance = kubernetes.client.CustomObjectsApi()
+config.load_incluster_config() 
+api_instance = client.CustomObjectsApi()
 
 
 class WippHandler(APIHandler):
