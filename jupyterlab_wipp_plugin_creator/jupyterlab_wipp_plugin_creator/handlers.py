@@ -121,6 +121,7 @@ class CreatePlugin(WippHandler):
                 logger.info(f"Copy command completed")
             else:
                 logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
+                self.write_error(500)
 
         except Exception as e:
             logger.error(f"Error when running copy command.", exc_info=e)
