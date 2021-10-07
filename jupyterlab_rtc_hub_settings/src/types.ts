@@ -1,10 +1,10 @@
 export interface IUserStatus {
-    name: string,
-    shared: boolean
+  name: string;
+  shared: boolean;
 }
 
 export type IUsersTableProps = {
-    ar: IUserStatus[],
-    updateUsers: (users: IUserStatus[]) => void,
-    refreshUsers: () => void;
-}
+  ar: IUserStatus[];
+  updateUsers: (users: IUserStatus[]) => void;
+  refreshUsers: () => void;
+};
