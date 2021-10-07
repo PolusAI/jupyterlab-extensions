@@ -2,16 +2,12 @@ import json
 import os
 from shutil import copy2
 
-
-from jinja2 import Template
-
 import kubernetes.client
 import kubernetes.config
 from kubernetes.client.rest import ApiException
-from pprint import pprint
-
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
+from jinja2 import Template
 import tornado
 
 from wipp_client.wipp import gen_random_object_id
