@@ -127,10 +127,11 @@ class CreatePlugin(WippHandler):
             logger.error(f"Error when running copy command.", exc_info=e)
             self.write_error(500)
 
+
         # Create Argojob to build container via Kubernetes Client
-        # Global definition strings
         logger.info(f"Beginning to run docker container via the Kubernetes Client.")
 
+        # Global definition strings
         group = 'argoproj.io' # str | The custom resource's group name
         version = 'v1alpha1' # str | The custom resource's version
         namespace = 'default' # str | The custom resource's namespace
