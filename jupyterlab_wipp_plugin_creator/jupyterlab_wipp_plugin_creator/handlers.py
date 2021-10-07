@@ -93,8 +93,8 @@ class CreatePlugin(WippHandler):
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
-        manifestPath = os.path.join(pluginOutputPath, "plugin.json")
         reqsPath = os.path.join(srcOutputPath, "requirements.txt")
+        manifestPath = os.path.join(pluginOutputPath, "plugin.json")
         dockerPath = os.path.join(pluginOutputPath, "Dockerfile")
         
 
