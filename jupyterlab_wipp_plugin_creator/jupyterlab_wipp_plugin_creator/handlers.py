@@ -67,7 +67,7 @@ class CreatePlugin(WippHandler):
             logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
-            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_PATH = '...' to set.")
+            logger.error("ENV variable doesn't exist, please use command, export PLUGIN_TEMP_PATH='...' to set.")
             self.write_error(500)
             return
 
