@@ -127,9 +127,10 @@ class CreatePlugin(WippHandler):
             self.write_error(500)
             return
 
-        debugEnv = os.getenv("PLUGIN_DEBUG")
-        if ((debugEnv) and debugEnv == "1"):
-            logger.info("Debug mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be created. Use 'export PLUGIN_DEBUG=0' to enable full functionality if on a pod.")
+        debugEnv = os.getenv("WIPP_PLUGIN_CREATOR_DISABLE_BUILD")
+        # if debugEnv was specified by the user
+        if (debugEnv):
+            logger.info("Debug mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be created. Use 'export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=enterAnything' to enable full functionality if on a pod.")
         else:
             logger.info("Debug mode OFF. Environment is pod. Reading k8s cluster config... ")
             try: 
