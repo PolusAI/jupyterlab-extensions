@@ -128,7 +128,7 @@ class CreatePlugin(WippHandler):
             return
 
         debugEnv = os.getenv("WIPP_PLUGIN_CREATOR_DISABLE_BUILD")
-        # if debugEnv was specified by the user
+        # if debugEnv was specified by the user, don't execute kubernetes commands to build the actual plugin
         if (debugEnv):
             logger.info("Debug mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be created. Use 'export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=enterAnything' to enable full functionality if on a pod.")
         else:
