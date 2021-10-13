@@ -136,6 +136,7 @@ class CreatePlugin(WippHandler):
                 api_instance = setup_k8s_api()
             except Exception as e:
                 logger.error(f"Error when reading k8s config.", exc_info=e)
+                self.write_error(500)
                 return
 
             # Create Argojob to build container via Kubernetes Client
