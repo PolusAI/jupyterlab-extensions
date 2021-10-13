@@ -1,5 +1,6 @@
 import json
 import os
+from re import L
 from shutil import copy2
 
 from kubernetes import client, config
@@ -131,7 +132,12 @@ class CreatePlugin(WippHandler):
             logger.info("Debug mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be created. Use 'export PLUGIN_DEBUG=0' to enable full functionality if on a pod.")
         else:
             logger.info("Debug mode OFF. Environment is pod. Reading k8s cluster config... ")
-            api_instance = setup_k8s_api()
+            try: 
+                api_instance = setup_k8s_api()
+            except Exception as e:
+                logger.error(f"Error when reading k8s config.", exc_info=e)
+                return
+
             # Create Argojob to build container via Kubernetes Client
             logger.info(f"Beginning to run docker container via the Kubernetes Client.")
 
