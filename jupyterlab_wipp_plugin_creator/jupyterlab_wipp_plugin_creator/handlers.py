@@ -126,9 +126,9 @@ class CreatePlugin(WippHandler):
             self.write_error(500)
             return
 
-        debugEnv = os.getenv("PLUGIN_TEMP_PATH")
+        debugEnv = os.getenv("PLUGIN_DEBUG")
         if ((debugEnv) and debugEnv == "1"):
-            logger.info("Debug mode ON. Environment is local. Manifest and dockerfile are generated but no images will be created. Use 'export debugEnv=0' to ")
+            logger.info("Debug mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be created. Use 'export PLUGIN_DEBUG=0' to enable full functionality if on a pod.")
         else:
             logger.info("Debug mode OFF. Environment is pod. Reading k8s cluster config... ")
             api_instance = setup_k8s_api()
