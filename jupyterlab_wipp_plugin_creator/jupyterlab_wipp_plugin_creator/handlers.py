@@ -129,7 +129,7 @@ class CreatePlugin(WippHandler):
         # if disable build env variable was specified by the user, don't execute kubernetes commands to build the actual plugin
 
         if (os.getenv("WIPP_PLUGIN_CREATOR_DISABLE_BUILD")):
-            logger.info("No Build mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be created. Use 'export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=enterAnything' to enable full functionality if on a pod.")
+            logger.info("No Build mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be built. If the environment is a pod, please use 'export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=enterAnything' to enable full functionality.")
         else:
             logger.info("No Build mode OFF. Environment is pod. Reading k8s cluster config... ")
             try: 
