@@ -12,13 +12,15 @@ import tornado
 from wipp_client.wipp import gen_random_object_id
 from .log import get_logger
 
-
 logger = get_logger()
 
-# Load the kubernetes config and create api instance, Only works inside of JupyterLab Pod
-config.load_incluster_config() 
-api_instance = client.CustomObjectsApi()
-
+def setup_k8s_api():
+    """
+    Common actions to setup Kubernetes API access to Argo workflows
+    """
+    config.load_incluster_config() #Only works inside of JupyterLab Pod
+    
+    return client.CustomObjectsApi()
 
 class WippHandler(APIHandler):
     @property
@@ -57,9 +59,9 @@ class CreatePlugin(WippHandler):
         randomId = gen_random_object_id()
 
         pluginOutputPath = os.getenv("PLUGIN_TEMP_PATH")
-        # if ENV exists
+        # if PLUGIN_TEMP_PATH ENV exists
         if pluginOutputPath:
-            logger.info(f"ENV variable exists, output path set to {pluginOutputPath}.")
+            logger.info(f"PLUGIN_TEMP_PATH ENV variable exists; output path set to {pluginOutputPath}.")
             pluginOutputPath = os.path.join(pluginOutputPath, f"{randomId}")
             srcOutputPath = os.path.join(pluginOutputPath, "src")
             os.makedirs(pluginOutputPath)
@@ -67,7 +69,7 @@ class CreatePlugin(WippHandler):
             logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
-            logger.error("ENV variable doesn't exist, please use command 'export PLUGIN_TEMP_PATH = '...' to set.")
+            logger.error("PLUGIN_TEMP_PATH ENV variable doesn't exist; please use command, export PLUGIN_TEMP_PATH='...' to set.")
             self.write_error(500)
             return
 
@@ -119,7 +121,7 @@ class CreatePlugin(WippHandler):
                 for filepath in filepaths:
                     filepath =  os.path.join(os.environ['HOME'], filepath)
                     copy2(filepath, srcOutputPath)
-                logger.info(f"Copy command completed")
+                logger.info("Copy command completed.")
             else:
                 logger.error(f"No file to copy. Please right click on file and select 'Add to new WIPP plugin'.")
                 self.write_error(500)
@@ -130,77 +132,89 @@ class CreatePlugin(WippHandler):
             self.write_error(500)
             return
 
+        # if disable build env variable was specified by the user, don't execute kubernetes commands to build the actual plugin
 
-        # Create Argojob to build container via Kubernetes Client
-        logger.info(f"Beginning to run docker container via the Kubernetes Client.")
+        if (os.getenv("WIPP_PLUGIN_CREATOR_DISABLE_BUILD")):
+            logger.info("No Build mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be built. If the environment is a pod, please use 'export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=1' to enable full functionality.")
+        else:
+            logger.info("No Build mode OFF. Environment is pod. Reading k8s cluster config... ")
+            try: 
+                api_instance = setup_k8s_api()
+            except Exception as e:
+                logger.error(f"Error when reading k8s config.", exc_info=e)
+                self.write_error(500)
+                return
 
-        # Global definition strings
-        group = 'argoproj.io' # str | The custom resource's group name
-        version = 'v1alpha1' # str | The custom resource's version
-        namespace = 'default' # str | The custom resource's namespace
-        plural = 'workflows' # str | The custom resource's plural name. For TPRs this would be lowercase plural kind.
-        
-        body = {
-            "apiVersion": "argoproj.io/v1alpha1",
-            "kind": "Workflow",
-            "metadata": {
-                "generateName": f"build-polus-plugin-{randomId}-",
-            },
-            "spec": {
-                "entrypoint": "kaniko",
-                "volumes": [
-                    {
-                        "name": "kaniko-secret",
-                        "secret": {
-                            "secretName": "labshare-docker",
-                            "items": [
-                                {
-                                    "key": ".dockerconfigjson",
-                                    "path": "config.json"
-                                }
-                            ]
+            # Create Argojob to build container via Kubernetes Client
+            logger.info(f"Beginning to run docker container via the Kubernetes Client.")
+
+            # Global definition strings
+            group = 'argoproj.io' # str | The custom resource's group name
+            version = 'v1alpha1' # str | The custom resource's version
+            namespace = 'default' # str | The custom resource's namespace
+            plural = 'workflows' # str | The custom resource's plural name. For TPRs this would be lowercase plural kind.
+            
+            body = {
+                "apiVersion": "argoproj.io/v1alpha1",
+                "kind": "Workflow",
+                "metadata": {
+                    "generateName": f"build-polus-plugin-{randomId}-",
+                },
+                "spec": {
+                    "entrypoint": "kaniko",
+                    "volumes": [
+                        {
+                            "name": "kaniko-secret",
+                            "secret": {
+                                "secretName": "labshare-docker",
+                                "items": [
+                                    {
+                                        "key": ".dockerconfigjson",
+                                        "path": "config.json"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "workdir",
+                            "persistentVolumeClaim": {
+                                "claimName": "wipp-pv-claim"
+                            }
                         }
-                    },
-                    {
-                        "name": "workdir",
-                        "persistentVolumeClaim": {
-                            "claimName": "wipp-pv-claim"
+                    ],
+                    "templates": [
+                        {
+                            "name": "kaniko",
+                            "container": {
+                                "image": "gcr.io/kaniko-project/executor:latest",
+                                "args": [
+                                f"--dockerfile=/workspace/Dockerfile",
+                                "--context=dir:///workspace",
+                                f"--destination=polusai/generated-plugins:{randomId}"
+                                ],
+                                "volumeMounts": [
+                                    {
+                                        "name": "kaniko-secret",
+                                        "mountPath": "/kaniko/.docker",  
+                                    },
+                                    {
+                                        "name": "workdir",
+                                        "mountPath": "/workspace",
+                                        "subPath": f"temp/plugins/{randomId}"
+                                    }
+                                ]
+                            }
                         }
-                    }
-                ],
-                "templates": [
-                    {
-                        "name": "kaniko",
-                        "container": {
-                            "image": "gcr.io/kaniko-project/executor:latest",
-                            "args": [
-                            f"--dockerfile=/workspace/Dockerfile",
-                            "--context=dir:///workspace",
-                            f"--destination=polusai/generated-plugins:{randomId}"
-                            ],
-                            "volumeMounts": [
-                                {
-                                    "name": "kaniko-secret",
-                                    "mountPath": "/kaniko/.docker",  
-                                },
-                                {
-                                    "name": "workdir",
-                                    "mountPath": "/workspace",
-                                    "subPath": f"temp/plugins/{randomId}"
-                                }
-                            ]
-                        }
-                    }
-                ]
+                    ]
+                }
             }
-        }
-        try:
-            api_response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
-            logger.info(api_response)
-        except ApiException as e:
-            logger.error("Exception when starting to build container via Kubernetes Client: %s\n" % e)
-            self.write_error(500)
-            return
+            try:
+                api_response = api_instance.create_namespaced_custom_object(group, version, namespace, plural, body)
+                logger.info(api_response)
+            except ApiException as e:
+                logger.error("Exception when starting to build container via Kubernetes Client: %s\n" % e)
+                self.write_error(500)
+                return
 
 
 def setup_handlers(web_app):
