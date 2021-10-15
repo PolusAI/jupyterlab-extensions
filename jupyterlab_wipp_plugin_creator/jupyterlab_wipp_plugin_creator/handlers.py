@@ -15,6 +15,13 @@ from .log import get_logger
 
 logger = get_logger()
 
+def setup_k8s_api():
+    """
+    Common actions to setup Kubernetes API access to Argo workflows
+    """
+    config.load_incluster_config() #Only works inside of JupyterLab Pod
+    
+    return client.CustomObjectsApi()
 
 class WippHandler(APIHandler):
     @property
@@ -219,11 +226,3 @@ def setup_handlers(web_app):
 
     host_pattern = ".*$"
     web_app.add_handlers(host_pattern, handlers)
-
-def setup_k8s_api():
-    """
-    Common actions to setup Kubernetes API access to Argo workflows
-    """
-    config.load_incluster_config() #Only works inside of JupyterLab Pod
-    
-    return client.CustomObjectsApi()
