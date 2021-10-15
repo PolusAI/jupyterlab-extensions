@@ -10,7 +10,7 @@ class _ExtensionLogger:
     def get_logger(cls) -> logging.Logger:
         if cls._LOGGER is None:
             app = Application.instance()
-            cls._LOGGER = logging.getLogger("{!s}.jupyterlab_git".format(app.log.name))
+            cls._LOGGER = logging.getLogger("{!s}.jupyterlab_wipp_plugin_creator".format(app.log.name))
 
         return cls._LOGGER
 
