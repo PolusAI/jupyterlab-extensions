@@ -61,7 +61,7 @@ class CreatePlugin(WippHandler):
         pluginOutputPath = os.getenv("PLUGIN_TEMP_PATH")
         # if PLUGIN_TEMP_PATH ENV exists
         if pluginOutputPath:
-            logger.info(f"PLUGIN_TEMP_PATH ENV variable exists, output path set to {pluginOutputPath}.")
+            logger.info(f"PLUGIN_TEMP_PATH ENV variable exists; output path set to {pluginOutputPath}.")
             pluginOutputPath = os.path.join(pluginOutputPath, f"{randomId}")
             srcOutputPath = os.path.join(pluginOutputPath, "src")
             os.makedirs(pluginOutputPath)
@@ -69,7 +69,7 @@ class CreatePlugin(WippHandler):
             logger.info(f"Random folder name created: {pluginOutputPath}.")
 
         else:
-            logger.error("PLUGIN_TEMP_PATH ENV variable doesn't exist, please use command, export PLUGIN_TEMP_PATH='...' to set.")
+            logger.error("PLUGIN_TEMP_PATH ENV variable doesn't exist; please use command, export PLUGIN_TEMP_PATH='...' to set.")
             self.write_error(500)
             return
 
