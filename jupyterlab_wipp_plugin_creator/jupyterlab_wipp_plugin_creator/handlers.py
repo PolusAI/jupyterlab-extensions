@@ -79,7 +79,7 @@ class CreatePlugin(WippHandler):
         filepaths = data["addedfilepaths"]
         requirements = form["requirements"]
 
-        # Separate requirements key in the formdata form rest to write plugin.json and requirements.txt separately
+        # Separate requirements key in the formdata from the rest to write plugin.json and requirements.txt separately
         form.pop("requirements")
         form["containerId"] = "polusai/generated-plugins:" + randomId
 
