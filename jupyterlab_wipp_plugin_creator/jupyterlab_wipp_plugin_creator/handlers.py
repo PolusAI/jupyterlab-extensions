@@ -100,8 +100,11 @@ class CreatePlugin(WippHandler):
             with open(manifestPath, "w") as f1:
                 f1.write(json.dumps(form))
             with open(reqsPath, "w") as f2:
-                for req in requirements:
-                    f2.write(f"{req}\n")
+                if requirements:
+                    for req in requirements:
+                        f2.write(f"{req}\n")
+                else: 
+                    f2.write("")
             # Read from Jinja2 template
             template = Template(open(templatePath).read())
 
