@@ -32,13 +32,30 @@ export class CreatorSidebar extends Widget {
 
     const formData: any = {
       name: "My Plugin",
+      title: "My Plugin",
       version: "0.1.0",
+      description: "",
+      author: "",
+      institution: "",
+      repository: "",
+      website: "",
+      citation: "",
       requirements: [''],
+      file: [''],
       inputs: [{}],
       outputs: [{}],
     };
-
-    this._form = new SchemaForm(schema, { formData: formData });
+    const uiSchema: any = {
+      "name": {
+      "ui:help": "Hint: Enter human-readable name"},
+      "title": {
+      "ui:help": "Hint: Enter machine-readable name"},
+      "requirements": {
+        "ui:help": "Hint: Enter 3rd party python packages that the plugin requires"},
+      "ui:options": { accept: ".py" }
+      
+    };
+    this._form = new SchemaForm(schema, { formData: formData,uiSchema:uiSchema,liveValidate:true,noHtml5Validate:true},{liveMarkdown: true});
     layout.addWidget(this._form);
 
     const runButtonWidget = new Widget()
