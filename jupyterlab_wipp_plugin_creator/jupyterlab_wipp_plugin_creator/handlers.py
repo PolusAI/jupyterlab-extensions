@@ -77,10 +77,13 @@ class CreatePlugin(WippHandler):
         data = json.loads(self.request.body.decode("utf-8"))
         form = data["formdata"]
         filepaths = data["addedfilepaths"]
-        requirements = form["requirements"]
+        if "requirements" in form:
+            requirements = form["requirements"]
+            # Separate requirements key in the formdata from the rest to write plugin.json and requirements.txt separately
+            form.pop("requirements")
+        else:
+            requirements = ""
 
-        # Separate requirements key in the formdata from the rest to write plugin.json and requirements.txt separately
-        form.pop("requirements")
         form["containerId"] = "polusai/generated-plugins:" + randomId
 
         # register plugin manifest to wipp CI
@@ -100,6 +103,7 @@ class CreatePlugin(WippHandler):
             with open(manifestPath, "w") as f1:
                 f1.write(json.dumps(form))
             with open(reqsPath, "w") as f2:
+                # check if requirements is not empty
                 if requirements:
                     for req in requirements:
                         f2.write(f"{req}\n")
