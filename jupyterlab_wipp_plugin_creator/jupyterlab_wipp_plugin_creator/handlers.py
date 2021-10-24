@@ -85,7 +85,20 @@ class CreatePlugin(WippHandler):
             requirements = ""
 
         form["containerId"] = "polusai/generated-plugins:" + randomId
-
+        
+        # Generate 'ui' key based on input dir
+        uiList = []
+        for inp in form["inputs"]:
+            #unsure how to do title , e.g. :
+            '''
+            "key": "inputs.GTDir",
+            "title": "Ground Truth Images",
+            "description": "Ground truth input image collection to be processed by this plugin."
+            '''
+            uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"inputs.{inp['name']}","description":f"inputs.{inp['description']}"}
+            uiList += uiKeyObj
+        form["ui"] = uiList
+        
         # register plugin manifest to wipp CI
         self.wipp.register_plugin(form)
         logger.info("WIPP plugin register completed")
