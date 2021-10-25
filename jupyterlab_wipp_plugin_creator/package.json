@@ -45,7 +45,6 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@deathbeds/jupyterlab-rjsf": "^1.0.2",
     "@jupyterlab/application": "^3.0.0",
     "@jupyterlab/builder": "^3.0.0",
     "@jupyterlab/console": "^3.0.0",
@@ -55,7 +54,8 @@
     "@jupyterlab/notebook": "^3.0.0",
     "@jupyterlab/services": "^6.0.0",
     "@jupyterlab/settingregistry": "^3.0.0",
-    "@lumino/datastore": "^0.14.2"
+    "@lumino/datastore": "^0.14.2",
+    "@polusai/jupyterlab-rjsf": "^1.1.1"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.0.0",
