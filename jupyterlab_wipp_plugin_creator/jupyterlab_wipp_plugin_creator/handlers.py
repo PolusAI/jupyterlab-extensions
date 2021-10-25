@@ -89,12 +89,10 @@ class CreatePlugin(WippHandler):
         # Generate 'ui' key based on input dir
         uiList = []
         for inp in form["inputs"]:
-            inpName = inp["name"] 
-            inpDesc= inp["description"]
             #title is set to input name as well
-            uiKeyObj = {"key":f"inputs.{inpName}","title":f"inputs.{inpName}","description":f"inputs.{inpDesc}"}
+            uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"inputs.{inp['name']}","description":f"{inp['description']}"}
             uiList.append(uiKeyObj)
-        form["ui"] = uiList
+        form['ui'] = uiList
 
         # register plugin manifest to wipp CI
         self.wipp.register_plugin(form)
