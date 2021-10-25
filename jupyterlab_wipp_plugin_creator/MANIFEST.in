@@ -9,7 +9,7 @@ include install.json
 include ts*.json
 include yarn.lock
 
-graft jupyterlab_wipp_plugin_creator/
+graft jupyterlab_wipp_plugin_creator
 
 # Javascript files
 graft src
