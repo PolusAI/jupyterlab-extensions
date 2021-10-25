@@ -91,19 +91,9 @@ class CreatePlugin(WippHandler):
         for inp in form["inputs"]:
             inpName = inp["name"] 
             inpDesc= inp["description"]
-            #unsure how to do title , e.g. :
-            '''
-            "key": "inputs.GTDir",
-            "title": "Ground Truth Images",
-            "description": "Ground truth input image collection to be processed by this plugin."
-            '''
+            #title is set to input name as well
             uiKeyObj = {"key":f"inputs.{inpName}","title":f"inputs.{inpName}","description":f"inputs.{inpDesc}"}
-            print(inpName)
-            print(uiKeyObj)
-            # results in empty values
-            #  uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"inputs.{inp['name']}","description":f"inputs.{inp['description']}"}
             uiList.append(uiKeyObj)
-        print(uiList)
         form["ui"] = uiList
 
         # register plugin manifest to wipp CI
