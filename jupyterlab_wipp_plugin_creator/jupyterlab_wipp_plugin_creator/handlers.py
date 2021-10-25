@@ -95,8 +95,12 @@ class CreatePlugin(WippHandler):
         form['ui'] = uiList
 
         # register plugin manifest to wipp CI
-        self.wipp.register_plugin(form)
-        logger.info("WIPP plugin register completed")
+        # if disable register env variable was specified by the user, don't register plugin in WIPP backend.
+        if (os.getenv("WIPP_PLUGIN_CREATOR_DISABLE_REGISTER")):
+            logger.info("No register mode ON. Plugin won't be registered in WIPP backend. Use 'export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=0' to enable automatic WIPP backend register.")
+        else:
+            self.wipp.register_plugin(form)
+            logger.info("WIPP plugin register completed")
         
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
@@ -150,7 +154,7 @@ class CreatePlugin(WippHandler):
         # if disable build env variable was specified by the user, don't execute kubernetes commands to build the actual plugin
 
         if (os.getenv("WIPP_PLUGIN_CREATOR_DISABLE_BUILD")):
-            logger.info("No Build mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be built. If the environment is a pod, please use 'export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=1' to enable full functionality.")
+            logger.info("No Build mode ON. Environment is local. Plugin manifest(plugin.json) and dockerfile are generated but no images will be built. If the environment is a pod, please use 'export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=0' to enable full functionality.")
         else:
             logger.info("No Build mode OFF. Environment is pod. Reading k8s cluster config... ")
             try: 
