@@ -90,7 +90,7 @@ class CreatePlugin(WippHandler):
         uiList = []
         for inp in form["inputs"]:
             #title is set to input name as well
-            uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"inputs.{inp['name']}","description":f"{inp['description']}"}
+            uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"{inp['name']}","description":f"{inp['description']}"}
             uiList.append(uiKeyObj)
         form['ui'] = uiList
 
