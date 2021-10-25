@@ -45,6 +45,7 @@ export class CreatorSidebar extends Widget {
       inputs: [{}],
       outputs: [{}],
     };
+    
     const uiSchema: any = {
       "name": {
       "ui:help": "Hint: Enter human-readable name"},
@@ -53,8 +54,8 @@ export class CreatorSidebar extends Widget {
       "requirements": {
         "ui:help": "Hint: Enter 3rd party python packages that the plugin requires"},
       "ui:options": { accept: ".py" }
-      
     };
+
     this._form = new SchemaForm(schema, { formData: formData,uiSchema:uiSchema,liveValidate:true,noHtml5Validate:true},{liveMarkdown: true});
     layout.addWidget(this._form);
 
