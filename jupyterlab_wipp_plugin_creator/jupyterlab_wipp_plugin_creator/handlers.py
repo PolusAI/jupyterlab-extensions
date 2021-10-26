@@ -152,7 +152,7 @@ class CreatePlugin(WippHandler):
         # File manager will return extra: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
         try:
             if "files" in form.keys():
-                # form["files"] is a list
+                # form["files"] is a list of urls
                 for pathFromFileManager in form["files"]:     
                     filepaths += re.findall(r'name=(.*?);',pathFromFileManager)
 

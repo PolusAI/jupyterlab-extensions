@@ -10,8 +10,7 @@
     "title",
     "description",
     "inputs",
-    "outputs",
-    "ui"
+    "outputs"
   ],
   "properties": {
     "name": {
