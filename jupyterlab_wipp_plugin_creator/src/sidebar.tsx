@@ -83,9 +83,6 @@ export class CreatorSidebar extends Widget {
     this._form = new SchemaForm(schema, { formData: formData,uiSchema:uiSchema,liveValidate:true,noHtml5Validate:true},{liveMarkdown: true});
     layout.addWidget(this._form);
 
-
-
-
     // Create submit plugin button
     const runButtonWidget = new Widget()
 
