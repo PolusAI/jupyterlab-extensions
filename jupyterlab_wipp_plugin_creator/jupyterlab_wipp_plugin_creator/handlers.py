@@ -84,8 +84,8 @@ class CreatePlugin(WippHandler):
             filepaths = []
         
         if "files" in form.keys():
-            # Separate files key from filemanager in the formdata from the rest to write plugin.json
             pathsFromManager = form["files"]
+            # Separate files key from filemanager in the formdata from the rest to write plugin.json
             form.pop("files")
 
         if "requirements" in form.keys():
