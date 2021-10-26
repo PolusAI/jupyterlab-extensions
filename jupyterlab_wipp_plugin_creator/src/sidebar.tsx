@@ -1,4 +1,7 @@
 import { Widget, PanelLayout } from '@lumino/widgets';
+import { IDocumentManager } from '@jupyterlab/docmanager';
+import { FileDialog } from '@jupyterlab/filebrowser';
+// import { showDialog, Dialog } from '@jupyterlab/apputils';
 import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
 import { IStateDB } from '@jupyterlab/statedb';
 import { AddedFilesWidget } from './addedFilesWidget';
@@ -10,7 +13,8 @@ export class CreatorSidebar extends Widget {
    * Create a new WIPP plugin creator sidebar.
    */
   constructor(
-    state: IStateDB
+    state: IStateDB,
+    manager: IDocumentManager
   ) {
     super();
     this.addClass('wipp-pluginCreatorSidebar');
@@ -61,6 +65,22 @@ export class CreatorSidebar extends Widget {
     this._form = new SchemaForm(schema, { formData: formData,uiSchema:uiSchema,liveValidate:true,noHtml5Validate:true},{liveMarkdown: true});
     layout.addWidget(this._form);
 
+    const chooseFilesButtonWidget = new Widget()
+    const chooseFilesButton = document.createElement('button');
+    chooseFilesButton.className = 'run';
+    chooseFilesButton.onclick = async () => {
+      const dialog = FileDialog.getOpenFiles({
+        manager, // IDocumentManager
+      });
+      const result = await dialog;
+      if(result.button.accept){
+        let files = result.value;
+        console.log(files);
+      }
+    }
+    chooseFilesButton.innerText = "Choose Files"
+    chooseFilesButtonWidget.node.appendChild(chooseFilesButton)
+    layout.addWidget(chooseFilesButtonWidget)
     const runButtonWidget = new Widget()
 
     const runButton = document.createElement('button');

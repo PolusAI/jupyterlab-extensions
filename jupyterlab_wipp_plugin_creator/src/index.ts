@@ -1,4 +1,5 @@
 import { JupyterFrontEnd, JupyterFrontEndPlugin, ILabShell } from '@jupyterlab/application';
+import { IDocumentManager } from '@jupyterlab/docmanager';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { IStateDB } from '@jupyterlab/statedb'
 import { LabIcon } from '@jupyterlab/ui-components';
@@ -17,12 +18,13 @@ let filepaths: string[] = [];
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_wipp_plugin_creator:plugin',
   autoStart: true,
-  requires: [IFileBrowserFactory, ILabShell, IStateDB],
+  requires: [IFileBrowserFactory, ILabShell, IStateDB, IDocumentManager],
   activate: (
     app: JupyterFrontEnd,
     factory: IFileBrowserFactory,
     labShell: ILabShell,
-    state: IStateDB
+    state: IStateDB,
+    manager: IDocumentManager,
   ) => {
 
     // Initialzie dbkey if not in IStateDB
@@ -34,7 +36,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     })
 
     // Create the WIPP sidebar panel
-    const sidebar = new CreatorSidebar(state);
+    const sidebar = new CreatorSidebar(state,manager);
     sidebar.id = 'wipp-labextension:plugin';
     sidebar.title.icon = logoIcon;
     sidebar.title.caption = 'WIPP Plugin Creator';
