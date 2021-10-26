@@ -24,15 +24,6 @@
       "minLength": 1,
       "pattern": "^(.*)$"
     },
-    "files": {
-      "$id": "#/properties/files",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "data-url"
-     },
-      "title": "Select files"
-    },
     "requirements": {
       "type": "array",
       "items": {
