@@ -145,8 +145,6 @@ class CreatePlugin(WippHandler):
             self.write_error(500)
             return
 
-        # Copy files to temp location with shutil
-        # Copy2 is like copy but preserves metadata
     
         # Concatenate file from RJSF's file manager
         # File manager will return extra: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
@@ -160,6 +158,8 @@ class CreatePlugin(WippHandler):
         except Exception as e:
             logger.error(f"Error reading 'files' in the dataform, continuing without files selected via file manager", exc_info=e)
 
+        # Copy files to temp location with shutil
+        # Copy2 is like copy but preserves metadata
         try:
             if filepaths:
                 # dedupe
