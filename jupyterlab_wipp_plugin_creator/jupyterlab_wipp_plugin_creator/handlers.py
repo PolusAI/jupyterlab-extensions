@@ -156,6 +156,7 @@ class CreatePlugin(WippHandler):
         try:
             if pathsFromFileManager:
                 # pathsFromFileManager is a list of uris
+                # logger.info(pathsFromFileManager)
                 for pathFromFileManager in pathsFromFileManager:     
                     filepaths += re.findall(r'name=(.*?);',pathFromFileManager)
 
