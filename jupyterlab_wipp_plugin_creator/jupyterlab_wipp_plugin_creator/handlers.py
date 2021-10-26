@@ -1,6 +1,7 @@
 import json
 import os
 from shutil import copy2
+import re
 
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
@@ -88,10 +89,16 @@ class CreatePlugin(WippHandler):
         
         # Generate 'ui' key based on input dir
         uiList = []
-        for inp in form["inputs"]:
-            #title is set to input name as well
-            uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"{inp['name']}","description":f"{inp['description']}"}
-            uiList.append(uiKeyObj)
+        if form["inputs"]:
+            for inp in form["inputs"]:
+                #title is set to input name as well
+                try:
+                    uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"{inp['name']}","description":f"{inp['description']}"}
+                    uiList.append(uiKeyObj)
+                except Exception as e:
+                    logger.error("Potential malformed inputs." , exc_info=e)
+                    self.write_error(500)
+                    return
         form['ui'] = uiList
 
         # register plugin manifest to wipp CI
@@ -136,7 +143,16 @@ class CreatePlugin(WippHandler):
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
         try:
+            #concatenate file from RJSF's file manager
+            #file manager will return gibberish: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
+            if form["file"]:
+                print(form["file"])
+                # result = re.findall(r'name=(.*?);',form["file"])
+                # form["file"] is a list
+                filepaths += re.findall(r'name=(.*?);',form["file"][0])
             if filepaths:
+                # dedupe
+                filepaths = list(set(filepaths))
                 for filepath in filepaths:
                     filepath =  os.path.join(os.environ['HOME'], filepath)
                     copy2(filepath, srcOutputPath)
