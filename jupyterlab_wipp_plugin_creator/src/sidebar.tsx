@@ -53,9 +53,14 @@ export class CreatorSidebar extends Widget {
       "ui:help": "Hint: Enter machine-readable name"},
       "requirements": {
         "ui:help": "Hint: Enter 3rd party python packages that the plugin requires"},
-      "ui:options": { accept: ".py" }
+      "files":{
+      "ui:options": { accept: ".py" },
+      // following will crash the frontend but might be required to 
+      // error in front end: Warning: Each child in a list should have a unique "key" prop
+      
+      }
     };
-
+    // "ui:widget": "file"
     this._form = new SchemaForm(schema, { formData: formData,uiSchema:uiSchema,liveValidate:true,noHtml5Validate:true},{liveMarkdown: true});
     layout.addWidget(this._form);
 
