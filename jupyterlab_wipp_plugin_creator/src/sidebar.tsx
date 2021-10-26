@@ -61,17 +61,6 @@ export class CreatorSidebar extends Widget {
               })
           }
       }
-        // state.save(ExtensionConstants.dbkey, filepaths)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         console.log(files);
       }
     }
