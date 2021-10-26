@@ -4,7 +4,6 @@ import { IStateDB } from '@jupyterlab/statedb'
 import { LabIcon } from '@jupyterlab/ui-components';
 import { ExtensionConstants } from './extensionConstants';
 import { CreatorSidebar } from './sidebar';
-// import { ISignal, Signal } from '@lumino/signaling';
 import logoSvg from '../style/logo.svg';
 
 const logoIcon = new LabIcon({
@@ -14,7 +13,6 @@ const logoIcon = new LabIcon({
 
 let filepaths: string[] = [];
 
-// let _stateChanged = new Signal<ButtonWidget, ICount>(this);
 
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_wipp_plugin_creator:plugin',
