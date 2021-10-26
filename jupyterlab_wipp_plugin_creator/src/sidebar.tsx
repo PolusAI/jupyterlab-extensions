@@ -31,23 +31,23 @@ export class CreatorSidebar extends Widget {
     //necessary or plugin will not activate
     const schema = schemaForm
 
-        // created file manager
-        const chooseFilesButtonWidget = new Widget()
-        const chooseFilesButton = document.createElement('button');
-        chooseFilesButton.className = 'run';
-        chooseFilesButton.onclick = async () => {
-          const dialog = FileDialog.getOpenFiles({
-            manager, // IDocumentManager
-          });
-          const result = await dialog;
-          if(result.button.accept){
-            let files = result.value;
-            console.log(files);
-          }
-        }
-        chooseFilesButton.innerText = "Choose Files"
-        chooseFilesButtonWidget.node.appendChild(chooseFilesButton)
-        layout.addWidget(chooseFilesButtonWidget)
+    // Created file manager button
+    const chooseFilesButtonWidget = new Widget()
+    const chooseFilesButton = document.createElement('button');
+    chooseFilesButton.className = 'run';
+    chooseFilesButton.onclick = async () => {
+      const dialog = FileDialog.getOpenFiles({
+        manager, // IDocumentManager
+      });
+      const result = await dialog;
+      if(result.button.accept){
+        let files = result.value;
+        console.log(files);
+      }
+    }
+    chooseFilesButton.innerText = "Choose Files"
+    chooseFilesButtonWidget.node.appendChild(chooseFilesButton)
+    layout.addWidget(chooseFilesButtonWidget)
 
     this._addFileWidget = new AddedFilesWidget(state)
     layout.addWidget(this._addFileWidget);
