@@ -143,18 +143,17 @@ class CreatePlugin(WippHandler):
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
     
-        #concatenate file from RJSF's file manager
-        #file manager will return gibberish: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
+        # Concatenate file from RJSF's file manager
+        # File manager will return extra: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
         try:
             if "files" in form.keys():
-                print(form["files"])
-                # result = re.findall(r'name=(.*?);',form["file"])
                 # form["file"] is a list
-                filepaths += re.findall(r'name=(.*?);',form["files"][0])
+                for pathFromFileManager in form["files"]:     
+                    filepaths += re.findall(r'name=(.*?);',pathFromFileManager)
 
-        # contiue without error out as user might not have used
+        # contiue without error out as user might not have used file manager
         except Exception as e:
-            logger.error(f"Error reading 'files' in the dataform, continuing without file selected via file manager", exc_info=e)
+            logger.error(f"Error reading 'files' in the dataform, continuing without files selected via file manager", exc_info=e)
 
         try:
             if filepaths:
