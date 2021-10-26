@@ -31,6 +31,24 @@ export class CreatorSidebar extends Widget {
     //necessary or plugin will not activate
     const schema = schemaForm
 
+        // created file manager
+        const chooseFilesButtonWidget = new Widget()
+        const chooseFilesButton = document.createElement('button');
+        chooseFilesButton.className = 'run';
+        chooseFilesButton.onclick = async () => {
+          const dialog = FileDialog.getOpenFiles({
+            manager, // IDocumentManager
+          });
+          const result = await dialog;
+          if(result.button.accept){
+            let files = result.value;
+            console.log(files);
+          }
+        }
+        chooseFilesButton.innerText = "Choose Files"
+        chooseFilesButtonWidget.node.appendChild(chooseFilesButton)
+        layout.addWidget(chooseFilesButtonWidget)
+
     this._addFileWidget = new AddedFilesWidget(state)
     layout.addWidget(this._addFileWidget);
 
@@ -65,22 +83,10 @@ export class CreatorSidebar extends Widget {
     this._form = new SchemaForm(schema, { formData: formData,uiSchema:uiSchema,liveValidate:true,noHtml5Validate:true},{liveMarkdown: true});
     layout.addWidget(this._form);
 
-    const chooseFilesButtonWidget = new Widget()
-    const chooseFilesButton = document.createElement('button');
-    chooseFilesButton.className = 'run';
-    chooseFilesButton.onclick = async () => {
-      const dialog = FileDialog.getOpenFiles({
-        manager, // IDocumentManager
-      });
-      const result = await dialog;
-      if(result.button.accept){
-        let files = result.value;
-        console.log(files);
-      }
-    }
-    chooseFilesButton.innerText = "Choose Files"
-    chooseFilesButtonWidget.node.appendChild(chooseFilesButton)
-    layout.addWidget(chooseFilesButtonWidget)
+
+
+
+    // Create submit plugin button
     const runButtonWidget = new Widget()
 
     const runButton = document.createElement('button');
