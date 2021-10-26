@@ -16,6 +16,10 @@
     "name": "Will Xiao",
     "email": "Will.Xiao@axleinfo.com"
   },
+  "contributors":[{
+    "name": "Konstantin Taletskiy",
+    "email": "konstantin.taletskiy@labshare.org"
+  }],
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
     "style/**/*.{css,js,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
