@@ -84,7 +84,7 @@ class CreatePlugin(WippHandler):
             filepaths = []
         
         if "files" in form.keys():
-            pathsFromManager = form["files"]
+            pathsFromFileManager = form["files"]
             # Separate files key from filemanager in the formdata from the rest to write plugin.json
             form.pop("files")
 
@@ -154,12 +154,12 @@ class CreatePlugin(WippHandler):
         # Concatenate file from RJSF's file manager
         # File manager will return extra: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
         try:
-            if pathsFromManager:
-                # pathsFromManager is a list of uris
-                for pathFromFileManager in pathsFromManager:     
+            if pathsFromFileManager:
+                # pathsFromFileManager is a list of uris
+                for pathFromFileManager in pathsFromFileManager:     
                     filepaths += re.findall(r'name=(.*?);',pathFromFileManager)
 
-        # contiue without error out as user might not have used file manager
+        # Contiue without error out as user might not have used file manager
         except Exception as e:
             logger.error(f"Error reading 'files' in the dataform, continuing without files selected via file manager", exc_info=e)
 
