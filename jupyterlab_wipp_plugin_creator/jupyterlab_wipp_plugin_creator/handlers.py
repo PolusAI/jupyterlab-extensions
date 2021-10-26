@@ -84,12 +84,13 @@ class CreatePlugin(WippHandler):
             filepaths = []
         
         if "files" in form.keys():
+            # Separate files key from filemanager in the formdata from the rest to write plugin.json
             pathsFromManager = form["files"]
             form.pop("files")
 
         if "requirements" in form.keys():
             requirements = form["requirements"]
-            # Separate requirements key in the formdata from the rest to write plugin.json and requirements.txt separately
+            # Same as above and write requirements.txt separately
             form.pop("requirements")
         else:
             requirements = ""
