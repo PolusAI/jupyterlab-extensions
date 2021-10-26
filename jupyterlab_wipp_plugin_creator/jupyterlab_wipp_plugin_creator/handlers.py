@@ -167,7 +167,7 @@ class CreatePlugin(WippHandler):
         # Copy2 is like copy but preserves metadata
         try:
             if filepaths:
-                # dedupe
+                # dedupe if the user select same code in two ways(via right click context and file manager)
                 filepaths = list(set(filepaths))
                 for filepath in filepaths:
                     filepath =  os.path.join(os.environ['HOME'], filepath)
