@@ -77,8 +77,13 @@ class CreatePlugin(WippHandler):
         # Read POST request
         data = json.loads(self.request.body.decode("utf-8"))
         form = data["formdata"]
-        filepaths = data["addedfilepaths"]
-        if "requirements" in form:
+
+        if "addedfilepaths" in form.keys():
+            filepaths = data["addedfilepaths"]
+        else:
+            filepaths = []
+
+        if "requirements" in form.keys():
             requirements = form["requirements"]
             # Separate requirements key in the formdata from the rest to write plugin.json and requirements.txt separately
             form.pop("requirements")
@@ -87,7 +92,7 @@ class CreatePlugin(WippHandler):
 
         form["containerId"] = "polusai/generated-plugins:" + randomId
         
-        # Generate 'ui' key based on input dir
+        # Generate 'ui' key based on user entered input dir
         uiList = []
         if form["inputs"]:
             for inp in form["inputs"]:
@@ -147,7 +152,7 @@ class CreatePlugin(WippHandler):
         # File manager will return extra: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
         try:
             if "files" in form.keys():
-                # form["file"] is a list
+                # form["files"] is a list
                 for pathFromFileManager in form["files"]:     
                     filepaths += re.findall(r'name=(.*?);',pathFromFileManager)
 
