@@ -82,6 +82,10 @@ class CreatePlugin(WippHandler):
             filepaths = data["addedfilepaths"]
         else:
             filepaths = []
+        
+        if "files" in form.keys():
+            pathsFromManager = form["files"]
+            form.pop("files")
 
         if "requirements" in form.keys():
             requirements = form["requirements"]
@@ -149,9 +153,9 @@ class CreatePlugin(WippHandler):
         # Concatenate file from RJSF's file manager
         # File manager will return extra: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
         try:
-            if "files" in form.keys():
-                # form["files"] is a list of urls
-                for pathFromFileManager in form["files"]:     
+            if pathsFromManager:
+                # pathsFromManager is a list of uris
+                for pathFromFileManager in pathsFromManager:     
                     filepaths += re.findall(r'name=(.*?);',pathFromFileManager)
 
         # contiue without error out as user might not have used file manager
