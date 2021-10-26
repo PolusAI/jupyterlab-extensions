@@ -7,6 +7,7 @@ import { IStateDB } from '@jupyterlab/statedb';
 import { AddedFilesWidget } from './addedFilesWidget';
 import { requestAPI } from './handler';
 import schemaForm from "./WippPluginSchema.json";
+import { ExtensionConstants } from './extensionConstants';
 
 export class CreatorSidebar extends Widget {
   /**
@@ -32,6 +33,8 @@ export class CreatorSidebar extends Widget {
     const schema = schemaForm
 
     // Created file manager button
+    var filepath = ''
+    var filepaths: string[] = [];
     const chooseFilesButtonWidget = new Widget()
     const chooseFilesButton = document.createElement('button');
     chooseFilesButton.className = 'run';
@@ -42,6 +45,33 @@ export class CreatorSidebar extends Widget {
       const result = await dialog;
       if(result.button.accept){
         let files = result.value;
+        
+        if (files) {
+          for (let i = 0; i < files.length; i++) {
+              filepath = files[i]['path']
+              state.fetch(ExtensionConstants.dbkey).then(response => {
+                filepaths = response as string[];
+                if (filepaths.indexOf(filepath) === -1) {
+                  filepaths.push(filepath);
+                }
+                else {
+                  console.log(`${filepath} was already added`)
+                }
+                state.save(ExtensionConstants.dbkey, filepaths);
+              })
+          }
+      }
+        // state.save(ExtensionConstants.dbkey, filepaths)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         console.log(files);
       }
     }
@@ -63,7 +93,6 @@ export class CreatorSidebar extends Widget {
       website: "",
       citation: "",
       requirements: [''],
-      files: [''],
       inputs: [{}],
       outputs: [{}],
     };
@@ -75,9 +104,6 @@ export class CreatorSidebar extends Widget {
       "ui:help": "Hint: Enter machine-readable name"},
       "requirements": {
         "ui:help": "Hint: Enter 3rd party python packages that the plugin requires"},
-      "files":{
-      "ui:options": { accept: ".py" },
-      }
     };
 
     this._form = new SchemaForm(schema, { formData: formData,uiSchema:uiSchema,liveValidate:true,noHtml5Validate:true},{liveMarkdown: true});
