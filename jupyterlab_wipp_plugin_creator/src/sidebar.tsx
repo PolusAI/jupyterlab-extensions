@@ -1,7 +1,7 @@
 import { Widget, PanelLayout } from '@lumino/widgets';
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { FileDialog } from '@jupyterlab/filebrowser';
-// import { showDialog, Dialog } from '@jupyterlab/apputils';
+import { showDialog, Dialog } from '@jupyterlab/apputils';
 import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
 import { IStateDB } from '@jupyterlab/statedb';
 import { AddedFilesWidget } from './addedFilesWidget';
@@ -116,7 +116,7 @@ export class CreatorSidebar extends Widget {
 
   //Sidebar constructor ends
   submit() {
-
+    
     //Create API request on submit
     let formValue = this._form.getValue()
     let request = {
@@ -134,11 +134,13 @@ export class CreatorSidebar extends Widget {
       requestAPI<any>('createplugin', fullRequest)
         .then(response => {
           console.log('POST request sent.')
+          showDialog({body: 'Create Plugin request submitted. Building the plugin...', buttons: [Dialog.okButton()]})
         })
         .catch(() => console.log('There is an error making POST CreatePlugin API request.'));
     }
 
     else {
+      showDialog({body: `There's an error with form value. Plugin build request failed.`, buttons: [Dialog.okButton()]})
       console.log(`Schema form data returns with an error`);
       console.log(formValue.errors)
     }
