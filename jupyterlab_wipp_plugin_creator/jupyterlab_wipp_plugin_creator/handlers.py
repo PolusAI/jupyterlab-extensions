@@ -91,6 +91,13 @@ class CreatePlugin(WippHandler):
         else:
             requirements = ""
 
+        if "baseImage" in form.keys():
+            baseImage = form["baseImage"]
+            # Same as above. Avoid baseImage from being written to the plugin manifest
+            form.pop("baseImage")
+        else:
+            baseImage = "python"
+
         form["containerId"] = "polusai/generated-plugins:" + randomId
         
         # Generate 'ui' key based on user entered input dir
@@ -138,7 +145,7 @@ class CreatePlugin(WippHandler):
             template = Template(open(templatePath).read())
 
             # Generate dockerfile with user inputs, hardcoded for the time being
-            template.stream(baseImage= "python").dump(dockerPath)
+            template.stream(baseImage= baseImage).dump(dockerPath)
             logger.info(f"Dockerfile Template generated from jinja2 template, src/dockerfile.j2" )
 
         except Exception as e:

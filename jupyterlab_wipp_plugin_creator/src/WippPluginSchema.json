@@ -460,5 +460,16 @@
         }
       }
     }
+    ,"baseImage": {
+      "$id": "#/properties/baseImage",
+      "type": "string",
+      "title": "Base Image of the plugin",
+      "default": "python",
+      "examples": [
+        "alpine:3.14"
+      ],
+      "minLength": 1,
+      "pattern": "^(.*)$"
+    }
     }
   }

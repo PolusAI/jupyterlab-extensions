@@ -82,7 +82,8 @@ export class CreatorSidebar extends Widget {
       citation: '',
       requirements: [''],
       inputs: [{}],
-      outputs: [{}]
+      outputs: [{}],
+      baseImage: ''
     };
 
     const uiSchema: any = {
@@ -98,6 +99,10 @@ export class CreatorSidebar extends Widget {
           SomeProject == 1.3 \r
           SomeProject >=1.2,<2.0 \r
           SomeProject~=1.4.2 (~= means compatible, >=1.4.2, ==1.4.X)` 
+      },
+      baseImage: {
+        'ui:help':
+        `Hint: Choose the base image of the Wipp plugin to be created.`
       }
     };
 
