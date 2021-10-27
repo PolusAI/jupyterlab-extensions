@@ -1,7 +1,6 @@
 import json
 import os
 from shutil import copy2
-import re
 
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
@@ -78,7 +77,7 @@ class CreatePlugin(WippHandler):
         data = json.loads(self.request.body.decode("utf-8"))
         form = data["formdata"]
 
-        if "addedfilepaths" in form.keys():
+        if "addedfilepaths" in data.keys():
             filepaths = data["addedfilepaths"]
         else:
             filepaths = []
@@ -151,7 +150,7 @@ class CreatePlugin(WippHandler):
         # Copy2 is like copy but preserves metadata
         try:
             if filepaths:
-                # dedupe if the user select same code in two ways(via right click context and file manager)
+                # dedupe if the user select same code in two ways(via right click context and file manager), even though this should have been handled by frontend
                 filepaths = list(set(filepaths))
                 for filepath in filepaths:
                     filepath =  os.path.join(os.environ['HOME'], filepath)

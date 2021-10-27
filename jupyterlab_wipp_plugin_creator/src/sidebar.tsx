@@ -120,7 +120,7 @@ export class CreatorSidebar extends Widget {
       formdata: formValue.formData,
       addedfilepaths: this._addFileWidget.getValue()
     };
-
+    console.log(this._addFileWidget.getValue())
     if (formValue.errors !== null) {
 
       var fullRequest = {
