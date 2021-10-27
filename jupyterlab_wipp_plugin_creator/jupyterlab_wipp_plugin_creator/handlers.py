@@ -75,6 +75,7 @@ class CreatePlugin(WippHandler):
 
         # Read POST request
         data = json.loads(self.request.body.decode("utf-8"))
+        # data contains 'formdata' and separately 'addedfilepaths'
         form = data["formdata"]
 
         if "addedfilepaths" in data.keys():
@@ -85,7 +86,7 @@ class CreatePlugin(WippHandler):
 
         if "requirements" in form.keys():
             requirements = form["requirements"]
-            # Same as above and write requirements.txt separately
+            # Remove requirements from form which will be written as plugin.json and write requirements.txt separately
             form.pop("requirements")
         else:
             requirements = ""
