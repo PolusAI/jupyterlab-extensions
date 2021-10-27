@@ -6,8 +6,8 @@ import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
 import { IStateDB } from '@jupyterlab/statedb';
 import { AddedFilesWidget } from './addedFilesWidget';
 import { requestAPI } from './handler';
+import { addFilePathToDB } from './extensionConstants';
 import schemaForm from './WippPluginSchema.json';
-import { ExtensionConstants } from './extensionConstants';
 
 export class CreatorSidebar extends Widget {
   /**
@@ -30,8 +30,6 @@ export class CreatorSidebar extends Widget {
     const schema = schemaForm;
 
     // Create file manager button
-    let filepath = '';
-    let filepaths: string[] = [];
     const chooseFilesButtonWidget = new Widget();
     const chooseFilesButton = document.createElement('button');
     chooseFilesButton.className = 'run';
@@ -47,16 +45,8 @@ export class CreatorSidebar extends Widget {
           for (let i = 0; i < files.length; i++) {
             // files is a list of json,
             // e.g. files[0]: Object { name: "pyproject.toml", path: "pyproject.toml" ..}
-            filepath = files[i]['path'];
-            state.fetch(ExtensionConstants.dbkey).then(response => {
-              filepaths = response as string[];
-              if (filepaths.indexOf(filepath) === -1) {
-                filepaths.push(filepath);
-              } else {
-                console.log(`${filepath} was already added`);
-              }
-              state.save(ExtensionConstants.dbkey, filepaths);
-            });
+            let filepath = files[i]['path'];
+            addFilePathToDB(state, filepath);
           }
         }
         // log files object on 'Select' of the file manager

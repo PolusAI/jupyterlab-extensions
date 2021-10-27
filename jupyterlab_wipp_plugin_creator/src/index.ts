@@ -7,7 +7,7 @@ import { IDocumentManager } from '@jupyterlab/docmanager';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
 import { IStateDB } from '@jupyterlab/statedb';
 import { LabIcon } from '@jupyterlab/ui-components';
-import { ExtensionConstants } from './extensionConstants';
+import { ExtensionConstants, addFilePathToDB } from './extensionConstants';
 import { CreatorSidebar } from './sidebar';
 import logoSvg from '../style/logo.svg';
 
@@ -57,15 +57,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
         ),
       execute: () => {
         filepath = factory.tracker.currentWidget!.selectedItems().next()!.path;
-        state.fetch(ExtensionConstants.dbkey).then(response => {
-          filepaths = response as string[];
-          if (filepaths.indexOf(filepath) === -1) {
-            filepaths.push(filepath);
-          } else {
-            console.log(`${filepath} was already added`);
-          }
-          state.save(ExtensionConstants.dbkey, filepaths);
-        });
+        addFilePathToDB(state,filepath);
       }
     });
 
