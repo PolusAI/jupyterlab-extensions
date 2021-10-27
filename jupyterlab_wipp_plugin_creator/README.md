@@ -24,7 +24,7 @@ export PLUGIN_TEMP_PATH="enter the path to temprorary plugins folder"
 Note that all paths above should be absolute. Environment variables set using export commands will be lost if bash session is restarted, hence needed to be created by running the export commands again.
 
 - `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster).
-- `PLUGIN_TEMP_PATH` is the local path to WIPP's `temp/plugins` folder, where the source code is copied and manifest and build dependecies generated.
+- `PLUGIN_TEMP_PATH` is the local path to WIPP's `temp/plugins` folder, where the source code is copied and plugin manifest and build dependecies are generated.
 
 ## Uninstall
 
