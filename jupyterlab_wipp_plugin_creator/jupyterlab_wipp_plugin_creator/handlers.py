@@ -153,7 +153,6 @@ class CreatePlugin(WippHandler):
             self.write_error(500)
             return
 
-
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
         try:
