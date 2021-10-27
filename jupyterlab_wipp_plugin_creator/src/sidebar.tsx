@@ -95,7 +95,7 @@ export class CreatorSidebar extends Widget {
       },
       requirements: {
         'ui:help':
-          `Hint: Enter 3rd party python packages that the plugin requires. E.g.\r
+          `Hint: Enter 3rd party python packages that the plugin requires. Just the package name is fine for its latest version. To specify version: \r
           SomeProject == 1.3 \r
           SomeProject >=1.2,<2.0 \r
           SomeProject~=1.4.2 (~= means compatible, >=1.4.2, ==1.4.X)` 
