@@ -154,8 +154,13 @@ export class CreatorSidebar extends Widget {
             buttons: [Dialog.okButton()]
           });
         })
-        .catch(() =>
+        .catch(() => {
           console.log('There is an error making POST CreatePlugin API request.')
+          showDialog({
+            body: 'There is an error making POST CreatePlugin API request.',
+            buttons: [Dialog.okButton()]
+          });
+        }
         );
     } else {
       showDialog({
