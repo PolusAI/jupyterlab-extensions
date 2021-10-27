@@ -40,12 +40,12 @@ export class CreatorSidebar extends Widget {
       const result = await dialog;
       if (result.button.accept) {
         const files = result.value;
-
+        let filepath: string;
         if (files) {
           for (let i = 0; i < files.length; i++) {
             // files is a list of json,
             // e.g. files[0]: Object { name: "pyproject.toml", path: "pyproject.toml" ..}
-            let filepath = files[i]['path'];
+            filepath = files[i]['path'];
             addFilePathToDB(state, filepath);
           }
         }
