@@ -60,15 +60,17 @@ Current features:
 
 - Right click on file 'Add to WIPP' to select code for containerization.
 - Filemanager to select multiple codes for containerization via Ctrl + Left Click.
+- Session persistent frontend database to store paths to marked files using IStateDB.
+- Live Validation of user inputs.
 - On click of 'Create Plugin' button:
-    - Post API request containing user input is sent over to the backend.
-    - Session persistent frontend database to store paths to marked files using IStateDB.
+    - Send post API request containing user input to the backend.
     - Create plugin.json, dockerfile, requirements.txt based on inputs.
-    - Register plugin automatically on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
+    - Generate 'ui' keys for plugin.json based on 'input' keys.
+    - Register plugin on WIPP CI https://wipp-ui.ci.aws.labshare.org/plugins.
     - Create temp staging folder with random ID and copy selected codes inside.
-    - Use Jinga2 template to generate Dockerfile
-    - Submit Argo job via Kubernetes Client to build the image via a Kaniko container
-    - Publish the image on POLUSAI Dockerhub
+    - Use Jinga2 template to generate Dockerfile, including pip install of requirements.txt.
+    - Submit Argo job via Kubernetes Client to build the image via a Kaniko container.
+    - Publish the image on POLUSAI Dockerhub.
 
 
 ### Development install
