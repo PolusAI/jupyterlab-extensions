@@ -29,10 +29,10 @@ export class CreatorSidebar extends Widget {
     title.node.appendChild(h1);
     layout.addWidget(title);
 
-    //necessary or plugin will not activate
+    // Necessary or plugin will not activate
     const schema = schemaForm
 
-    // Created file manager button
+    // Create file manager button
     var filepath = ''
     var filepaths: string[] = [];
     const chooseFilesButtonWidget = new Widget()
@@ -48,6 +48,8 @@ export class CreatorSidebar extends Widget {
         
         if (files) {
           for (let i = 0; i < files.length; i++) {
+            // files is a list of json,
+            // e.g. files[0]: Object { name: "pyproject.toml", path: "pyproject.toml" ..}
               filepath = files[i]['path']
               state.fetch(ExtensionConstants.dbkey).then(response => {
                 filepaths = response as string[];
@@ -61,6 +63,7 @@ export class CreatorSidebar extends Widget {
               })
           }
       }
+        // log files object on 'Select' of the file manager
         console.log(files);
       }
     }
@@ -120,7 +123,7 @@ export class CreatorSidebar extends Widget {
       formdata: formValue.formData,
       addedfilepaths: this._addFileWidget.getValue()
     };
-    
+
     if (formValue.errors !== null) {
 
       var fullRequest = {
