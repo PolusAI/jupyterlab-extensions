@@ -83,7 +83,6 @@ class CreatePlugin(WippHandler):
         else:
             filepaths = []
         
-
         if "requirements" in form.keys():
             requirements = form["requirements"]
             # Remove requirements from form which will be written as plugin.json and write requirements.txt separately
@@ -98,9 +97,10 @@ class CreatePlugin(WippHandler):
         else:
             baseImage = "python"
 
+        # Generate 'containerId' key to publish plugin, used as the name of the plugin to be generated
         form["containerId"] = "polusai/generated-plugins:" + randomId
         
-        # Generate 'ui' key based on user entered input dir
+        # Generate 'ui' key based on user entered input dir, used by Wipp frontend
         uiList = []
         if form["inputs"]:
             for inp in form["inputs"]:
@@ -130,7 +130,7 @@ class CreatePlugin(WippHandler):
         dockerPath = os.path.join(pluginOutputPath, "Dockerfile")
         
 
-        # Generate files to temp folder
+        # Generate plugin.json, aka. plugin manifest to temp folder
         try:
             with open(manifestPath, "w") as f1:
                 f1.write(json.dumps(form))
