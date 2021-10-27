@@ -102,7 +102,7 @@ export class CreatorSidebar extends Widget {
       },
       baseImage: {
         'ui:help':
-        `Hint: Choose the base image of the Wipp plugin to be created.`
+        `Hint: Choose the base image of the Wipp plugin to be created. Leave it as python if unsure.`
       }
     };
 
