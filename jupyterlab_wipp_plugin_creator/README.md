@@ -21,10 +21,10 @@ pip install jupyterlab_wipp_plugin_creator
 export WIPP_API_INTERNAL_URL="enter wipp api url"
 export PLUGIN_TEMP_PATH="enter the path to temprorary plugins folder"
 ```
-Note that all paths above should be absolute.
+Note that all paths above should be absolute. Environment variables set using export commands will be lost if bash session is restarted, hence needed to be created by running the export commands again.
 
 - `WIPP_API_INTERNAL_URL` is the internal URL of WIPP API (usually internal URL on Kubernetes cluster).
-- `PLUGIN_TEMP_PATH` is the local path to WIPP's `temp/plugins` folder, where the source, manifest and build dependecies are copied to.
+- `PLUGIN_TEMP_PATH` is the local path to WIPP's `temp/plugins` folder, where the source code is copied and manifest and build dependecies generated.
 
 ## Uninstall
 
@@ -51,6 +51,17 @@ the frontend extension, check the frontend extension is installed:
 jupyter labextension list
 ```
 
+If Jupyter Lab is not hosted on a Kubernetes environement, or local testing is desired, use this command to disable the Kubernetes Client to avoid error. Note no image will be built or published but plugin.json, requirements.txt and Dockerfile will be generated in the temp folder set by environment variable PLUGIN_TEMP_PATH:
+
+```bash
+export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=1
+```
+
+To disable Wipp register on CI, use:
+
+```bash
+export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=1
+```
 
 ## Contributing
 
