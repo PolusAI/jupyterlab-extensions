@@ -83,10 +83,6 @@ class CreatePlugin(WippHandler):
         else:
             filepaths = []
         
-        if "files" in form.keys():
-            pathsFromFileManager = form["files"]
-            # Separate files key from filemanager in the formdata from the rest to write plugin.json
-            form.pop("files")
 
         if "requirements" in form.keys():
             requirements = form["requirements"]
@@ -150,19 +146,6 @@ class CreatePlugin(WippHandler):
             self.write_error(500)
             return
 
-    
-        # Concatenate file from RJSF's file manager
-        # File manager will return extra: instead of "main.py", it returns "data:application/octet-stream;name=main.py;base64,IyBNYWtpbmcg..."
-        try:
-            if pathsFromFileManager:
-                # pathsFromFileManager is a list of uris
-                # logger.info(pathsFromFileManager)
-                for pathFromFileManager in pathsFromFileManager:     
-                    filepaths += re.findall(r'name=(.*?);',pathFromFileManager)
-
-        # Contiue without error out as user might not have used file manager
-        except Exception as e:
-            logger.error(f"Error reading 'files' in the dataform, continuing without files selected via file manager", exc_info=e)
 
         # Copy files to temp location with shutil
         # Copy2 is like copy but preserves metadata
