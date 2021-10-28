@@ -90,7 +90,9 @@ Current features:
     - Submit Argo job via Kubernetes Client to build the image via a Kaniko container.
     - Publish the image on POLUSAI Dockerhub.
 
-Currently ui key is automatically generated and will only contain "key" (name), "title", and "description". Hard-coding and more complex 'ui' keys with more fields such as "default" and "condition" are not supported as of 0.2.4. 
+ As of 0.2.4, after selecting file to add to wipp plugin either through right click menu or file manager, user need to manually hit button "Update list of files" at the top in order for database to update. 
+
+ As of 0.2.4, ui key is automatically generated and will only contain "key" (name), "title", and "description". Hard-coding and more complex 'ui' keys with more fields such as "default" and "condition" are not supported. 
 
 ### Development install
 
