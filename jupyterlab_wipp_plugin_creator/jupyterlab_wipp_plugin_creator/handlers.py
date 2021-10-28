@@ -119,9 +119,13 @@ class CreatePlugin(WippHandler):
         if (os.getenv("WIPP_PLUGIN_CREATOR_DISABLE_REGISTER")):
             logger.info("No register mode ON. Plugin won't be registered in WIPP backend. Use 'export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=0' to enable automatic WIPP backend register.")
         else:
-            self.wipp.register_plugin(form)
-            logger.info("WIPP plugin register completed")
-        
+            try:
+                self.wipp.register_plugin(form)
+                logger.info("WIPP plugin registered!")
+            except Exception as e:
+                logger.error("Wipp plugin register failed," , exc_info=e)
+                self.write_error(500)
+                return        
         # Get ../jupyterlab-extensions/jupyterlab_wipp_plugin_creator/jupyterlab_wipp_plugin_creator
         backendDirPath = os.path.dirname(os.path.realpath(__file__))
         templatePath = os.path.join(backendDirPath, "dockerfile.j2")
