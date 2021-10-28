@@ -90,6 +90,7 @@ Current features:
     - Submit Argo job via Kubernetes Client to build the image via a Kaniko container.
     - Publish the image on POLUSAI Dockerhub.
 
+Currently ui key is automatically generated and will only contain "key" (name), "title", and "description". Hard-coding and more complex 'ui' keys with more fields such as "default" and "condition" are not supported as of 0.2.4. 
 
 ### Development install
 
