@@ -70,6 +70,14 @@ export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=0
 export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=0
 ```
 
+
+## Known issues
+
+ As of 0.2.4, after selecting file to add to wipp plugin either through right click menu or file manager, user need to manually hit button "Update list of files" at the top in order for database to update. 
+
+ As of 0.2.4, ui key is automatically generated and will only contain "key" (name), "title", and "description". Hard-coding and more complex 'ui' keys with more fields such as "default" and "condition" are not supported. 
+
+
 ## Contributing
 
 ### Architecture
@@ -90,9 +98,6 @@ Current features:
     - Submit Argo job via Kubernetes Client to build the image via a Kaniko container.
     - Publish the image on POLUSAI Dockerhub.
 
- As of 0.2.4, after selecting file to add to wipp plugin either through right click menu or file manager, user need to manually hit button "Update list of files" at the top in order for database to update. 
-
- As of 0.2.4, ui key is automatically generated and will only contain "key" (name), "title", and "description". Hard-coding and more complex 'ui' keys with more fields such as "default" and "condition" are not supported. 
 
 ### Development install
 
