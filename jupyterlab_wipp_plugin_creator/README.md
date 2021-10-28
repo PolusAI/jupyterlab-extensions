@@ -1,7 +1,7 @@
 # JupyterLab WIPP Plugin Creator extension
 
 <!-- Create wipp plugin by containerizing local code in various languages,  automate the Plugin generation and testing process using both static analysis and templates.  -->
-Enter your plugin information, select the code you wish to containerize, create WIPP plugin automatically.
+Enter your plugin information. Select the code you wish to containerize. Create WIPP plugin automatically.
 
 This extension is composed of a Python package named `jupyterlab_wipp_plugin_creator`
 for the server extension and a NPM package named `jupyterlab_wipp_plugin_creator`
