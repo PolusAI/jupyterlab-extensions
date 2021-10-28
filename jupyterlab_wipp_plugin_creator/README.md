@@ -63,6 +63,13 @@ To disable Wipp register on CI, use:
 export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=1
 ```
 
+To renable build and Wipp register, set them back to zero:
+
+```bash
+export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=0
+export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=0
+```
+
 ## Contributing
 
 ### Architecture
