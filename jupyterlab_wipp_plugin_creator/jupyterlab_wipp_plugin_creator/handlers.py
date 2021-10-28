@@ -47,7 +47,16 @@ class CreatePlugin(WippHandler):
                     'name': '',
                     'version': '',
                     'title': '',
-                    'description': ''
+                    'description': '',
+                    'author': '',
+                    'institution': '',
+                    'repository': '',
+                    'website': '',
+                    'citation': '',
+                    'requirements': [''],
+                    'inputs': [{}],
+                    'outputs': [{}],
+                    'baseImage': ''
                     }
                 'filepaths':
                     string[]
