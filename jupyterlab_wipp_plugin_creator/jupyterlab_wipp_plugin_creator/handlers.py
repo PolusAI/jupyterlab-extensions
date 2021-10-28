@@ -135,8 +135,7 @@ class CreatePlugin(WippHandler):
             with open(manifestPath, "w") as f1:
                 f1.write(json.dumps(form))
             with open(reqsPath, "w") as f2:
-                # check if requirements is not empty
-                print(requirements)
+                # join will write "" if list is empty
                 f2.write("\n".join(requirements))
             # Read from Jinja2 template
             template = Template(open(templatePath).read())
