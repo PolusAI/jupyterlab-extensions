@@ -106,7 +106,10 @@ class CreatePlugin(WippHandler):
             for inp in form["inputs"]:
                 #title is set to input name as well
                 try:
-                    uiKeyObj = {"key":f"inputs.{inp['name']}","title":f"{inp['name']}","description":f"{inp['description']}"}
+                    uiKeyObj = \
+                    {"key":f"inputs.{inp['name']}",
+                    "title":f"{inp['name']}",
+                    "description":f"{inp['description']}"}
                     uiList.append(uiKeyObj)
                 except Exception as e:
                     logger.error("Potential malformed inputs." , exc_info=e)
