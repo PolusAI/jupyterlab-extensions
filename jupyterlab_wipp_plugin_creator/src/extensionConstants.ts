@@ -4,9 +4,9 @@ export class ExtensionConstants {
   public static dbkey = 'wipp-plugin-creator:data';
 }
 
-export function addFilePathToDB (state:IStateDB ,filepath:string): void {
+export function addFilePathToDB(state: IStateDB, filepath: string): void {
   state.fetch(ExtensionConstants.dbkey).then(response => {
-    var filepaths = response as string[];
+    const filepaths = response as string[];
     if (filepaths.indexOf(filepath) === -1) {
       filepaths.push(filepath);
     } else {

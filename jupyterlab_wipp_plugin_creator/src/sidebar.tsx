@@ -84,15 +84,14 @@ export class CreatorSidebar extends Widget {
         'ui:help': 'Hint: Enter machine-readable name'
       },
       requirements: {
-        'ui:help':
-          `Hint: Enter 3rd party python packages that the plugin requires. Just the package name is fine for its latest version. To specify version: \r
+        'ui:help': `Hint: Enter 3rd party python packages that the plugin requires. Just the package name is fine for its latest version. To specify version: \r
           SomeProject == 1.3 \r
           SomeProject >=1.2,<2.0 \r
-          SomeProject~=1.4.2 (~= means compatible, >=1.4.2, ==1.4.X)` 
+          SomeProject~=1.4.2 (~= means compatible, >=1.4.2, ==1.4.X)`
       },
       baseImage: {
         'ui:help':
-        `Hint: Choose the base image of the Wipp plugin to be created. Leave it as python if unsure.`
+          'Hint: Choose the base image of the WIPP plugin to be created. Leave it as Python if unsure.'
       }
     };
 
@@ -122,7 +121,7 @@ export class CreatorSidebar extends Widget {
   }
 
   //Sidebar constructor ends
-  submit() {
+  submit(): void {
     //Create API request on submit
     const formValue = this._form.getValue();
     const request = {
@@ -145,13 +144,14 @@ export class CreatorSidebar extends Widget {
           });
         })
         .catch(() => {
-          console.log('There is an error making POST CreatePlugin API request.')
+          console.log(
+            'There is an error making POST CreatePlugin API request.'
+          );
           showDialog({
             body: 'There is an error making POST CreatePlugin API request.',
             buttons: [Dialog.okButton()]
           });
-        }
-        );
+        });
     } else {
       showDialog({
         body: 'There is an error with form value. Plugin build request failed.',

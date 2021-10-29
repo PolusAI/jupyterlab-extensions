@@ -16,7 +16,7 @@ const logoIcon = new LabIcon({
   svgstr: logoSvg
 });
 
-let filepaths: string[] = [];
+const filepaths: string[] = [];
 
 const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_wipp_plugin_creator:plugin',
@@ -53,11 +53,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
       iconClass: 'jp-MaterialIcon jp-AddIcon',
       isVisible: () =>
         ['notebook', 'file'].includes(
-          factory.tracker.currentWidget!.selectedItems().next()!.type
+          factory.tracker.currentWidget.selectedItems().next().type
         ),
       execute: () => {
-        filepath = factory.tracker.currentWidget!.selectedItems().next()!.path;
-        addFilePathToDB(state,filepath);
+        filepath = factory.tracker.currentWidget.selectedItems().next().path;
+        addFilePathToDB(state, filepath);
       }
     });
 
