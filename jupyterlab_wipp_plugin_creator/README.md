@@ -1,6 +1,5 @@
 # JupyterLab WIPP Plugin Creator extension
 
-<!-- Create wipp plugin by containerizing local code in various languages,  automate the Plugin generation and testing process using both static analysis and templates.  -->
 Enter your plugin information. Select the code you wish to containerize. Create WIPP plugin automatically.
 
 This extension is composed of a Python package named `jupyterlab_wipp_plugin_creator`
@@ -11,6 +10,8 @@ for the frontend extension.
 ## Requirements
 
 * JupyterLab >= 3.0
+* wipp-client
+* kubernetes
 
 ## Install
 
@@ -51,31 +52,33 @@ the frontend extension, check the frontend extension is installed:
 jupyter labextension list
 ```
 
-If Jupyter Lab is not hosted on a Kubernetes environement, or local testing is desired, use this command to disable the Kubernetes Client to avoid error. Note no image will be built or published but plugin.json, requirements.txt and Dockerfile will be generated in the temp folder set by environment variable PLUGIN_TEMP_PATH:
+If Jupyter Lab is not hosted on a Kubernetes environement, or local testing is desired, use this command to disable the Kubernetes Client to avoid error. Note: no image will be built or published but plugin.json, requirements.txt and Dockerfile will be generated in the folder set by environment variable PLUGIN_TEMP_PATH:
 
 ```bash
 export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=1
 ```
 
-To disable Wipp register on CI, use:
+If the access to a running instance of WIPP is not possible, or local testing is desired, use this command to disable plugin registration in WIPP:
 
 ```bash
 export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=1
 ```
 
-To renable build and Wipp register, set them back to zero:
+To renable image build and plugin registration, you can set the variables to zero:
 
 ```bash
 export WIPP_PLUGIN_CREATOR_DISABLE_BUILD=0
 export WIPP_PLUGIN_CREATOR_DISABLE_REGISTER=0
 ```
 
+Wh
+
 
 ## Contributing
 
 ### Architecture
 
-Current features:
+#### Current features:
 
 - Right click on file 'Add to WIPP' to select code for containerization.
 - Filemanager to select multiple codes for containerization via Ctrl + Left Click.
@@ -89,12 +92,18 @@ Current features:
     - Create temp staging folder with random ID and copy selected codes inside.
     - Use Jinga2 template to generate Dockerfile, including pip install of requirements.txt.
     - Submit Argo job via Kubernetes Client to build the image via a Kaniko container.
-    - Publish the image on POLUSAI Dockerhub.
+    - Publish the image on PolusAI Dockerhub.
 
- As of 0.2.4, after selecting file to add to wipp plugin either through right click menu or file manager, user need to manually hit button "Update list of files" at the top in order for database to update. 
+#### Known issues:
 
- As of 0.2.4, ui key is automatically generated and will only contain "key" (name), "title", and "description". Hard-coding and more complex 'ui' keys with more fields such as "default" and "condition" are not supported. 
+ - As of 0.2.4, after selecting file to add to wipp plugin either through right click menu or file manager, user need to manually hit button "Update list of files" at the top in order for database to update. 
+ - As of 0.2.4, UI key is automatically generated and will only contain "key" (name), "title", and "description". Hard-coding and more complex 'ui' keys with more fields such as "default" and "condition" are not supported. 
 
+#### Planned improvements:
+
+- Support of Jupyter notebooks as a file source
+- Support of multiple languages
+- Static analysis of dependencies
 
 ### Development install
 
