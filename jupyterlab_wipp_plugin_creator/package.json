@@ -1,7 +1,7 @@
 {
   "name": "jupyterlab_wipp_plugin_creator",
-  "version": "0.2.4",
-  "description": "Create WIPP container for local python code",
+  "version": "0.2.5",
+  "description": "Create WIPP container for local Python code",
   "keywords": [
     "jupyter",
     "jupyterlab",
@@ -16,6 +16,10 @@
     "name": "Will Xiao",
     "email": "Will.Xiao@axleinfo.com"
   },
+  "contributors":[{
+    "name": "Konstantin Taletskiy",
+    "email": "konstantin.taletskiy@labshare.org"
+  }],
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
     "style/**/*.{css,js,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
