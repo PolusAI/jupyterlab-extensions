@@ -95,16 +95,12 @@ export class CreatorSidebar extends Widget {
       }
     };
 
-    this._form = new SchemaForm(
-      schema,
-      {
-        formData: formData,
-        uiSchema: uiSchema,
-        onSubmit: (e: any) => this.submit()
-      }
-    );
+    this._form = new SchemaForm(schema, {
+      formData: formData,
+      uiSchema: uiSchema,
+      onSubmit: (e: any) => this.submit()
+    });
     layout.addWidget(this._form);
-
   }
 
   //Sidebar constructor ends
