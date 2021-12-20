@@ -1,5 +1,7 @@
 import json
 import os
+import time
+import binascii
 from shutil import copy2
 
 from kubernetes import client, config
@@ -9,11 +11,17 @@ from jupyter_server.utils import url_path_join
 from jinja2 import Template
 import tornado
 
-from wipp_client.wipp import gen_random_object_id
 from .log import get_logger
 
 logger = get_logger()
 
+def gen_random_object_id():
+    """
+    Generate random ObjectID in MongoDB format
+    """
+    timestamp = '{0:x}'.format(int(time.time()))
+    rest = binascii.b2a_hex(os.urandom(8)).decode('ascii')
+    return timestamp + rest
 
 def setup_k8s_api():
     """
