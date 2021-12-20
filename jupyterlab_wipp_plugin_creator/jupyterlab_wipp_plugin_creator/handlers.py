@@ -138,7 +138,7 @@ class CreatePlugin(WippHandler):
             )
         else:
             try:
-                self.wipp.register_plugin(form)
+                self.wipp.create_plugin(form)
                 logger.info("WIPP plugin registered!")
             except Exception as e:
                 logger.error("WIPP plugin register failed,", exc_info=e)
