@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab_rtc_hub_settings",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A JupyterLab extension to manage real time collaboration settings on JupyterHub",
   "keywords": [
     "jupyter",
