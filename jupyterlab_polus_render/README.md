@@ -1,4 +1,4 @@
-# JupyterLab_Polus-Render
+# JupyterLab_Polus_Render
 
 Render application is loaded in an IFrame. The package allows points the IFrame at a production build of render served by `polus-server-ext`.
 
@@ -19,12 +19,12 @@ Please note that usage differs significantly from https://pypi.org/project/polus
 
 # Installation
 ```
-pip install "git+https://github.com/jcaxle/jupyterlab-extensions.git@render#egg=jupyterlab_polus-render&subdirectory=jupyterlab_polus_render"
+pip install "git+https://github.com/jcaxle/jupyterlab-extensions.git@render#egg=jupyterlab_polus_render&subdirectory=jupyterlab_polus_render"
 ```
 
 # Project File Structure
 ```
-jupyterlab_polus-render
+jupyterlab_polus_render
 | Build Instructions.md           // Instructions on how to update Pypi project
 | LICENSE
 | requirements.txt

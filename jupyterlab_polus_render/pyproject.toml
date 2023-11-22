@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "jupyterlab_polus-render"
+name = "jupyterlab_polus_render"
 version = "0.1.0"
 description = "Displays Polus Render dashboard in Jupyter Notebooks."
 authors = ["Jeff Chen <Jeff.Chen@axleinfo.com>"]
