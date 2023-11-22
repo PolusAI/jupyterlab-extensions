@@ -6,7 +6,7 @@ authors = ["Jeff Chen <Jeff.Chen@axleinfo.com>"]
 packages = [{ include = "polus"}, {include = "polus-server-ext"}]
 License = "MIT"
 readme = "README.md"
-"repository" = "TODO"
+repository = "https://github.com/jcaxle/jupyterlab-extensions/tree/repo/jupyterlab_polus_render"
 
 [tool.poetry.dependencies]
 python = ">=3.9" 
