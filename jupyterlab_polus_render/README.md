@@ -119,4 +119,4 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
 - At the end, combine render url fragments into a single url, insert it into an IFrame, and display it.
 - Complete url string is returned not printed.
 - Uses only a local build of Render and does not access the online production build of Render at https://render.ci.ncats.io/.
-- No servers are launched. Files are served from endpoints generated from the remote Jupyter Lab's URL. The local build of render is served from the [render-server-ext](https://github.com/jcaxle/render-server-ext) instead of the bundled build files. Essentially, render() runs serverless with the exception of the server that serves Jupyter Lab itself.
+- No servers are launched. Files are served from endpoints generated from the remote Jupyter Lab's URL. The local build of render is served from [render-server-ext](https://github.com/jcaxle/jupyterlab-extensions/tree/render/jupyterlab_polus_render/render-server-ext). Essentially, render() runs serverless with the exception of the server that serves Jupyter Lab itself.
