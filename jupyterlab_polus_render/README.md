@@ -10,6 +10,8 @@ The are three ways to load the data:
 
 Has the ability to work both local and remote versions of JupyterLab.
 
+Please note that usage differs significantly from https://pypi.org/project/polus-render/0.0.4.0.1.5/
+
 ![image](https://github.com/jcaxle/jupyterlab-extensions/assets/145499292/35fb18d8-107a-4dee-9e09-6ff7bf13ac7d)
 
 # Requirements
@@ -119,4 +121,4 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
 - At the end, combine render url fragments into a single url, insert it into an IFrame, and display it.
 - Complete url string is returned not printed.
 - Uses only a local build of Render and does not access the online production build of Render at https://render.ci.ncats.io/.
-- No servers are launched. Files are served from endpoints generated from the remote Jupyter Notebook's URL. The local build of render is served from the [polus-server-ext](https://github.com/jcaxle/polus-server-ext) instead of the bundled build files. Essentially, nb_render() runs serverless with the exception of the server that serves the remote Jupyter Notebooks itself.
+- No servers are launched. Files are served from endpoints generated from the remote Jupyter Lab's URL. The local build of render is served from the [polus-server-ext](https://github.com/jcaxle/polus-server-ext) instead of the bundled build files. Essentially, render() runs serverless with the exception of the server that serves Jupyter Lab itself.
