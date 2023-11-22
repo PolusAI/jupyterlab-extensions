@@ -13,7 +13,7 @@
 - For each upload, version number must be changed in `pyproject.toml`
 - Add additional files to `MANIFEST.in` to bundle them with Pypi package
 
-**Git Repository**: [https://github.com/jcaxle/polus-render](https://github.com/jcaxle/jupyterlab-extensions/tree/render_revisions/jupyterlab_polus_render)
+**Git Repository**: https://github.com/jcaxle/jupyterlab-extensions/tree/render/jupyterlab_polus_render
 
 **Pypi**: TODO
 
