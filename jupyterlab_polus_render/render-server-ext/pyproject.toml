@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "polus-server-ext"
+name = "render-server-ext"
 description = "Serves files and serves a local build of Polus Render"
 readme = "README.md"
 license = "MIT"
@@ -15,7 +15,7 @@ authors = [{name = "Jeff Chen", email="jeff.chen@axleinfo.com"}]
 version = "0.0.1"
 
 [project.urls]
-Homepage = "https://github.com/jcaxle/polus-server-ext"
+Homepage = "https://github.com/jcaxle/render-server-ext"
 
 [project.scripts]
 jupyter-server = "serve.application:main"

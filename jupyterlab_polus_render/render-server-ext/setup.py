@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(
-    name="myfrontend",
+    name="render-server-ext",
     # ...
     entry_points={
         "console_scripts": ["jupyter-serve = serve:launch_instance"]

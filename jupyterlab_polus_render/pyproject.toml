@@ -1,16 +1,16 @@
 [tool.poetry]
-name = "jupyterlab_polus-render"
+name = "jupyterlab_polus_render"
 version = "0.1.0"
 description = "Displays Polus Render dashboard in Jupyter Notebooks."
 authors = ["Jeff Chen <Jeff.Chen@axleinfo.com>"]
-packages = [{ include = "polus"}, {include = "polus-server-ext"}]
+packages = [{ include = "polus"}, {include = "render-server-ext"}]
 License = "MIT"
 readme = "README.md"
 repository = "https://github.com/jcaxle/jupyterlab-extensions/tree/repo/jupyterlab_polus_render"
 
 [tool.poetry.dependencies]
 python = ">=3.9" 
-polus-server-ext = { path = "./polus-server-ext/", develop = false }
+render-server-ext = { path = "./render-server-ext/", develop = false }
 
 
 [build-system]

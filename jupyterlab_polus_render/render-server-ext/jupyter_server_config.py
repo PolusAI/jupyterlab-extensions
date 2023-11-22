@@ -4,5 +4,5 @@
 # ------------------------------------------------------------------------------
 # The date format used by logging formatters for %(asctime)s
 c.Application.log_datefmt = (  # type:ignore[name-defined]
-    "%Y-%m-%d %H:%M:%S Polus-Server-Ext"
+    "%Y-%m-%d %H:%M:%S Render-Server-Ext"
 )
