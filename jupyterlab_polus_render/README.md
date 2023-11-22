@@ -1,10 +1,10 @@
 # JupyterLab_Polus_Render
 
-Render application is loaded in an IFrame. The package allows points the IFrame at a production build of render served by `polus-server-ext`.
+Render application is loaded in an IFrame. The package allows points the IFrame at a production build of render served by `render-server-ext`.
 
 The are three ways to load the data:
 1. Specifying a URL to a server serving the data.
-2. Specifying a local path from JupyterLab will generate a URL pointing to the path being served from `polus-server-ext`. This URL will be passed into the IFrame to be visualized by Render.
+2. Specifying a local path from JupyterLab will generate a URL pointing to the path being served from `render-server-ext`. This URL will be passed into the IFrame to be visualized by Render.
 3. Dragging-and-dropping the dataset does not use a server, it calls an API from the front end (It should the this under the hood https://developer.mozilla.org/en-US/docs/Web/API/File_API).
 </br>
 
@@ -32,7 +32,7 @@ jupyterlab_polus_render
 | pyproject.toml                  // Pypi config 
 | README                          
 | requirements.txt
-└───polus-server-ext              // Server extension used by polus-render
+└───render-server-ext             // Server extension used by polus-render
 └───polus
     | polus_render.py             // Main file, contains render function used by user
 ```
@@ -99,7 +99,7 @@ render(height=1080)
 ``` Python
 def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500)->str:
     """
-    Embeds a local build of render into a JupyterLabs notebook with the help of `polus-server-ext`
+    Embeds a local build of render into a JupyterLabs notebook with the help of `render-server-ext`
 
     Param:
         nbhub_url (ParseResult): URL used used for jupyterhub. Contains '/lab/' in its uri
@@ -117,8 +117,8 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
 
 # Implementation Details
 - render() builds up URL scheme fragments for render url, image url, and microjson url.
-- If the image url and microjson url are file paths, serve the files through `polus-server-ext`.
+- If the image url and microjson url are file paths, serve the files through `render-server-ext`.
 - At the end, combine render url fragments into a single url, insert it into an IFrame, and display it.
 - Complete url string is returned not printed.
 - Uses only a local build of Render and does not access the online production build of Render at https://render.ci.ncats.io/.
-- No servers are launched. Files are served from endpoints generated from the remote Jupyter Lab's URL. The local build of render is served from the [polus-server-ext](https://github.com/jcaxle/polus-server-ext) instead of the bundled build files. Essentially, render() runs serverless with the exception of the server that serves Jupyter Lab itself.
+- No servers are launched. Files are served from endpoints generated from the remote Jupyter Lab's URL. The local build of render is served from the [render-server-ext](https://github.com/jcaxle/render-server-ext) instead of the bundled build files. Essentially, render() runs serverless with the exception of the server that serves Jupyter Lab itself.

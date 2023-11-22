@@ -1,4 +1,4 @@
-# Polus-Server-Extension
+# render-server-ext
 Jupyter Server Extension used serve files and provides a local build of Polus Render.
 
 > TODO: IMG

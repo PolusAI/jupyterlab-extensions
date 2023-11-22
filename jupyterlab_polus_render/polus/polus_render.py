@@ -8,7 +8,7 @@ from typing import Union
 
 def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500)->str:
     """
-    Embeds a local build of render into a JupyterLabs notebook with the help of `polus-server-ext`
+    Embeds a local build of render into a JupyterLabs notebook with the help of `render-server-ext`
 
     Param:
         nbhub_url (ParseResult): URL used used for jupyterhub. Contains '/lab/' in its uri
