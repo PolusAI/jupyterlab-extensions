@@ -21,6 +21,7 @@ Please note that usage differs significantly from https://pypi.org/project/polus
 ```
 pip install "git+https://github.com/jcaxle/jupyterlab-extensions.git@render#egg=jupyterlab_polus_render&subdirectory=jupyterlab_polus_render"
 ```
+You will need to restart Jupyter Server for `render-server-ext` endpoints to take effect.
 
 # Project File Structure
 ```
@@ -32,7 +33,7 @@ jupyterlab_polus_render
 | pyproject.toml                  // Pypi config 
 | README                          
 | requirements.txt
-└───render-server-ext             // Server extension used by polus-render
+└───render-server-ext             // Server extension used by jupyterlab_polus_render
 └───polus
     | polus_render.py             // Main file, contains render function used by user
 ```
@@ -41,7 +42,7 @@ jupyterlab_polus_render
 - Refer to [Build Instructions.md](https://github.com/jcaxle/jupyterlab-extensions/blob/render/jupyterlab_polus_render/Build%20Instructions.md)
 
 # Render: Local build functionality
-polus-render is bundled with a build of Polus Render which supporting the following functionality
+`jupyterlab_polus_render` is bundled with a build of Polus Render which supporting the following functionality
 | Version           | Zarr from URL/Path | TIF from URL/Path   | Micro-JSON Support | Zarr/TIF Drag & Drop | Micro-JSON Drag & Drop | 
 |----------------|---------------|---------------|----------------|-----------|-----|
 | Local | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
@@ -90,9 +91,6 @@ render(nbhub_url=JL_URL, \
 render(nbhub_url=JL_URL, \
     image_location=urlparse("https://files.scb-ncats.io/pyramids/segmentations/x00_y01_c1.ome.tif"), \
     microjson_overlay_location=urlparse("https://files.scb-ncats.io/pyramids/segmentations/x00_y03_c1_segmentations.json"))
-
-# Embeds an IFrame with a height of 1080 of a local build of Polus Render.
-render(height=1080)
 ```
 
 # Functions
