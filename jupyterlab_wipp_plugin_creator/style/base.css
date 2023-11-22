@@ -8,7 +8,7 @@
 .wipp-pluginCreatorSidebar button.run
 {
     color: #000000;
-    background-color: #94c7c4;
-    border: 1px solid #94c7c4;
+    background-color: var(--jp-brand-color2);
+    border: 1px solid var(--jp-brand-color2);
     text-transform: uppercase;
 }

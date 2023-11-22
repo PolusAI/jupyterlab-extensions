@@ -2,7 +2,7 @@ import { Widget, PanelLayout } from '@lumino/widgets';
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { FileDialog } from '@jupyterlab/filebrowser';
 import { showDialog, Dialog } from '@jupyterlab/apputils';
-import { SchemaForm } from '@deathbeds/jupyterlab-rjsf';
+import { SchemaForm } from '@polusai/jupyterlab-rjsf';
 import { IStateDB } from '@jupyterlab/statedb';
 import { AddedFilesWidget } from './addedFilesWidget';
 import { requestAPI } from './handler';
@@ -95,29 +95,12 @@ export class CreatorSidebar extends Widget {
       }
     };
 
-    this._form = new SchemaForm(
-      schema,
-      {
-        formData: formData,
-        uiSchema: uiSchema,
-        liveValidate: true,
-        noHtml5Validate: true
-      },
-      { liveMarkdown: true }
-    );
+    this._form = new SchemaForm(schema, {
+      formData: formData,
+      uiSchema: uiSchema,
+      onSubmit: (e: any) => this.submit()
+    });
     layout.addWidget(this._form);
-
-    // Create submit plugin button
-    const runButtonWidget = new Widget();
-
-    const runButton = document.createElement('button');
-    runButton.className = 'run';
-    runButton.onclick = () => {
-      this.submit();
-    };
-    runButton.innerText = 'Create Plugin';
-    runButtonWidget.node.appendChild(runButton);
-    layout.addWidget(runButtonWidget);
   }
 
   //Sidebar constructor ends

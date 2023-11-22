@@ -11,6 +11,7 @@ export class AddedFilesWidget extends Widget {
     this.node.appendChild(this._addedFileDiv);
 
     const button = document.createElement('button');
+    button.className = 'run';
     button.innerHTML = 'Update list of files';
     button.onclick = () => this.update();
     this.node.appendChild(button);
