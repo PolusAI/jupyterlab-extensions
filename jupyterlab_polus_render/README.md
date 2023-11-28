@@ -1,12 +1,12 @@
 # JupyterLab Polus Render
-JupyterLab_Polus_Render makes Polus Render available as a JupyterLab extension. 
+JupyterLab Polus Render makes Polus Render available as a JupyterLab extension. 
 
 Polus Render allows visualizing tiled raster datasets in Zarr and TIFF formats, as well as vector overlays in MicroJSON format. It uses lookup tables to map intensity values in these datasets to colors.
 
 The are three ways to load the data:
 1. Specifying a URL to a server serving the data.
 2. Specifying a local path to a file from JupyterLab.
-3. Dragging-and-dropping the dataset does not use a server. It calls an API from the front end (It should the this under the hood https://developer.mozilla.org/en-US/docs/Web/API/File_API).
+3. Dragging-and-dropping the dataset does not use a server.
 </br>
 
 Please note that usage differs significantly from https://pypi.org/project/polus-render/0.0.4.0.1.5/
@@ -37,13 +37,13 @@ jupyterlab_polus_render
     | polus_render.py             // Main file, contains render function used by user
 ```
 
-## Build Instructions
+# Build Instructions
 - cd to `jupyterlab_polus_render` root directory.
 - `py -m build`
 - `py -m twine upload  dist/*`
 - Enter `__token__` as user and reference API keys for password
 
-### NOTE:
+## NOTE:
 - For each upload, version number must be changed in `pyproject.toml`
 - Add additional files to `MANIFEST.in` to bundle them with Pypi package
 
@@ -54,12 +54,7 @@ jupyterlab_polus_render
 | Local | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 
 # Drag & Drop Demo
->TODO
-# Local Jupyter Notebooks Demo
->TODO
-
-# Remote Jupyter Notebooks Demo
->TODO
+<img src="/images/drag-drop.gif" width="250" height="250"/>
 
 # Sample usage
 ``` Python
@@ -120,6 +115,6 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
 
 # Implementation Details
 - Render application is loaded in an IFrame.
-- render() builds up URL scheme fragments for render url, image url, and microjson url.
-- At the end, combine render url fragments into a single url, insert it into an IFrame, and display it.
+- render() builds up URL scheme fragments for render url, image url, and microjson url. It then combines url fragments into a single url which is displayed through an embedded IFrame.
 - Static build of Polus Render as well as files to be displayed are served by Jupyter Server extension
+- Dragging-and-dropping the dataset does not use a server. It calls an API from the front end (It should the this under the hood https://developer.mozilla.org/en-US/docs/Web/API/File_API).
