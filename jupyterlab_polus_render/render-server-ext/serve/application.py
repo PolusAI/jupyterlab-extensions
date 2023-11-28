@@ -17,10 +17,10 @@ DEFAULT_TEMPLATE_FILES_PATH = os.path.join(os.path.dirname(__file__), "templates
 class Application(ExtensionAppJinjaMixin, ExtensionApp):
     """A simple jupyter server application."""
     # The name of the extension.
-    name = "serve"
+    name = "render"
 
     # The url that your extension will serve its homepage.
-    default_url = "/serve/"
+    default_url = "/render/"
 
     # Should your extension expose other server extensions when launched directly?
     load_other_extensions = True

@@ -26,7 +26,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
     base_nbhub = nbhub_url.geturl().rpartition("lab")[0]
     # Extract url from local file path if provided. ?imageUrl is required scheme for render
     if isinstance(image_location, PurePath):
-        image_location = "?imageUrl=" + base_nbhub + "serve/file/" + os.path.join(str(nb_root), str(image_location))
+        image_location = "?imageUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(image_location))
 
     # Otherwise, extract url from user provided url if provided
     elif isinstance(image_location, ParseResult):
@@ -34,13 +34,13 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
     
     # Do the same but for JSON
     if isinstance(microjson_overlay_location, PurePath):
-        microjson_overlay_location = "&overlayUrl=" + base_nbhub + "serve/file/" + os.path.join(str(nb_root), str(microjson_overlay_location))
+        microjson_overlay_location = "&overlayUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(microjson_overlay_location))
 
     elif isinstance(microjson_overlay_location, ParseResult):
         microjson_overlay_location = "&overlayUrl=" + microjson_overlay_location.geturl()    
 
     # Local render
-    render_url = f"{base_nbhub}static/serve/render-ui/index.html"
+    render_url = f"{base_nbhub}static/render/render-ui/index.html"
     
     # Display render
     display(IFrame(src=(f"{render_url}{image_location}{microjson_overlay_location}")
