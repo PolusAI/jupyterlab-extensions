@@ -54,7 +54,7 @@ jupyterlab_polus_render
 | Local | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 
 # Drag & Drop Demo
-<img src="/images/drag-drop.gif" width="250" height="250"/>
+<img src="/images/drag-drop.gif"/>
 
 # Sample usage
 ``` Python
