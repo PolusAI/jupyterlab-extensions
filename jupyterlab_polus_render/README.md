@@ -1,14 +1,13 @@
-# JupyterLab_Polus_Render
+# JupyterLab Polus Render
+JupyterLab_Polus_Render makes Polus Render available as a JupyterLab extension. 
 
-Render application is loaded in an IFrame. The package allows points the IFrame at a production build of render served by `render-server-ext`.
+Polus Render allows visualizing tiled raster datasets in Zarr and TIFF formats, as well as vector overlays in MicroJSON format. It uses lookup tables to map intensity values in these datasets to colors.
 
 The are three ways to load the data:
 1. Specifying a URL to a server serving the data.
-2. Specifying a local path from JupyterLab will generate a URL pointing to the path being served from `render-server-ext`. This URL will be passed into the IFrame to be visualized by Render.
-3. Dragging-and-dropping the dataset does not use a server, it calls an API from the front end (It should the this under the hood https://developer.mozilla.org/en-US/docs/Web/API/File_API).
+2. Specifying a local path to a file from JupyterLab.
+3. Dragging-and-dropping the dataset does not use a server. It calls an API from the front end (It should the this under the hood https://developer.mozilla.org/en-US/docs/Web/API/File_API).
 </br>
-
-Has the ability to work both local and remote versions of JupyterLab.
 
 Please note that usage differs significantly from https://pypi.org/project/polus-render/0.0.4.0.1.5/
 
@@ -38,8 +37,15 @@ jupyterlab_polus_render
     | polus_render.py             // Main file, contains render function used by user
 ```
 
-# Build Instructions
-- Refer to [Build Instructions.md](https://github.com/jcaxle/jupyterlab-extensions/blob/render/jupyterlab_polus_render/Build%20Instructions.md)
+## Build Instructions
+- cd to `jupyterlab_polus_render` root directory.
+- `py -m build`
+- `py -m twine upload  dist/*`
+- Enter `__token__` as user and reference API keys for password
+
+### NOTE:
+- For each upload, version number must be changed in `pyproject.toml`
+- Add additional files to `MANIFEST.in` to bundle them with Pypi package
 
 # Render: Local build functionality
 `jupyterlab_polus_render` is bundled with a build of Polus Render which supporting the following functionality
@@ -48,8 +54,7 @@ jupyterlab_polus_render
 | Local | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 
 # Drag & Drop Demo
-![ezgif-4-7162ca42b5](https://github.com/jcaxle/polus-render/assets/145499292/7a59db1e-3128-4ee0-b9cc-ad1be7d3faee)
-
+>TODO
 # Local Jupyter Notebooks Demo
 >TODO
 
@@ -65,7 +70,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 
 # Make sure to keep track of your JupyterLab url and file root if your root is not at "/home/joyvan".
-JL_URL = urlparse("https://jh.scb-ncats.io/user/jeff.chen@axleinfo.com/user-namespaces/lab?")
+JL_URL = urlparse("https://<JUPYTERHUB_URL>/user/<USERNAME>/user-namespaces/lab?")
 
 # Embeds an IFrame of a local build of Polus Render into Jupyter Lab, this is sufficient if your file root is "/home/joyvan/"
 render(nbhub_url=JL_URL)
@@ -114,9 +119,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
 ```
 
 # Implementation Details
+- Render application is loaded in an IFrame.
 - render() builds up URL scheme fragments for render url, image url, and microjson url.
-- If the image url and microjson url are file paths, serve the files through `render-server-ext`.
 - At the end, combine render url fragments into a single url, insert it into an IFrame, and display it.
-- Complete url string is returned not printed.
-- Uses only a local build of Render and does not access the online production build of Render at https://render.ci.ncats.io/.
-- No servers are launched. Files are served from endpoints generated from the remote Jupyter Lab's URL. The local build of render is served from [render-server-ext](https://github.com/jcaxle/jupyterlab-extensions/tree/render/jupyterlab_polus_render/render-server-ext). Essentially, render() runs serverless with the exception of the server that serves Jupyter Lab itself.
+- Static build of Polus Render as well as files to be displayed are served by Jupyter Server extension
