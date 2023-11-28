@@ -11,7 +11,7 @@ The are three ways to load the data:
 
 Please note that usage differs significantly from https://pypi.org/project/polus-render/0.0.4.0.1.5/
 
-![image](https://github.com/jcaxle/jupyterlab-extensions/assets/145499292/35fb18d8-107a-4dee-9e09-6ff7bf13ac7d)
+<img src="images/home.png"/>
 
 # Requirements
 * Python 3.9+
