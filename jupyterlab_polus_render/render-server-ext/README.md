@@ -6,8 +6,13 @@ Jupyter Server Extension serves files and provides a static build of Polus Rende
 # Requirements
 - Jupyter Server 2.7.0
 
+# Adding a static build of Polus Render
+- Remove all existing files in `~/render-server-ext/static/render-ui/`. 
+- Run `npx nx build render-ui` in the root of your Polus Render folder
+- Transfer generated files from `~/Polus Render/dist/apps/render-ui/` into `~/render-server-ext/static/render-ui/`. 
+
 # API Endpoints
-- `/render/`: Help on usage of extension
+- `/render/default/(.*)`: Help on usage of extension
 - `/static/render/render-ui/index.html`: Serves static build of Polus Render.
 - `/render/file/(.+)`: Serves files at a specfied path. Does not serve directories.
 

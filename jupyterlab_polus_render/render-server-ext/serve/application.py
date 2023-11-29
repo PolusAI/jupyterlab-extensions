@@ -20,7 +20,7 @@ class Application(ExtensionAppJinjaMixin, ExtensionApp):
     name = "render"
 
     # The url that your extension will serve its homepage.
-    default_url = "/render/"
+    default_url = "/render/default/"
 
     # Should your extension expose other server extensions when launched directly?
     load_other_extensions = True
@@ -36,7 +36,7 @@ class Application(ExtensionAppJinjaMixin, ExtensionApp):
         """Initialize handlers."""
         self.handlers.extend(
             [
-                (rf"/{self.name}/default/(.+)", DefaultHandler),
+                (rf"/{self.name}/default/(.*)", DefaultHandler),
                 (rf"/{self.name}/file/(.+)", AuthFileHandler, {"path":"/"}),
                 (rf"/{self.name}/(.*)", ErrorHandler),
             ]
