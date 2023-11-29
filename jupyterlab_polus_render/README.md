@@ -26,7 +26,6 @@ You will need to restart Jupyter Server for `render-server-ext` endpoints to tak
 ```
 jupyterlab_polus_render
 | LICENSE
-| requirements.txt
 | MANIFEST.in                     // Packaging entries
 | pyproject.toml                  // Pypi config 
 | README                          
