@@ -18,20 +18,18 @@ Please note that usage differs significantly from https://pypi.org/project/polus
 
 # Installation
 ```
-pip install "git+https://github.com/jcaxle/jupyterlab-extensions.git@render#egg=jupyterlab_polus_render&subdirectory=jupyterlab_polus_render"
+pip install "git+https://github.com/PolusAI/jupyterlab-extensions.git#egg=jupyterlab_polus_render&subdirectory=jupyterlab_polus_render"
 ```
 You will need to restart Jupyter Server for `render-server-ext` endpoints to take effect.
 
 # Project File Structure
 ```
 jupyterlab_polus_render
-| Build Instructions.md           // Instructions on how to update Pypi project
 | LICENSE
 | requirements.txt
 | MANIFEST.in                     // Packaging entries
 | pyproject.toml                  // Pypi config 
 | README                          
-| requirements.txt
 └───render-server-ext             // Server extension used by jupyterlab_polus_render
 └───polus
     | polus_render.py             // Main file, contains render function used by user
@@ -47,11 +45,11 @@ jupyterlab_polus_render
 - For each upload, version number must be changed in `pyproject.toml`
 - Add additional files to `MANIFEST.in` to bundle them with Pypi package
 
-# Render: Local build functionality
-`jupyterlab_polus_render` is bundled with a build of Polus Render which supporting the following functionality
+# Render: Static build functionality
+JupyterLab Polus Render is bundled with a build of Polus Render which supporting the following functionality
 | Version           | Zarr from URL/Path | TIF from URL/Path   | Micro-JSON Support | Zarr/TIF Drag & Drop | Micro-JSON Drag & Drop | 
 |----------------|---------------|---------------|----------------|-----------|-----|
-| Local | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
+| Static | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 
 # Drag & Drop Demo
 <img src="images/drag-drop.gif"/>
@@ -67,27 +65,27 @@ from pathlib import Path
 # Make sure to keep track of your JupyterLab url and file root if your root is not at "/home/joyvan".
 JL_URL = urlparse("https://<JUPYTERHUB_URL>/user/<USERNAME>/user-namespaces/lab?")
 
-# Embeds an IFrame of a local build of Polus Render into Jupyter Lab, this is sufficient if your file root is "/home/joyvan/"
+# Embeds an IFrame of a static build of Polus Render into Jupyter Lab, this is sufficient if your file root is "/home/joyvan/"
 render(nbhub_url=JL_URL)
 
 # Same as above; however, if your file root is "/Users/jeff.chen/", your invocation will require nb_root argument
 render(nbhub_url=JL_URL, \
     nb_root=Path("/Users/jeff.chen/"))
 
-# Embeds an IFrame of a local build of Polus Render with an image file hosted at "https://viv-demo.storage.googleapis.com/LuCa-7color_Scan1/"
+# Embeds an IFrame of a static build of Polus Render with an image file hosted at "https://viv-demo.storage.googleapis.com/LuCa-7color_Scan1/"
 render(nbhub_url=JL_URL, \
     image_location=urlparse("https://viv-demo.storage.googleapis.com/LuCa-7color_Scan1/"))
 
-# Embeds an IFrame of a local build of Polus Render with an image hosted locally at "/home/joyvan/zarr files/pyramid.zarr"
+# Embeds an IFrame of a static build of Polus Render with an image hosted at "/home/joyvan/zarr files/pyramid.zarr"
 render(nbhub_url=JL_URL, \
     image_location=Path(r"zarr files/pyramid.zarr"))
 
-# Embeds an IFrame of a local build of Polus Render with an image and overlay file that is hosted locally
+# Embeds an IFrame of a static build of Polus Render with an image and overlay file
 render(nbhub_url=JL_URL, \
     image_location=Path("zarr files/pyramid.zarr"), \
     microjson_overlay_location=Path("overlay files/x00_y01_c1_segmentations.json"))
 
-# Embeds an IFrame of a local build of Polus Render with an image and overlay file that is hosted online
+# Embeds an IFrame of a static build of Polus Render with an image and overlay file served online
 render(nbhub_url=JL_URL, \
     image_location=urlparse("https://files.scb-ncats.io/pyramids/segmentations/x00_y01_c1.ome.tif"), \
     microjson_overlay_location=urlparse("https://files.scb-ncats.io/pyramids/segmentations/x00_y03_c1_segmentations.json"))
@@ -97,7 +95,7 @@ render(nbhub_url=JL_URL, \
 ``` Python
 def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500)->str:
     """
-    Embeds a local build of render into a JupyterLabs notebook with the help of `render-server-ext`
+    Embeds a static build of render into a JupyterLabs notebook with the help of `render-server-ext`
 
     Param:
         nbhub_url (ParseResult): URL used used for jupyterhub. Contains '/lab/' in its uri
