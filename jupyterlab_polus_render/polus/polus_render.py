@@ -8,7 +8,7 @@ from typing import Union
 
 def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500)->str:
     """
-    Embeds a local build of render into a JupyterLabs notebook with the help of `render-server-ext`
+    Embeds a static build of render into a JupyterLabs notebook with the help of `render-server-ext`
 
     Param:
         nbhub_url (ParseResult): URL used used for jupyterhub. Contains '/lab/' in its uri
@@ -24,7 +24,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
     """
     assert(nbhub_url)
     base_nbhub = nbhub_url.geturl().rpartition("lab")[0]
-    # Extract url from local file path if provided. ?imageUrl is required scheme for render
+    # Extract url from file path if provided. ?imageUrl is required scheme for render
     if isinstance(image_location, PurePath):
         image_location = "?imageUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(image_location))
 
@@ -39,7 +39,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
     elif isinstance(microjson_overlay_location, ParseResult):
         microjson_overlay_location = "&overlayUrl=" + microjson_overlay_location.geturl()    
 
-    # Local render
+    # static render
     render_url = f"{base_nbhub}static/render/render-ui/index.html"
     
     # Display render
