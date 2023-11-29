@@ -10,7 +10,7 @@ class DefaultHandler(ExtensionHandlerMixin, JupyterHandler):
     @tornado.web.authenticated
     def get(self, path):
         self.write("<h1>render-server-ext</h1>")
-        self.write("For usage and more, please click <a href=\"https://github.com/jcaxle/render-server-ext\">here</a>")
+        self.write("For usage and more, please click <a href=\"https://github.com/PolusAI/jupyterlab-extensions\">here</a>")
 
 class AuthFileHandler(JupyterHandler, StaticFileHandler):
 
