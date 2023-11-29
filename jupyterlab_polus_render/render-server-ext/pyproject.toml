@@ -12,10 +12,10 @@ dependencies = [
     "jinja2",
 ]
 authors = [{name = "Jeff Chen", email="jeff.chen@axleinfo.com"}]
-version = "0.0.1"
+version = "0.1.0"
 
 [project.urls]
-Homepage = "https://github.com/jcaxle/render-server-ext"
+Homepage = "https://github.com/PolusAI/jupyterlab-extensions"
 
 [project.scripts]
 jupyter-server = "serve.application:main"
