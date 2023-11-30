@@ -34,7 +34,7 @@ The example JupyterHub configuration will be provided soon.
 
 ## Requirements
 
-* JupyterLab >= 3.0
+* JupyterLab >= 4.0
 
 
 ## Install
