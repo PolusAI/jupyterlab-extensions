@@ -18,9 +18,12 @@ class AuthFileHandler(JupyterHandler, StaticFileHandler):
         StaticFileHandler._initialize(path)
 
     def set_default_headers(self):
-        self.set_header("Access-Control-Allow-Origin", "*")
-        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
-        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        origin = self.request.headers.get('Origin')
+        if origin and origin.endswith('.ncats.io'):
+            self.set_header('Access-Control-Allow-Origin', origin)
+            self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+            self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+
 
 class BaseTemplateHandler(ExtensionHandlerJinjaMixin, ExtensionHandlerMixin, JupyterHandler):
     """The base template handler."""
