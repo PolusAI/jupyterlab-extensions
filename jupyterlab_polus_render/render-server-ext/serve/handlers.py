@@ -24,6 +24,11 @@ class AuthFileHandler(JupyterHandler, StaticFileHandler):
             self.set_header("Access-Control-Allow-Headers", "x-requested-with")
             self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
 
+    def options(self):
+        # This is needed for the preflight request
+        self.set_status(204)
+        self.finish()
+
 
 class BaseTemplateHandler(ExtensionHandlerJinjaMixin, ExtensionHandlerMixin, JupyterHandler):
     """The base template handler."""
