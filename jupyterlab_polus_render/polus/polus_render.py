@@ -12,7 +12,8 @@ class MissingEnvironmentVariable(Exception):
         return self.message
 
 
-def render(nbhub_url:ParseResult, nb_root:PurePath = Path(os.getenv('HOME')) if "HOME" in os.environ else Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", 
+def render(nbhub_url:ParseResult, nb_root:PurePath = Path(os.getenv('HOME')) if "HOME" in os.environ else Path("/home/jovyan/"),    
+           image_location:Union[ParseResult, PurePath] = "", 
            microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500, use_static:bool = True)->str:
     """
     Embeds Polus Render into a JupyterLabs notebook with the help of `render-server-ext`
@@ -32,6 +33,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path(os.getenv('HOME')) if 
     Returns: Render URL
     """
     assert(nbhub_url)
+    assert(nb_root)
     base_nbhub = nbhub_url.geturl().rpartition("lab")[0]
     # Extract url from file path if provided. ?imageUrl is required scheme for render
     if isinstance(image_location, PurePath):
@@ -45,10 +47,12 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path(os.getenv('HOME')) if 
     # Do the same but for JSON
     if isinstance(microjson_overlay_location, PurePath):
         assert(os.path.exists(os.path.join(str(nb_root), str(microjson_overlay_location))))
-        microjson_overlay_location = "&overlayUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(microjson_overlay_location))
+        microjson_overlay_location = ("?" if image_location == "" else "&") +"overlayUrl=" + base_nbhub + \
+            "render/file/" + os.path.join(str(nb_root), str(microjson_overlay_location))
 
     elif isinstance(microjson_overlay_location, ParseResult):
-        microjson_overlay_location = "&overlayUrl=" + microjson_overlay_location.geturl()    
+        microjson_overlay_location =  ("?" if image_location == "" else "&") + "overlayUrl=" + \
+            microjson_overlay_location.geturl()    
 
     # static render
     if use_static:
