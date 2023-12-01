@@ -12,14 +12,15 @@ class MissingEnvironmentVariable(Exception):
         return self.message
 
 
-def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", 
+def render(nbhub_url:ParseResult, nb_root:PurePath = Path(os.getenv('HOME')) if "HOME" in os.environ else Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", 
            microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500, use_static:bool = True)->str:
     """
     Embeds Polus Render into a JupyterLabs notebook with the help of `render-server-ext`
 
     Param:
         nbhub_url (ParseResult): URL used used for jupyterhub. Contains '/lab/' in its uri
-        nb_root (ParseResult): Root path used to search files in. Default is '/home/jovyan/' which works for notebooks hub. Can be set to empty path 
+        nb_root (PurePath): Root path used to search files in. Default is os.getenv('HOME') else \"/home/joyvan/\""
+                            if HOME does not exist.
                 if absolute paths will be used for images and json files.
         image_location(ParseResult|Purepath): Acquired from urllib.parse.ParseResult or Path, renders url in render.
                             If not specified, renders default render url.
@@ -59,7 +60,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
     
     # Display render
     display(IFrame(src=(f"{render_url}{image_location}{microjson_overlay_location}")
-                                                        , width=width, height=height))
+                                                        ,width=width, height=height))
     
     return f"{render_url}{image_location}{microjson_overlay_location}"
 
