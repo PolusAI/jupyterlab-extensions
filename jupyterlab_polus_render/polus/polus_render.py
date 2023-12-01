@@ -2,6 +2,7 @@ import os
 from IPython.display import display, IFrame
 from urllib.parse import ParseResult
 from pathlib import PurePath, Path
+import errno
 from typing import Union
 
 
@@ -37,7 +38,8 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path(os.getenv('HOME')) if 
     base_nbhub = nbhub_url.geturl().rpartition("lab")[0]
     # Extract url from file path if provided. ?imageUrl is required scheme for render
     if isinstance(image_location, PurePath):
-        assert(os.path.exists(os.path.join(str(nb_root), str(image_location))))
+        if not os.path.exists(os.path.join(str(nb_root), str(image_location))):
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), os.path.join(str(nb_root), str(image_location)))
         image_location = "?imageUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(image_location))
 
     # Otherwise, extract url from user provided url if provided
@@ -46,7 +48,8 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path(os.getenv('HOME')) if 
 
     # Do the same but for JSON
     if isinstance(microjson_overlay_location, PurePath):
-        assert(os.path.exists(os.path.join(str(nb_root), str(microjson_overlay_location))))
+        if not os.path.exists(os.path.join(str(nb_root), str(microjson_overlay_location))):
+            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), os.path.join(str(nb_root), str(microjson_overlay_location)))
         microjson_overlay_location = ("?" if image_location == "" else "&") +"overlayUrl=" + base_nbhub + \
             "render/file/" + os.path.join(str(nb_root), str(microjson_overlay_location))
 
