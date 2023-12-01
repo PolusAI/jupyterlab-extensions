@@ -34,6 +34,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
     base_nbhub = nbhub_url.geturl().rpartition("lab")[0]
     # Extract url from file path if provided. ?imageUrl is required scheme for render
     if isinstance(image_location, PurePath):
+        assert(os.path.exists(os.path.join(str(nb_root), str(image_location))))
         image_location = "?imageUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(image_location))
 
     # Otherwise, extract url from user provided url if provided
@@ -42,6 +43,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
 
     # Do the same but for JSON
     if isinstance(microjson_overlay_location, PurePath):
+        assert(os.path.exists(os.path.join(str(nb_root), str(microjson_overlay_location))))
         microjson_overlay_location = "&overlayUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(microjson_overlay_location))
 
     elif isinstance(microjson_overlay_location, ParseResult):
