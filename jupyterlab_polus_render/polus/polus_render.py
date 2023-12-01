@@ -5,10 +5,17 @@ from pathlib import PurePath, Path
 from typing import Union
 
 
+class MissingEnvironmentVariable(Exception):
+    def __init__(self, message):
+        self.message = message
+    def __str__(self):
+        return self.message
 
-def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500)->str:
+
+def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), image_location:Union[ParseResult, PurePath] = "", 
+           microjson_overlay_location:Union[ParseResult, PurePath] = "", width:int=960, height:int=500, use_static:bool = True)->str:
     """
-    Embeds a static build of render into a JupyterLabs notebook with the help of `render-server-ext`
+    Embeds Polus Render into a JupyterLabs notebook with the help of `render-server-ext`
 
     Param:
         nbhub_url (ParseResult): URL used used for jupyterhub. Contains '/lab/' in its uri
@@ -20,6 +27,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
                             If not specified, renders default render url
         width (int): width of render to be displayed, default is 960
         height (int): height of render to be displayed, default is 500
+        use_static (bool): Use static build of render, default is True
     Returns: Render URL
     """
     assert(nbhub_url)
@@ -31,7 +39,7 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
     # Otherwise, extract url from user provided url if provided
     elif isinstance(image_location, ParseResult):
         image_location = "?imageUrl=" + image_location.geturl() # Can be manually rebuilt to check if a valid format url is sent
-    
+
     # Do the same but for JSON
     if isinstance(microjson_overlay_location, PurePath):
         microjson_overlay_location = "&overlayUrl=" + base_nbhub + "render/file/" + os.path.join(str(nb_root), str(microjson_overlay_location))
@@ -40,7 +48,12 @@ def render(nbhub_url:ParseResult, nb_root:PurePath = Path("/home/jovyan/"), imag
         microjson_overlay_location = "&overlayUrl=" + microjson_overlay_location.geturl()    
 
     # static render
-    render_url = f"{base_nbhub}static/render/render-ui/index.html"
+    if use_static:
+        render_url = f"{base_nbhub}static/render/render-ui/index.html"
+    elif("RENDER_URL" in os.environ):
+        render_url = os.getenv('RENDER_URL')
+    else:
+        raise MissingEnvironmentVariable("RENDER_URL enviromental variable does not exist!")        
     
     # Display render
     display(IFrame(src=(f"{render_url}{image_location}{microjson_overlay_location}")

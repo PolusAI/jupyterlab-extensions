@@ -15,6 +15,7 @@ class DefaultHandler(ExtensionHandlerMixin, JupyterHandler):
 class AuthFileHandler(JupyterHandler, StaticFileHandler):
 
     def _initialize(self,path) -> None:
+        self.set_header("Access-Control-Allow-Origin", "*")
         StaticFileHandler._initialize(path)
 
 
