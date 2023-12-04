@@ -71,10 +71,6 @@ render(nbhub_url=JL_URL)
 render(nbhub_url=JL_URL, \
     nb_root=Path("/Users/jeff.chen/"))
 
-# Embeds an IFrame of a static build of Polus Render with an image file hosted at "https://viv-demo.storage.googleapis.com/LuCa-7color_Scan1/"
-render(nbhub_url=JL_URL, \
-    image_location=urlparse("https://viv-demo.storage.googleapis.com/LuCa-7color_Scan1/"))
-
 # Embeds an IFrame of a static build of Polus Render with an image hosted at "/home/joyvan/zarr files/pyramid.zarr"
 render(nbhub_url=JL_URL, \
     image_location=Path(r"zarr files/pyramid.zarr"))
@@ -84,10 +80,9 @@ render(nbhub_url=JL_URL, \
     image_location=Path("zarr files/pyramid.zarr"), \
     microjson_overlay_location=Path("overlay files/x00_y01_c1_segmentations.json"))
 
-# Embeds an IFrame of a static build of Polus Render with an image and overlay file served online
+# Embeds an IFrame of a static build of Polus Render with remote image
 render(nbhub_url=JL_URL, \
-    image_location=urlparse("https://files.scb-ncats.io/pyramids/segmentations/x00_y01_c1.ome.tif"), \
-    microjson_overlay_location=urlparse("https://files.scb-ncats.io/pyramids/segmentations/x00_y03_c1_segmentations.json"))
+    image_location=urlparse("https://viv-demo.storage.googleapis.com/LuCa-7color_3x3component_data.ome.tif"))
 ```
 
 # Functions
