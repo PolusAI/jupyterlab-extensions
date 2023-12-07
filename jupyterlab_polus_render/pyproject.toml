@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jupyterlab_polus_render"
-version = "0.1.0"
+version = "0.1.1"
 description = "Displays Polus Render dashboard in Jupyter Notebooks."
 authors = ["Jeff Chen <Jeff.Chen@axleinfo.com>"]
 packages = [{ include = "polus"}, {include = "render-server-ext"}]
