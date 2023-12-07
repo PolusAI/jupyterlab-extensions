@@ -19,7 +19,10 @@ Please note that usage differs significantly from https://pypi.org/project/polus
 # Installation
 ```
 pip install "git+https://github.com/PolusAI/jupyterlab-extensions.git#egg=jupyterlab_polus_render&subdirectory=jupyterlab_polus_render"
+export RENDER_URL="<Polus Render URL>"
 ```
+
+You may also run `%env RENDER_URL <Polus Render URL>` in a notebook to set the enviromental variable.
 You will need to restart Jupyter Server for `render-server-ext` endpoints to take effect.
 
 # Project File Structure
