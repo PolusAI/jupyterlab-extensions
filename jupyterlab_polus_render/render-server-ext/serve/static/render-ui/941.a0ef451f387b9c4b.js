@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkrender_ui=self.webpackChunkrender_ui||[]).push([[941],{3941:(a,d,e)=>{e.r(d),e.d(d,{default:()=>n});var r=e(2828),s=e(605);class n extends s.Z{decodeBlock(u){return(0,r.rr)(new Uint8Array(u)).buffer}}}}]);
