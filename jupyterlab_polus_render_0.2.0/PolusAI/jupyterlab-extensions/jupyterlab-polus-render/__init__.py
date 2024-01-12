@@ -6,6 +6,13 @@
 
 from .example import ExampleWidget
 from ._version import __version__, version_info
+from .application import Application
+
+
+# Sets server activation ID and the app itself, called from jupyter server --ServerApp.jpserver_extensions="{'simple_ext1': True}"
+def _jupyter_server_extension_points():
+    return [{"module": "serve.application", "app": Application}]
+
 
 def _jupyter_labextension_paths():
     """Called by Jupyter Lab Server to detect if it is a valid labextension and
