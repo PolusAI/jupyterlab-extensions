@@ -1,2 +1,0 @@
-[run]
-omit = jupyterlab-polus-render/tests/*
