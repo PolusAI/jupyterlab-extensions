@@ -1,10 +1,10 @@
-# polus_render
+# jlp_polus_render
 
 [![Github Actions Status](/workflows/Build/badge.svg)](/actions/workflows/build.yml)
 A JupyterLab extension.
 
-This extension is composed of a Python package named `polus_render`
-for the server extension and a NPM package named `polus-render`
+This extension is composed of a Python package named `jlp_polus_render`
+for the server extension and a NPM package named `jlp-polus-render`
 for the frontend extension.
 
 ## Requirements
@@ -16,7 +16,7 @@ for the frontend extension.
 To install the extension, execute:
 
 ```bash
-pip install polus_render
+pip install jlp_polus_render
 ```
 
 ## Uninstall
@@ -24,7 +24,7 @@ pip install polus_render
 To remove the extension, execute:
 
 ```bash
-pip uninstall polus_render
+pip uninstall jlp_polus_render
 ```
 
 ## Troubleshoot
@@ -55,13 +55,13 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the polus_render directory
+# Change directory to the jlp_polus_render directory
 # Install package in development mode
 pip install -e ".[test]"
 # Link your development version of the extension with JupyterLab
 jupyter labextension develop . --overwrite
 # Server extension must be manually installed in develop mode
-jupyter server extension enable polus_render
+jupyter server extension enable jlp_polus_render
 # Rebuild extension Typescript source after making changes
 jlpm build
 ```
@@ -87,13 +87,13 @@ jupyter lab build --minimize=False
 
 ```bash
 # Server extension must be manually disabled in develop mode
-jupyter server extension disable polus_render
-pip uninstall polus_render
+jupyter server extension disable jlp_polus_render
+pip uninstall jlp_polus_render
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
-folder is located. Then you can remove the symlink named `polus-render` within that folder.
+folder is located. Then you can remove the symlink named `jlp-polus-render` within that folder.
 
 ### Testing the extension
 
@@ -112,7 +112,7 @@ jupyter labextension develop . --overwrite
 To execute them, run:
 
 ```sh
-pytest -vv -r ap --cov polus_render
+pytest -vv -r ap --cov jlp_polus_render
 ```
 
 #### Frontend tests

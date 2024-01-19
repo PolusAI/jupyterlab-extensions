@@ -17,7 +17,7 @@ export async function requestAPI<T>(
   const settings = ServerConnection.makeSettings();
   const requestUrl = URLExt.join(
     settings.baseUrl,
-    'polus-render', // API Namespace
+    'jlp-polus-render', // API Namespace
     endPoint
   );
 

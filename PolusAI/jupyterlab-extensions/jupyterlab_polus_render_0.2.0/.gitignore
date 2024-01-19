@@ -7,9 +7,9 @@ node_modules/
 *.egg-info/
 .ipynb_checkpoints
 *.tsbuildinfo
-polus_render/labextension
+jlp_polus_render/labextension
 # Version file is handled by hatchling
-polus_render/_version.py
+jlp_polus_render/_version.py
 
 # Integration tests
 ui-tests/test-results/

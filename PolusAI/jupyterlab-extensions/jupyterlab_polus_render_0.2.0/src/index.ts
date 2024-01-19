@@ -3,20 +3,20 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-// export * from './version';
-// export * from './widget';
+export * from './version';
+export * from './widget';
 
 import { requestAPI } from './handler';
 
 /**
- * Initialization data for the polus-render extension.
+ * Initialization data for the jlp-polus-render extension.
  */
 const plugin: JupyterFrontEndPlugin<void> = {
-  id: 'polus-render:plugin',
+  id: 'jlp-polus-render:plugin',
   description: 'A JupyterLab extension.',
   autoStart: true,
   activate: (app: JupyterFrontEnd) => {
-    console.log('JupyterLab extension polus-render is activated!');
+    console.log('JupyterLab extension jlp-polus-render is activated!');
 
     requestAPI<any>('get-example')
       .then(data => {
@@ -24,7 +24,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       })
       .catch(reason => {
         console.error(
-          `The polus_render server extension appears to be missing.\n${reason}`
+          `The jlp_polus_render server extension appears to be missing.\n${reason}`
         );
       });
   }

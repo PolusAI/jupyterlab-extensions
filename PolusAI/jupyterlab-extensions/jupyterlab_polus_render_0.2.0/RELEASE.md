@@ -1,4 +1,4 @@
-# Making a new release of polus_render
+# Making a new release of jlp_polus_render
 
 The extension can be published to `PyPI` and `npm` manually or using the [Jupyter Releaser](https://github.com/jupyter-server/jupyter_releaser).
 

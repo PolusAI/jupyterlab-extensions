@@ -1,5 +1,5 @@
 {
-    "name": "polus-render",
+    "name": "jlp-polus-render",
     "version": "0.1.0",
     "description": "A JupyterLab extension.",
     "keywords": [
@@ -13,7 +13,7 @@
     },
     "license": "BSD-3-Clause",
     "author": {
-        "name": "Akshat Saini",
+        "name": "Jeff Chen, Akshat Saini",
         "email": "akshat.saini@axleinfo.com"
     },
     "files": [
@@ -37,7 +37,7 @@
         "clean": "jlpm clean:lib",
         "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
         "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-        "clean:labextension": "rimraf polus_render/labextension polus_render/_version.py",
+        "clean:labextension": "rimraf jlp_polus_render/labextension jlp_polus_render/_version.py",
         "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
         "eslint": "jlpm eslint:check --fix",
         "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -55,18 +55,15 @@
         "watch:labextension": "jupyter labextension watch ."
     },
     "dependencies": {
-        "@jupyter-widgets/base": "^1.1.10 || ^2 || ^3 || ^4 || ^5 || ^6",
+        "@jupyter-widgets/base": "^6.0.6",
         "@jupyterlab/application": "^4.0.0",
         "@jupyterlab/coreutils": "^6.0.0",
-        "@jupyterlab/services": "^7.0.0",
-        "@jupyterlab/settingregistry": "^4.0.0",
-        "@lumino/application": "^1.6.0",
-        "@lumino/widgets": "^1.6.0"
+        "@jupyterlab/services": "^7.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.5.0",
         "@babel/preset-env": "^7.5.0",
-        "@jupyter-widgets/base-manager": "^1.0.2",
+        "@jupyter-widgets/base-manager": "^1.0.7",
         "@jupyterlab/builder": "^4.0.0",
         "@jupyterlab/testutils": "^4.0.0",
         "@lumino/application": "^1.6.0",
@@ -83,7 +80,6 @@
         "eslint": "^8.36.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-prettier": "^5.0.0",
-        "fs-extra": "^7.0.0",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^29.2.0",
         "mkdirp": "^1.0.3",
@@ -97,8 +93,6 @@
         "stylelint-config-standard": "^34.0.0",
         "stylelint-csstree-validator": "^3.0.0",
         "stylelint-prettier": "^4.0.0",
-        "ts-jest": "^26.0.0",
-        "ts-loader": "^8.0.0",
         "typescript": "~5.0.2",
         "webpack": "^5.61.0",
         "webpack-cli": "^4.0.0",
@@ -119,12 +113,12 @@
                     "pip"
                 ],
                 "base": {
-                    "name": "polus_render"
+                    "name": "jlp_polus_render"
                 }
             }
         },
         "extension": true,
-        "outputDir": "polus_render/labextension"
+        "outputDir": "jlp_polus_render/labextension"
     },
     "eslintIgnore": [
         "node_modules",
