@@ -8,6 +8,11 @@ except ImportError:
     warnings.warn("Importing 'jlp_polus_render' outside a proper installation.")
     __version__ = "dev"
 from .handlers import setup_handlers
+from .application import Application
+
+# Sets server activation ID and the app itself, called from jupyter server --ServerApp.jpserver_extensions="{'simple_ext1': True}"
+def _jupyter_server_extension_points():
+    return [{"module": "serve.application", "app": Application}]
 
 
 def _jupyter_labextension_paths():

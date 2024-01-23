@@ -3,8 +3,8 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-export * from './version';
-export * from './widget';
+// export * from './version';
+// export * from './widget';
 
 import { requestAPI } from './handler';
 
