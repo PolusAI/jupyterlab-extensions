@@ -35,7 +35,6 @@ class ErrorHandler(BaseTemplateHandler):
         self.write_error(400)
 
 
-
 class RouteHandler(APIHandler):
     # The following decorator should be present on all verb methods (head, get, post,
     # patch, put, delete, options) to ensure only authorized user can request the

@@ -11,8 +11,6 @@
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 (window as any).__webpack_public_path__ =
   document.querySelector('body')!.getAttribute('data-base-url') +
-  'nbextensions/jlp_polus_render';
+  'nbextensions/widget1';
 
-// export * from './index';
-export * from './version';
-export * from './widget';
+export * from './index';
