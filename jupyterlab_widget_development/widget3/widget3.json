@@ -1,0 +1,5 @@
+{
+  "load_extensions": {
+    "widget3/extension": true
+  }
+}
