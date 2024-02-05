@@ -8,9 +8,16 @@ import {
 } from '@jupyter-widgets/base';
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
+import { PageConfig } from '@jupyterlab/coreutils';
+
 
 // Import the CSS
 import '../css/widget.css';
+
+// Get the base URL of the JupyterLab session
+const baseUrl = PageConfig.getBaseUrl();
+// Construct the full URL for your server extension
+const serverExtensionPath = 'static/render/render-ui/index.html';
 
 export class ExampleModel extends DOMWidgetModel {
   defaults() {
@@ -22,7 +29,7 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      iframeSrc: 'http://localhost:8888/static/render/render-ui/index.html'
+      iframeSrc: `${baseUrl}${serverExtensionPath}`
     };
   }
 
