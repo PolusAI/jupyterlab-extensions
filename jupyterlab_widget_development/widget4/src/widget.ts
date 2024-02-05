@@ -16,7 +16,7 @@ import '../css/widget.css';
 
 // Get the base URL of the JupyterLab session
 const baseUrl = PageConfig.getBaseUrl();
-// Construct the full URL for your server extension
+// url for server-ext file
 const serverExtensionPath = 'static/render/render-ui/index.html';
 
 export class ExampleModel extends DOMWidgetModel {
