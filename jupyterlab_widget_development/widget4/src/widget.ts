@@ -29,7 +29,8 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      iframeSrc: `${baseUrl}${serverExtensionPath}`
+      imageUrl: `${baseUrl}`,
+      iframeSrc: `${baseUrl}${serverExtensionPath}` 
     };
   }
 
@@ -50,15 +51,23 @@ export class ExampleView extends DOMWidgetView {
   render() {
     // Get the value of the iframeSrc attribute from the model
     const iframeSrc = this.model.get('iframeSrc');
+    let imageUrl = this.model.get('imageUrl');
+
+    let fullSrc = iframeSrc;
+
+    // Check if imageUrl is not empty and concatenate baseUrl
+    if (imageUrl !== '') {
+      imageUrl = `${baseUrl}${imageUrl}`;
+      fullSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+    }
 
     // Create an iframe element
     const iframe = document.createElement('iframe');
-    iframe.src = iframeSrc;
-    iframe.width = '100%';
+    iframe.src = fullSrc;
+    iframe.width = '100%';  
     iframe.height = '300px';  // Adjust the height as needed
-  
-
-    // Append the iframe to the widget's DOM element
+    
+  // Append the iframe to the widget's DOM element
     this.el.appendChild(iframe);
   }
 }
