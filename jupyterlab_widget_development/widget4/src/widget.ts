@@ -65,7 +65,7 @@ export class ExampleView extends DOMWidgetView {
     const iframe = document.createElement('iframe');
     iframe.src = fullSrc;
     iframe.width = '100%';  
-    iframe.height = '300px';  // Adjust the height as needed
+    iframe.style.height = '900px';  // Adjust the height as needed
     
   // Append the iframe to the widget's DOM element
     this.el.appendChild(iframe);

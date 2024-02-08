@@ -23,7 +23,7 @@ class ExampleWidget(DOMWidget):
     imageUrl = Unicode('').tag(sync=True)
     height = Integer(0).tag(sync=True)
 
-    def __init__(self, imageUrl='', height='', **kwargs):
+    def __init__(self, imageUrl='', height=0, **kwargs):
         super().__init__(**kwargs)
         self.imageUrl = imageUrl
         self.height = height
