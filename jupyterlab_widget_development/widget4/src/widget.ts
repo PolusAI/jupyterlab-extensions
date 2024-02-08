@@ -17,7 +17,8 @@ import '../css/widget.css';
 // Get the base URL of the JupyterLab session
 const baseUrl = PageConfig.getBaseUrl();
 // url for server-ext file
-const serverExtensionPath = 'static/render/render-ui/index.html';
+const renderUIPath = 'static/render/render-ui/index.html';
+const renderFilePrefix = 'render/file/'
 
 export class ExampleModel extends DOMWidgetModel {
   defaults() {
@@ -29,8 +30,8 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      imageUrl: `${baseUrl}`,
-      iframeSrc: `${baseUrl}${serverExtensionPath}` 
+      imagePath: `${baseUrl}`,
+      iframeSrc: `${baseUrl}${renderUIPath}` 
     };
   }
 
@@ -51,14 +52,15 @@ export class ExampleView extends DOMWidgetView {
   render() {
     // Get the value of the iframeSrc attribute from the model
     const iframeSrc = this.model.get('iframeSrc');
-    let imageUrl = this.model.get('imageUrl');
+    let imagePath = this.model.get('imagePath');
 
     let fullSrc = iframeSrc;
+    let finalImagePath = '';
 
-    // Check if imageUrl is not empty and concatenate baseUrl
-    if (imageUrl !== '') {
-      imageUrl = `${baseUrl}${imageUrl}`;
-      fullSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+    // Check if imagePath is not empty and concatenate baseUrl and renderFilePrefix
+    if (imagePath !== '') {
+      finalImagePath = `${baseUrl}${renderFilePrefix}${imagePath}`;
+      fullSrc = `${iframeSrc}?imagePath=${finalImagePath}`;
     }
 
     // Create an iframe element
