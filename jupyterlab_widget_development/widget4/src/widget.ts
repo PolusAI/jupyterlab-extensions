@@ -30,7 +30,7 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      imagePath: `${baseUrl}`,
+      imageUrl: `${baseUrl}`,
       iframeSrc: `${baseUrl}${renderUIPath}` 
     };
   }
@@ -52,15 +52,15 @@ export class ExampleView extends DOMWidgetView {
   render() {
     // Get the value of the iframeSrc attribute from the model
     const iframeSrc = this.model.get('iframeSrc');
-    let imagePath = this.model.get('imagePath');
+    let imageUrl = this.model.get('imageUrl');
 
     let fullSrc = iframeSrc;
-    let finalImagePath = '';
+    let finalImageUrl = '';
 
-    // Check if imagePath is not empty and concatenate baseUrl and renderFilePrefix
-    if (imagePath !== '') {
-      finalImagePath = `${baseUrl}${renderFilePrefix}${imagePath}`;
-      fullSrc = `${iframeSrc}?imagePath=${finalImagePath}`;
+    // Check if imageUrl is not empty and concatenate baseUrl and renderFilePrefix
+    if (imageUrl !== '') {
+      finalImageUrl = `${baseUrl}${renderFilePrefix}${imageUrl}`;
+      fullSrc = `${iframeSrc}?imageUrl=${finalImageUrl}`;
     }
 
     // Create an iframe element

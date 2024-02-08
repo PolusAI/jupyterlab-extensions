@@ -20,11 +20,11 @@ class ExampleWidget(DOMWidget):
     _view_name = Unicode('ExampleView').tag(sync=True)
     _view_module = Unicode(module_name).tag(sync=True)
     _view_module_version = Unicode(module_version).tag(sync=True)
-    imagePath = Unicode('').tag(sync=True)
+    imageUrl = Unicode('').tag(sync=True)
     height = Integer(0).tag(sync=True)
 
-    def __init__(self, imagePath='', height=0, **kwargs):
+    def __init__(self, imageUrl='', height=0, **kwargs):
         super().__init__(**kwargs)
-        self.imagePath = imagePath
+        self.imageUrl = imageUrl
         self.height = height
 
