@@ -30,7 +30,7 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      imageUrl: `${baseUrl}`,
+      imagePath: `${baseUrl}`,
       iframeSrc: `${baseUrl}${renderUIPath}` 
     };
   }
@@ -51,21 +51,20 @@ export class ExampleModel extends DOMWidgetModel {
 export class ExampleView extends DOMWidgetView {
   render() {
     // Get the value of the iframeSrc attribute from the model
-    const iframeSrc = this.model.get('iframeSrc');
-    let imageUrl = this.model.get('imageUrl');
+    let iframeSrc = this.model.get('iframeSrc');
+    let imagePath = this.model.get('imagePath');
 
-    let fullSrc = iframeSrc;
-    let finalImageUrl = '';
+    let imageUrl = '';
 
-    // Check if imageUrl is not empty and concatenate baseUrl and renderFilePrefix
-    if (imageUrl !== '') {
-      finalImageUrl = `${baseUrl}${renderFilePrefix}${imageUrl}`;
-      fullSrc = `${iframeSrc}?imageUrl=${finalImageUrl}`;
+    // Check if imagePath is not empty and concatenate baseUrl and renderFilePrefix
+    if (imagePath !== '') {
+      imageUrl = `${baseUrl}${renderFilePrefix}${imagePath}`;
+      iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
     }
 
     // Create an iframe element
     const iframe = document.createElement('iframe');
-    iframe.src = fullSrc;
+    iframe.src = iframeSrc;
     iframe.width = '100%';  
     iframe.style.height = '900px';  // Adjust the height as needed
     
