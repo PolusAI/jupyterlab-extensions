@@ -18,7 +18,7 @@ import '../css/widget.css';
 const baseUrl = PageConfig.getBaseUrl();
 // url for server-ext file
 const renderUIPath = 'static/render/render-ui/index.html';
-const renderFilePrefix = 'render/file/'
+const renderFilePrefix = 'render/file'
 
 export class ExampleModel extends DOMWidgetModel {
   defaults() {
@@ -30,7 +30,6 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      imagePath: `${baseUrl}`,
       iframeSrc: `${baseUrl}${renderUIPath}` 
     };
   }
@@ -53,12 +52,13 @@ export class ExampleView extends DOMWidgetView {
     // Get the value of the iframeSrc attribute from the model
     let iframeSrc = this.model.get('iframeSrc');
     let imagePath = this.model.get('imagePath');
+    let full_image_path = this.model.get('full_image_path');
 
     let imageUrl = '';
 
     // Check if imagePath is not empty and concatenate baseUrl and renderFilePrefix
     if (imagePath !== '') {
-      imageUrl = `${baseUrl}${renderFilePrefix}${imagePath}`;
+      imageUrl = `${baseUrl}${renderFilePrefix}${full_image_path}`;
       iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
     }
 
