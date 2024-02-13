@@ -29,7 +29,14 @@ class ExampleWidget(DOMWidget):
         super().__init__(**kwargs)
 
         notebook_dir = os.path.dirname(os.path.realpath(__name__))
-        full_image_path = os.path.join(notebook_dir, imagePath)
         self.imagePath = imagePath
         self.height = height
+        full_image_path = imagePath
+        # Check for sys path or relative path
+        if os.path.isabs(imagePath):
+            full_image_path = imagePath
+        else:   
+            full_image_path = os.path.join(notebook_dir, imagePath)
         self.full_image_path = full_image_path
+
+        
