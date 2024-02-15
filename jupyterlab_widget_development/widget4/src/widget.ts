@@ -53,7 +53,7 @@ export class ExampleView extends DOMWidgetView {
     let iframeSrc = this.model.get('iframeSrc');
     let imagePath = this.model.get('imagePath');
     let full_image_path = this.model.get('full_image_path');
-
+    let frame_height = this.model.get('height');
     let imageUrl = '';
 
     // Check if imagePath is not empty and concatenate baseUrl and renderFilePrefix
@@ -66,7 +66,8 @@ export class ExampleView extends DOMWidgetView {
     const iframe = document.createElement('iframe');
     iframe.src = iframeSrc;
     iframe.width = '100%';  
-    iframe.style.height = '900px';  // Adjust the height as needed
+    // Add the unit 'px' to the height value
+    iframe.style.height = frame_height+'px';
     
   // Append the iframe to the widget's DOM element
     this.el.appendChild(iframe);
