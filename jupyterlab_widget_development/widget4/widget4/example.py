@@ -47,7 +47,11 @@ class ExampleWidget(DOMWidget):
         notebook_dir = Path.cwd() # Get the current working directory
         self.imagePath = imagePath
         self.height = height
-        full_image_path = Path(imagePath) # Convert imagePath to a Path object
-        if not full_image_path.is_absolute():
-            full_image_path = notebook_dir / imagePath
-        self.full_image_path = str(full_image_path) # Convert to string object
+        # If imagePath starts with 'http', set full_image_path to imagePath
+        if imagePath.startswith('http'):
+            self.full_image_path = imagePath
+        else:
+            full_image_path = Path(imagePath) # Convert imagePath to a Path object
+            if not full_image_path.is_absolute():
+                full_image_path = notebook_dir / imagePath
+            self.full_image_path = str(full_image_path) # Convert to string object

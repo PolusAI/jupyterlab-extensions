@@ -56,10 +56,16 @@ export class ExampleView extends DOMWidgetView {
     let frame_height = this.model.get('height');
     let imageUrl = '';
 
-    // Check if imagePath is not empty and concatenate baseUrl and renderFilePrefix
-    if (imagePath !== '') {
-      imageUrl = `${baseUrl}${renderFilePrefix}${full_image_path}`;
+    // Checks for imagePath 
+    if (imagePath.startsWith('http')) {
+      imageUrl = `${full_image_path}`;
       iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+    } else {
+      // Concatenate baseUrl and renderFilePrefix to imageUrl
+      if (imagePath !== '') {
+        imageUrl = `${baseUrl}${renderFilePrefix}${full_image_path}`;
+        iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+      }
     }
 
     // Create an iframe element
