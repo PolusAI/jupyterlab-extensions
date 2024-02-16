@@ -15,7 +15,7 @@ from traitlets import Unicode, Integer
 from ._frontend import module_name, module_version
 
 
-class ExampleWidget(DOMWidget):
+class Render(DOMWidget):
     _model_name = Unicode('ExampleModel').tag(sync=True)
     _model_module = Unicode(module_name).tag(sync=True)
     _model_module_version = Unicode(module_version).tag(sync=True)
