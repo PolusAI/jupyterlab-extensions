@@ -24,9 +24,11 @@ class Render(DOMWidget):
     _view_module_version = Unicode(module_version).tag(sync=True)
     imagePath = Unicode('').tag(sync=True)
     full_image_path = Unicode('').tag(sync=True)
+    overlayPath = Unicode('').tag(sync=True)
+    full_overlay_path = Unicode('').tag(sync=True)
     height = Integer(0).tag(sync=True)
     
-    def __init__(self, imagePath='', height=0, **kwargs):
+    def __init__(self, imagePath='', overlayPath='', height=0, **kwargs):
         super().__init__(**kwargs)
 
 # Commented code below uses OS module to grab system path and perform checks
@@ -46,6 +48,7 @@ class Render(DOMWidget):
         
         notebook_dir = Path.cwd() # Get the current working directory
         self.imagePath = imagePath
+        self.overlayPath = overlayPath
         self.height = height
         # If imagePath starts with 'http', set full_image_path to imagePath
         if imagePath.startswith('http'):
@@ -53,5 +56,11 @@ class Render(DOMWidget):
         else:
             full_image_path = Path(imagePath) # Convert imagePath to a Path object
             if not full_image_path.is_absolute():
-                full_image_path = notebook_dir / imagePath
+                full_image_path = notebook_dir / imagePath 
             self.full_image_path = str(full_image_path) # Convert to string object
+        # Overlays are stored locally and dont have url clause
+        full_overlay_path = Path(overlayPath)
+        if not full_overlay_path.is_absolute():
+            full_overlay_path = notebook_dir / overlayPath
+        self.full_overlay_path = str(full_overlay_path)
+        

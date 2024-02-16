@@ -55,18 +55,34 @@ export class ExampleView extends DOMWidgetView {
     let iframeSrc = this.model.get('iframeSrc');
     let imagePath = this.model.get('imagePath');
     let full_image_path = this.model.get('full_image_path');
+    let overlayPath = this.model.get('overlayPath');
+    let full_overlay_path = this.model.get('full_overlay_path');
     let frame_height = this.model.get('height');
     let imageUrl = '';
+    let overlayUrl = '';
 
-    // Checks for imagePath 
+    // Checks for imagePath and overlayPath
     if (imagePath.startsWith('http')) {
       imageUrl = `${full_image_path}`;
-      iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+      if (overlayPath !== '') {
+        overlayUrl = `${baseUrl}${renderFilePrefix}${full_overlay_path}`
+        iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}&overlayUrl=${overlayUrl}`;
+      }
+      else {
+        iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+      }
     } else {
       // Concatenate baseUrl and renderFilePrefix to imageUrl
       if (imagePath !== '') {
         imageUrl = `${baseUrl}${renderFilePrefix}${full_image_path}`;
-        iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+        if (overlayPath !== '') {
+          // Only concatenate overlayUrl if there is a value
+          overlayUrl = `${baseUrl}${renderFilePrefix}${full_overlay_path}`
+          iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}&overlayUrl=${overlayUrl}`;
+        }
+        else {
+          iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
+        }
       }
     }
 
