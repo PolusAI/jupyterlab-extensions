@@ -11,7 +11,7 @@ import * as widgetExports from './widget';
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
-const EXTENSION_ID = 'jupyterlab-polus-render:plugin';
+const EXTENSION_ID = 'jupyterlab_polus_render:plugin';
 
 /**
  * The example plugin.

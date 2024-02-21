@@ -6,7 +6,7 @@ define(function() {
     window['requirejs'].config({
         map: {
             '*': {
-                'jupyterlab-polus-render': 'nbextensions/jupyterlab_polus_render/index',
+                'jupyterlab_polus_render': 'nbextensions/jupyterlab_polus_render/index',
             },
         }
     });

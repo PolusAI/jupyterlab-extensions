@@ -21,7 +21,7 @@ def _jupyter_labextension_paths():
     """
     return [{
         'src': 'labextension',
-        'dest': 'jupyterlab-polus-render',
+        'dest': 'jupyterlab_polus_render',
     }]
 
 

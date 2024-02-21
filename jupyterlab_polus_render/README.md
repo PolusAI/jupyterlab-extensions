@@ -1,8 +1,8 @@
 
-# jupyterlab-polus-render
+# jupyterlab_polus_render
 
-[![Build Status](https://travis-ci.org/PolusAI/jupyterlab-polus-render.svg?branch=master)](https://travis-ci.org/PolusAI/jupyterlab_polus_render)
-[![codecov](https://codecov.io/gh/PolusAI/jupyterlab-polus-render/branch/master/graph/badge.svg)](https://codecov.io/gh/PolusAI/jupyterlab-polus-render)
+[![Build Status](https://travis-ci.org/PolusAI/jupyterlab_polus_render.svg?branch=master)](https://travis-ci.org/PolusAI/jupyterlab_polus_render)
+[![codecov](https://codecov.io/gh/PolusAI/jupyterlab_polus_render/branch/master/graph/badge.svg)](https://codecov.io/gh/PolusAI/jupyterlab_polus_render)
 
 
 A Jupyterlab extension for RenderUI.

@@ -58,7 +58,7 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/PolusAI/jupyterlab-polus-render"
+Homepage = "https://github.com/PolusAI/jupyterlab_polus_render"
 
 [tool.hatch.metadata]
 allow-direct-references = true
@@ -72,8 +72,8 @@ artifacts = [
 
 [tool.hatch.build.targets.wheel.shared-data]
 "jupyterlab_polus_render/nbextension" = "share/jupyter/nbextensions/jupyterlab_polus_render"
-"jupyterlab_polus_render/labextension" = "share/jupyter/labextensions/jupyterlab-polus-render"
-"./install.json" = "share/jupyter/labextensions/jupyterlab-polus-render/install.json"
+"jupyterlab_polus_render/labextension" = "share/jupyter/labextensions/jupyterlab_polus_render"
+"./install.json" = "share/jupyter/labextensions/jupyterlab_polus_render/install.json"
 "./jupyterlab_polus_render.json" = "etc/jupyter/nbconfig/notebook.d/jupyterlab_polus_render.json"
 
 [tool.hatch.build.targets.sdist]

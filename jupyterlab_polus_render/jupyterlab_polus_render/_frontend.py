@@ -8,5 +8,5 @@
 Information about the frontend package of the widgets.
 """
 
-module_name = "jupyterlab-polus-render"
+module_name = "jupyterlab_polus_render"
 module_version = "^0.2.0"

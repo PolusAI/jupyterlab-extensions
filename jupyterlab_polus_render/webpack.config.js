@@ -40,7 +40,7 @@ module.exports = [
   },
 
   /**
-   * Embeddable jupyterlab-polus-render bundle
+   * Embeddable jupyterlab_polus_render bundle
    *
    * This bundle is almost identical to the notebook extension bundle. The only
    * difference is in the configuration of the webpack public path for the
@@ -55,8 +55,8 @@ module.exports = [
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'amd',
-        library: "jupyterlab-polus-render",
-        publicPath: 'https://unpkg.com/jupyterlab-polus-render@' + version + '/dist/'
+        library: "jupyterlab_polus_render",
+        publicPath: 'https://unpkg.com/jupyterlab_polus_render@' + version + '/dist/'
     },
     devtool: 'source-map',
     module: {
@@ -77,7 +77,7 @@ module.exports = [
     output: {
       filename: 'embed-bundle.js',
       path: path.resolve(__dirname, 'docs', 'source', '_static'),
-      library: "jupyterlab-polus-render",
+      library: "jupyterlab_polus_render",
       libraryTarget: 'amd'
     },
     module: {

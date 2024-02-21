@@ -6,8 +6,8 @@ Developer install
 To install a developer version of jupyterlab_polus_render, you will first need to clone
 the repository::
 
-    git clone https://github.com/PolusAI/jupyterlab-polus-render
-    cd jupyterlab-polus-render
+    git clone https://github.com/PolusAI/jupyterlab_polus_render
+    cd jupyterlab_polus_render
 
 Next, install it with a develop install using pip::
 
