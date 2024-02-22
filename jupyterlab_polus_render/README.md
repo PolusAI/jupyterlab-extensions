@@ -1,13 +1,23 @@
 
-# jupyterlab_polus_render
+# Jupyterlab Polus Render
 
-[![Build Status](https://travis-ci.org/PolusAI/jupyterlab_polus_render.svg?branch=master)](https://travis-ci.org/PolusAI/jupyterlab_polus_render)
-[![codecov](https://codecov.io/gh/PolusAI/jupyterlab_polus_render/branch/master/graph/badge.svg)](https://codecov.io/gh/PolusAI/jupyterlab_polus_render)
+JupyterLab Polus Render makes Polus Render available as a JupyterLab extension. 
 
+Polus Render allows visualizing tiled raster datasets in Zarr and TIFF formats, as well as vector overlays in MicroJSON format. It uses lookup tables to map intensity values in these datasets to colors.
 
-A Jupyterlab extension for RenderUI.
+The are three ways to load the data:
+1. Specifying a URL to the server serving the data.
+2. Specifying a local path to a file from JupyterLab.
+3. Dragging-and-dropping the dataset.
+</br>
 
-## Installation
+<img src="images/home.png"/>
+
+## Requirements
+
+* JupyterLab >= 4.0
+
+## Install
 
 You can install using `pip`:
 
@@ -15,13 +25,53 @@ You can install using `pip`:
 pip install jupyterlab_polus_render
 ```
 
-If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
-the nbextension:
+## Uninstall
+
+To remove the extension, execute:
+
 ```bash
-jupyter nbextension enable --py [--sys-prefix|--user|--system] jupyterlab_polus_render
+pip uninstall jupyterlab_polus_render
 ```
 
-## Development Installation
+## Troubleshoot
+
+If you are seeing the frontend extension, but it is not working, check
+that the server extension is enabled:
+
+```bash
+jupyter server extension list
+```
+
+If the server extension is installed and enabled, but you are not seeing
+the frontend extension, check the frontend extension is installed:
+
+```bash
+jupyter labextension list
+```
+
+## Sample usage
+```Python
+import jupyterlab_polus_render
+
+# Initiates the static build of Render with height of iFrame window set to 900px.
+jupyterlab_polus_render.Render(height = 900)
+
+# Serves a tiff image by providing the local path. 
+jupyterlab_polus_render.Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif', height = 900)
+
+# Serves a tiff image by providing the local path along with an overlay used for the image. 
+jupyterlab_polus_render.Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif', overlayPath = 'images/overlay_render2.json', height = 900)
+
+# Embeds an iFrame of a static build of Polus Render with remote image
+jupyterlab_polus_render.Render(imagePath = 'https://viv-demo.storage.googleapis.com/LuCa-7color_3x3component_data.ome.tif', height = 900)
+
+# Serves a zarr dataset by providing the local path along with an overlay used for the dataset. 
+jupyterlab_polus_render.Render(imagePath = 'images/pyramid.zarr', overlayPath = 'images/overlay_render2.json', height = 900)
+
+```
+
+## Contributing
+### Development Install
 
 Create a dev environment:
 ```bash
@@ -29,30 +79,18 @@ conda create -n jupyterlab_polus_render-dev -c conda-forge nodejs python jupyter
 conda activate jupyterlab_polus_render-dev
 ```
 
-Install the python. This will also build the TS package.
 ```bash
-pip install -e ".[test, examples]"
-```
-
-When developing your extensions, you need to manually enable your extensions with the
-notebook / lab frontend. For lab, this is done by the command:
-
-```
-jupyter labextension develop --overwrite .
+# Clone the repo to your local environment
+# Change directory to the jupyterlab_polus_render directory
+# Install package in development mode
+pip install -e .
+# Link your development version of the extension with JupyterLab
+jupyter labextension develop . --overwrite
+# Server extension must be manually installed in develop mode
+jupyter server extension enable jupyterlab_polus_render
+# Rebuild extension Typescript source after making changes
 jlpm run build
 ```
-
-For classic notebook, you need to run:
-
-```
-jupyter nbextension install --sys-prefix --symlink --overwrite --py jupyterlab_polus_render
-jupyter nbextension enable --sys-prefix --py jupyterlab_polus_render
-```
-
-Note that the `--symlink` flag doesn't work on Windows, so you will here have to run
-the `install` command every time that you rebuild your extension. For certain installations
-you might also need another flag instead of `--sys-prefix`, but we won't cover the meaning
-of those flags here.
 
 ### How to see your changes
 #### Typescript:
@@ -71,13 +109,15 @@ After a change wait for the build to finish and then refresh your browser and th
 #### Python:
 If you make a change to the python code then you will need to restart the notebook kernel to have it take effect.
 
-## Updating the version
 
-To update the version, install tbump and use it to bump the version.
-By default it will also create a tag.
+### Development uninstall
 
 ```bash
-pip install tbump
-tbump <new-version>
+# Server extension must be manually disabled in develop mode
+jupyter server extension disable jupyterlab_polus_render
+pip uninstall jupyterlab_polus_render
 ```
 
+In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
+command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
+folder is located. Then you can remove the symlink named `jupyterlab_polus_render` within that folder.

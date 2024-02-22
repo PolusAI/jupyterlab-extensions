@@ -158,3 +158,5 @@ jupyterlab_polus_render/labextension
 
 # Files used for Render
 *.tif
+*.ome.tif
+**/pyramid.zarr/
