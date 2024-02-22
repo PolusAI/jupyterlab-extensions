@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab_wipp_plugin_creator",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "Create WIPP container for local Python code",
   "keywords": [
     "jupyter",
