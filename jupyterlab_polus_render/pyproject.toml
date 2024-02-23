@@ -75,6 +75,7 @@ artifacts = [
 "jupyterlab_polus_render/labextension" = "share/jupyter/labextensions/jupyterlab_polus_render"
 "./install.json" = "share/jupyter/labextensions/jupyterlab_polus_render/install.json"
 "./jupyterlab_polus_render.json" = "etc/jupyter/nbconfig/notebook.d/jupyterlab_polus_render.json"
+"jupyter-config/server-config" = "etc/jupyter/jupyter_server_config.d"
 
 [tool.hatch.build.targets.sdist]
 exclude = [
