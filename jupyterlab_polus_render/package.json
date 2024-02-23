@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab_polus_render",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "A Jupyterlab extension for RenderUI.",
   "keywords": [
     "jupyter",
@@ -81,11 +81,6 @@
     "typescript": "~5.3.3",
     "webpack": "^5.90.0",
     "webpack-cli": "^5.1.4"
-  },
-  "devDependenciesComments": {
-    "@jupyterlab/builder": "pinned to the latest JupyterLab 3.x release",
-    "@lumino/application": "pinned to the latest Lumino 1.x release",
-    "@lumino/widgets": "pinned to the latest Lumino 1.x release"
   },
   "jupyterlab": {
     "extension": "lib/plugin",
