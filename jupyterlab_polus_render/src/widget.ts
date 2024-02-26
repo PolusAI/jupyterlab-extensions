@@ -19,8 +19,8 @@ import '../css/widget.css';
 // Get the base URL of the JupyterLab session
 const baseUrl = PageConfig.getBaseUrl();
 // url for server-ext file
-const renderUIPath = 'static/render/render-ui/index.html';
-const renderFilePrefix = 'render/file'
+const renderUIPath = 'jupyterlab-polus-render/render/index.html';
+const renderFilePrefix = 'jupyterlab-polus-render/image'
 
 export class ExampleModel extends DOMWidgetModel {
   defaults() {

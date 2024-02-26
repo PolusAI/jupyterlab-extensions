@@ -1,7 +1,7 @@
 {
-    "ServerApp": {
-      "jpserver_extensions": {
-        "jupyterlab_polus_render": true
-      }
+  "ServerApp": {
+    "jpserver_extensions": {
+      "jupyterlab_polus_render": true
     }
   }
+}
