@@ -11,7 +11,7 @@ TODO: Add module docstring
 # import os
 from pathlib import Path
 from ipywidgets import DOMWidget
-from traitlets import Unicode, Integer
+from traitlets import Unicode
 from ._frontend import module_name, module_version
 
 
@@ -26,9 +26,8 @@ class Render(DOMWidget):
     full_image_path = Unicode('').tag(sync=True)
     overlayPath = Unicode('').tag(sync=True)
     full_overlay_path = Unicode('').tag(sync=True)
-    height = Integer(900).tag(sync=True)
     
-    def __init__(self, imagePath='', overlayPath='', height=900, **kwargs):
+    def __init__(self, imagePath='', overlayPath='', **kwargs):
         super().__init__(**kwargs)
 
 # Commented code below uses OS module to grab system path and perform checks
@@ -49,7 +48,6 @@ class Render(DOMWidget):
         notebook_dir = Path.cwd() # Get the current working directory
         self.imagePath = imagePath
         self.overlayPath = overlayPath
-        self.height = height
         # If imagePath starts with 'http', set full_image_path to imagePath
         if imagePath.startswith('http'):
             self.full_image_path = imagePath

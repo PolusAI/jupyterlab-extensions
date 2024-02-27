@@ -11,6 +11,7 @@ import {
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
 import { PageConfig } from '@jupyterlab/coreutils';
+import { store } from '@labshare/polus-render';
 
 
 // Import the CSS
@@ -32,7 +33,7 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      iframeSrc: `${baseUrl}${renderUIPath}` 
+      iframeSrc: `${baseUrl}${renderUIPath}`
     };
   }
 
@@ -51,13 +52,10 @@ export class ExampleModel extends DOMWidgetModel {
 
 export class ExampleView extends DOMWidgetView {
   render() {
-    // Get the value of the iframeSrc attribute from the model
-    let iframeSrc = this.model.get('iframeSrc');
     let imagePath = this.model.get('imagePath');
     let full_image_path = this.model.get('full_image_path');
     let overlayPath = this.model.get('overlayPath');
     let full_overlay_path = this.model.get('full_overlay_path');
-    let frame_height = this.model.get('height');
     let imageUrl = '';
     let overlayUrl = '';
 
@@ -66,10 +64,6 @@ export class ExampleView extends DOMWidgetView {
       imageUrl = `${full_image_path}`;
       if (overlayPath !== '') {
         overlayUrl = `${baseUrl}${renderFilePrefix}${full_overlay_path}`
-        iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}&overlayUrl=${overlayUrl}`;
-      }
-      else {
-        iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
       }
     } else {
       // Concatenate baseUrl and renderFilePrefix to imageUrl
@@ -78,22 +72,41 @@ export class ExampleView extends DOMWidgetView {
         if (overlayPath !== '') {
           // Only concatenate overlayUrl if there is a value
           overlayUrl = `${baseUrl}${renderFilePrefix}${full_overlay_path}`
-          iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}&overlayUrl=${overlayUrl}`;
-        }
-        else {
-          iframeSrc = `${iframeSrc}?imageUrl=${imageUrl}`;
         }
       }
     }
 
-    // Create an iframe element
-    const iframe = document.createElement('iframe');
-    iframe.src = iframeSrc;
-    iframe.width = '100%';  
-    // Add the unit 'px' to the height value
-    iframe.style.height = frame_height+'px';
+    // Set the image url
+    store.setState({
+      urls: [
+        imageUrl,
+      ],
+    });
+
+    // Set the overlay url
+    fetch(overlayUrl).then((response) => {
+      response.json().then((overlayData) => {
+        store.setState({
+          overlayData,
+        });
+        const heatmapIds = Object.keys(overlayData.value_range)
+          .map((d: any) => ({ label: d, value: d }))
+          .concat({ label: 'None', value: null });
     
-  // Append the iframe to the widget's DOM element
-    this.el.appendChild(iframe);
+        store.setState({
+          heatmapIds,
+        });
+      });
+    });    
+
+    this.el.innerHTML = `
+    <div style="width:100%;height:900px">
+    <div style="position: absolute; z-index: 100; right: 0">
+              <image-menu-web-component></image-menu-web-component>
+              <overlay-menu-web-component></overlay-menu-web-component>
+            </div>
+            <viv-viewer-web-component-wrapper></viv-viewer-web-component-wrapper>
+            </div>
+    `;
   }
 }
