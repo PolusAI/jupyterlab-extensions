@@ -26,9 +26,9 @@ class Render(DOMWidget):
     full_image_path = Unicode('').tag(sync=True)
     overlayPath = Unicode('').tag(sync=True)
     full_overlay_path = Unicode('').tag(sync=True)
-    height = Integer(0).tag(sync=True)
+    height = Integer(900).tag(sync=True)
     
-    def __init__(self, imagePath='', overlayPath='', height=0, **kwargs):
+    def __init__(self, imagePath='', overlayPath='', height=900, **kwargs):
         super().__init__(**kwargs)
 
 # Commented code below uses OS module to grab system path and perform checks
