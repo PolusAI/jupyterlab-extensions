@@ -56,9 +56,12 @@ class Render(DOMWidget):
             if not full_image_path.is_absolute():
                 full_image_path = notebook_dir / imagePath 
             self.full_image_path = str(full_image_path) # Convert to string object
-        # Overlays are stored locally and dont have url clause
-        full_overlay_path = Path(overlayPath)
-        if not full_overlay_path.is_absolute():
-            full_overlay_path = notebook_dir / overlayPath
-        self.full_overlay_path = str(full_overlay_path)
+        # If overlayPath starts with 'http', set full_overlay_path to overlayPath
+        if overlayPath.startswith('http'):
+            self.full_overlay_path = overlayPath
+        else:
+            full_overlay_path = Path(overlayPath)
+            if not full_overlay_path.is_absolute():
+                full_overlay_path = notebook_dir / overlayPath
+            self.full_overlay_path = str(full_overlay_path)
         

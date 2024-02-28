@@ -19,8 +19,7 @@ import '../css/widget.css';
 
 // Get the base URL of the JupyterLab session
 const baseUrl = PageConfig.getBaseUrl();
-// url for server-ext file
-const renderUIPath = 'jupyterlab-polus-render/render/index.html';
+// URL for serving images
 const renderFilePrefix = 'jupyterlab-polus-render/image'
 
 export class ExampleModel extends DOMWidgetModel {
@@ -33,7 +32,6 @@ export class ExampleModel extends DOMWidgetModel {
       _view_name: ExampleModel.view_name,
       _view_module: ExampleModel.view_module,
       _view_module_version: ExampleModel.view_module_version,
-      iframeSrc: `${baseUrl}${renderUIPath}`
     };
   }
 
@@ -59,22 +57,28 @@ export class ExampleView extends DOMWidgetView {
     let imageUrl = '';
     let overlayUrl = '';
 
-    // Checks for imagePath and overlayPath
+    // URL was provided
     if (imagePath.startsWith('http')) {
       imageUrl = `${full_image_path}`;
+    // Local file was provided
+    } else {
+      if (imagePath !== '') {
+        imageUrl = `${baseUrl}${renderFilePrefix}${full_image_path}`;
+      }
+    }
+
+    // URL was provided
+    if (overlayPath.startsWith('http')) {
+      overlayUrl = `${full_overlay_path}`;
+    // Local file was provided
+    } else {
       if (overlayPath !== '') {
         overlayUrl = `${baseUrl}${renderFilePrefix}${full_overlay_path}`
       }
-    } else {
-      // Concatenate baseUrl and renderFilePrefix to imageUrl
-      if (imagePath !== '') {
-        imageUrl = `${baseUrl}${renderFilePrefix}${full_image_path}`;
-        if (overlayPath !== '') {
-          // Only concatenate overlayUrl if there is a value
-          overlayUrl = `${baseUrl}${renderFilePrefix}${full_overlay_path}`
-        }
-      }
     }
+
+    console.log('imageUrl', imageUrl);
+    console.log('overlayUrl', overlayUrl);
 
     // Set the image url
     store.setState({
