@@ -82,7 +82,7 @@ Render(imagePath = 'images/pyramid.zarr', overlayPath = 'images/overlay_render2.
 
 # API Endpoints
 
-- `/jupyterlab-polus-render/image/(.+)`: Serves images at a specfied path. Does not serve directories.
+- `/jupyterlab-polus-render/image/(.+)`: Serves tiff images and zarr datasets at a specfied path.
 
 
 ## Contributing

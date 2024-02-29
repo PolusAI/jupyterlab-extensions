@@ -8,7 +8,7 @@ TODO: Add module docstring
 # import os
 from pathlib import Path
 from ipywidgets import DOMWidget
-from traitlets import Unicode
+from traitlets import Unicode, Bool
 from ._frontend import module_name, module_version
 
 
@@ -23,6 +23,8 @@ class Render(DOMWidget):
     full_image_path = Unicode('').tag(sync=True)
     overlayPath = Unicode('').tag(sync=True)
     full_overlay_path = Unicode('').tag(sync=True)
+    is_imagePath_url = Bool(False).tag(sync=True)  # Flag if the imagePath is a URL
+    is_overlayPath_url = Bool(False).tag(sync=True) # Flag if the overlayPath is a URL
     
     def __init__(self, imagePath='', overlayPath='', **kwargs):
         super().__init__(**kwargs)
@@ -45,8 +47,10 @@ class Render(DOMWidget):
         notebook_dir = Path.cwd() # Get the current working directory
         self.imagePath = imagePath
         self.overlayPath = overlayPath
+
         # If imagePath starts with 'http', set full_image_path to imagePath
         if imagePath.startswith('http'):
+            self.is_imagePath_url = True
             self.full_image_path = imagePath
         else:
             full_image_path = Path(imagePath) # Convert imagePath to a Path object
@@ -55,6 +59,7 @@ class Render(DOMWidget):
             self.full_image_path = str(full_image_path) # Convert to string object
         # If overlayPath starts with 'http', set full_overlay_path to overlayPath
         if overlayPath.startswith('http'):
+            self.is_overlayPath_url = True
             self.full_overlay_path = overlayPath
         else:
             full_overlay_path = Path(overlayPath)
