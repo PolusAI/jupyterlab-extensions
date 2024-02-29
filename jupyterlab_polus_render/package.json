@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/PolusAI/jupyterlab_polus_render/issues"
   },
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "author": {
     "name": "Akshat Saini, Jeff Chen",
     "email": "akshat.saini@axleinfo.com"

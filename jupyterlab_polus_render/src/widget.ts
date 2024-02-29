@@ -1,8 +1,3 @@
-// Copyright (c) Akshat Saini, Jeff Chen
-// Distributed under the terms of the Modified BSD License.
-// Copyright (c) as
-// Distributed under the terms of the Modified BSD License.
-
 import {
   DOMWidgetModel,
   DOMWidgetView,

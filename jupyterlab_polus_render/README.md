@@ -10,7 +10,7 @@ The are three ways to load the data:
 3. Dragging-and-dropping the dataset.
 </br>
 
-<img src="images/home.png"/>
+<img src="images/image.png"/>
 
 ## Requirements
 
@@ -50,61 +50,47 @@ jupyter labextension list
 
 ## Sample usage
 ```Python
-import jupyterlab_polus_render
+from jupyterlab_polus_render import Render
 
-# Initiates the static build of Render with height of iFrame window set to 900px.
-jupyterlab_polus_render.Render(height = 900)
+# Initiates RenderUI.
+Render()
 
 # Serves a tiff image by providing the local path. 
-jupyterlab_polus_render.Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif', height = 900)
+Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif')
 
 # Serves a tiff image by providing the local path along with an overlay used for the image. 
-jupyterlab_polus_render.Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif', overlayPath = 'images/overlay_render2.json', height = 900)
+Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif', overlayPath = 'images/overlay_render2.json')
 
 # Embeds an iFrame of a static build of Polus Render with remote image
-jupyterlab_polus_render.Render(imagePath = 'https://viv-demo.storage.googleapis.com/LuCa-7color_3x3component_data.ome.tif', height = 900)
+Render(imagePath = 'https://viv-demo.storage.googleapis.com/LuCa-7color_3x3component_data.ome.tif')
 
 # Serves a zarr dataset by providing the local path along with an overlay used for the dataset. 
-jupyterlab_polus_render.Render(imagePath = 'images/pyramid.zarr', overlayPath = 'images/overlay_render2.json', height = 900)
+Render(imagePath = 'images/pyramid.zarr', overlayPath = 'images/overlay_render2.json')
+```
 
-# Adding a static build of Polus Render
-- Remove all existing files in `~/render-server-ext/static/render-ui/`. 
-- Run `npx nx build render-ui` in the root of your Polus Render folder
-- Transfer generated files from `~/Polus Render/dist/apps/render-ui/` into `~/render-server-ext/static/render-ui/`. 
+# Implementation Details
+
+### Frontend
+- The frontend part of the extension effectively utilizes the polus-render package which is used to serve the static build of the render application. This approach ensures a clean, responsive and reliable interface between the backend and the frontend.
+
+### Backend 
+- The backend functionality, including serving images is handled by the server extension. This extension is integrated with the Jupyterlab server environment and allows custom functionality based on the application's needs.  
+
+###
+- In summary, the Jupyterlab-Polus-Render extension combines the frontend and the backend components into a single extension resulting in a more robust and cohesive extension.
+
 
 # API Endpoints
-- `/render/default/(.*)`: Help on usage of extension
-- `/static/render/render-ui/index.html`: Serves static build of Polus Render.
-- `/render/file/(.+)`: Serves files at a specfied path. Does not serve directories.
 
-# Examples
-For the following examples, JupyterLab is ran locally at `https://localhost:7832/lab`
+- `/jupyterlab-polus-render/image/(.+)`: Serves images at a specfied path. Does not serve directories.
 
-
-## Render-UI 
-URL: `http://localhost:7832/static/render/render-ui/index.html?imageUrl=http://localhost:7832/render/file//home/jovyan/work/images/4by4large_intensity_image.ome.tif`
-
-<img src="images/renderui-1.png"/>
-
-
-URL: `http://localhost:7832/static/render/render-ui/index.html?imageUrl=http://localhost:7832/render/file//home/jovyan/work/images/x00_y01_p02_c1.ome.tif&overlayUrl=http://localhost:7832/render/file//home/jovyan/work/overlays/combined.json`
-
-<img src="images/renderui-2.png"/>
-
-
-## Image
-URL: `http://localhost:7832/render/file/home/jovyan/work/samples/butterfly.jpeg`
-
-<img src="images/image.png"/>
-
-```
 
 ## Contributing
 ### Development Install
 
 Create a dev environment:
 ```bash
-conda create -n jupyterlab_polus_render-dev -c conda-forge nodejs python jupyterlab=4.0.11
+conda create -n jupyterlab_polus_render-dev -c conda-forge nodejs python jupyterlab=4.0.11 ipywidgets
 conda activate jupyterlab_polus_render-dev
 ```
 

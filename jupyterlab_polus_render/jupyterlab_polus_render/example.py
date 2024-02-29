@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Copyright (c) Akshat Saini, Jeff Chen.
-# Distributed under the terms of the Modified BSD License.
-
 """
 TODO: Add module docstring
 """

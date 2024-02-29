@@ -1,6 +1,3 @@
-// Copyright (c) Akshat Saini, Jeff Chen
-// Distributed under the terms of the Modified BSD License.
-
 import { Application, IPlugin } from '@lumino/application';
 
 import { Widget } from '@lumino/widgets';
