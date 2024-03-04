@@ -44,26 +44,26 @@ class Render(DOMWidget):
 
 # Below uses pathlib module
         
-        notebook_dir = Path.cwd() # Get the current working directory
         self.imagePath = imagePath
         self.overlayPath = overlayPath
 
-        # If imagePath starts with 'http', set full_image_path to imagePath
-        if imagePath.startswith('http'):
-            self.is_imagePath_url = True
-            self.full_image_path = imagePath
+        self.full_image_path, self.is_imagePath_url = self.create_full_path(imagePath)
+        self.full_overlay_path, self.is_overlayPath_url = self.create_full_path(overlayPath)
+
+
+    def create_full_path(self, path):
+        notebook_dir = Path.cwd()  # Get the current working directory
+
+        # If the path starts with 'http', return path value and set True for URL flag
+        if path.startswith('http'):
+            return path, True 
         else:
-            full_image_path = Path(imagePath) # Convert imagePath to a Path object
-            if not full_image_path.is_absolute():
-                full_image_path = notebook_dir / imagePath 
-            self.full_image_path = str(full_image_path) # Convert to string object
-        # If overlayPath starts with 'http', set full_overlay_path to overlayPath
-        if overlayPath.startswith('http'):
-            self.is_overlayPath_url = True
-            self.full_overlay_path = overlayPath
-        else:
-            full_overlay_path = Path(overlayPath)
-            if not full_overlay_path.is_absolute():
-                full_overlay_path = notebook_dir / overlayPath
-            self.full_overlay_path = str(full_overlay_path)
-        
+            full_path = Path(path)  # Convert path to a Path object
+            if not full_path.is_absolute():
+                full_path = notebook_dir / path
+                    
+            # Raise FileNotFoundError if file does not exist             
+            if not full_path.exists():
+                raise FileNotFoundError(f"The file '{full_path}' does not exist.")
+            
+            return str(full_path), False

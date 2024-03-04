@@ -10,7 +10,6 @@ import { MODULE_NAME, MODULE_VERSION } from './version';
 import { PageConfig } from '@jupyterlab/coreutils';
 import { store } from '@labshare/polus-render';
 
-
 // Import the CSS
 import '../css/widget.css';
 
@@ -55,31 +54,8 @@ export class ExampleView extends DOMWidgetView {
     let full_overlay_path = this.model.get('full_overlay_path');
     let isImagePathUrl = this.model.get('is_imagePath_url');
     let isOverlayPathUrl = this.model.get('is_overlayPath_url');
-    let imageUrl = isImagePathUrl ? full_image_path : `${baseUrl}${renderFilePrefix}${full_image_path}`; // condition ? valueIfTrue : valueIfFalse
+    let imageUrl = isImagePathUrl ? full_image_path : `${baseUrl}${renderFilePrefix}${full_image_path}`; // T/F condition ? valueIfTrue : valueIfFalse
     let overlayUrl = isOverlayPathUrl ? full_overlay_path : `${baseUrl}${renderFilePrefix}${full_overlay_path}`;
-
-    // // URL was provided
-    // if (imagePath.startsWith('http')) {
-    //   imageUrl = `${full_image_path}`;
-    // // Local file was provided
-    // } else {
-    //   if (imagePath !== '') {
-    //     imageUrl = `${baseUrl}${renderFilePrefix}${full_image_path}`;
-    //   }
-    // }
-
-    // // URL was provided
-    // if (overlayPath.startsWith('http')) {
-    //   overlayUrl = `${full_overlay_path}`;
-    // // Local file was provided
-    // } else {
-    //   if (overlayPath !== '') {
-    //     overlayUrl = `${baseUrl}${renderFilePrefix}${full_overlay_path}`
-    //   }
-    // }
-
-    console.log('imageUrl', imageUrl);
-    console.log('overlayUrl', overlayUrl);
 
     // Set the image url
     store.setState({
