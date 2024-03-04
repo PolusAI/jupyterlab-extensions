@@ -13,9 +13,9 @@
     "dist/*.js",
     "css/*.css"
   ],
-  "homepage": "https://github.com/PolusAI/jupyterlab_polus_render",
+  "homepage": "https://github.com/PolusAI/jupyterlab-extensions/tree/master/jupyterlab_polus_render",
   "bugs": {
-    "url": "https://github.com/PolusAI/jupyterlab_polus_render/issues"
+    "url": "https://github.com/PolusAI/jupyterlab-extensions/issues"
   },
   "license": "MIT",
   "author": {
@@ -26,7 +26,7 @@
   "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PolusAI/jupyterlab_polus_render"
+    "url": "https://github.com/PolusAI/jupyterlab-extensions"
   },
   "scripts": {
     "build": "jlpm run build:lib && jlpm run build:nbextension && jlpm run build:labextension:dev",

@@ -55,34 +55,34 @@ from jupyterlab_polus_render import Render
 # Initiates RenderUI.
 Render()
 
-# Serves a tiff image by providing the local path. 
+# Shows a tiff image by providing the local path. 
 Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif')
 
-# Serves a tiff image by providing the local path along with an overlay used for the image. 
+# Shows a tiff image by providing the local path along with an overlay used for the image. 
 Render(imagePath = 'images/LuCa-7color_3x3component_data.ome.tif', overlayPath = 'images/overlay_render2.json')
 
-# Embeds an iFrame of a static build of Polus Render with remote image
+# Shows a tiff image by providing a remote url. 
 Render(imagePath = 'https://viv-demo.storage.googleapis.com/LuCa-7color_3x3component_data.ome.tif')
 
-# Serves a zarr dataset by providing the local path along with an overlay used for the dataset. 
+# Shows a zarr dataset by providing the local path along with an overlay used for the dataset. 
 Render(imagePath = 'images/pyramid.zarr', overlayPath = 'images/overlay_render2.json')
 ```
 
 # Implementation Details
 
 ### Frontend
-- The frontend part of the extension effectively utilizes the polus-render package which is used to serve the static build of the render application. This approach ensures a clean, responsive and reliable interface between the backend and the frontend.
+- The frontend part of the extension effectively utilizes the @labshare/polus-render npm package which is used to visualize tiled TIFF images and overlays given the URL of the image/overlay. 
 
 ### Backend 
 - The backend functionality, including serving images is handled by the server extension. This extension is integrated with the Jupyterlab server environment and allows custom functionality based on the application's needs.  
 
 ###
-- In summary, the Jupyterlab-Polus-Render extension combines the frontend and the backend components into a single extension resulting in a more robust and cohesive extension.
+- In summary, the Jupyterlab Polus Render extension combines the frontend and the backend components into a single extension.
 
 
 # API Endpoints
 
-- `/jupyterlab-polus-render/image/(.+)`: Serves tiff images and zarr datasets at a specfied path.
+- `/jupyterlab-polus-render/image/(.+)`: Shows tiff images and zarr datasets at a specfied path.
 
 
 ## Contributing

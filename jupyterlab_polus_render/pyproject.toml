@@ -58,7 +58,7 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/PolusAI/jupyterlab_polus_render"
+Homepage = "https://github.com/PolusAI/jupyterlab-extensions/tree/master/jupyterlab_polus_render"
 
 [tool.hatch.metadata]
 allow-direct-references = true
