@@ -1,7 +1,7 @@
 {
   "name": "jupyterlab_polus_render",
   "version": "1.0.0",
-  "description": "A Jupyterlab extension for RenderUI.",
+  "description": "A Jupyterlab extension for Polus Render.",
   "keywords": [
     "jupyter",
     "jupyterlab",
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@jupyter-widgets/base": "^1.1.10 || ^2 || ^3 || ^4 || ^5 || ^6",
-    "@labshare/polus-render": "file:labshare-polus-render-0.1.0.tgz",
+    "@labshare/polus-render": "^0.1.4-test",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",

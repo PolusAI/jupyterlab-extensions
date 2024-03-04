@@ -2080,10 +2080,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@labshare/polus-render@file:labshare-polus-render-0.1.0.tgz::locator=jupyterlab_polus_render%40workspace%3A.":
-  version: 0.1.0
-  resolution: "@labshare/polus-render@file:labshare-polus-render-0.1.0.tgz::locator=jupyterlab_polus_render%40workspace%3A."
-  checksum: 60030561c2bbe7843a1de845c248b1851381cbb1aa3b08fa13db8f82431d300de659e5983e7b5da826f20577cdae5395600f439c55509f54041d18a5e93f4b2c
+"@labshare/polus-render@npm:^0.1.4-test":
+  version: 0.1.4-test
+  resolution: "@labshare/polus-render@npm:0.1.4-test"
+  checksum: 1359cf608903479c9543731647b4cd09398362404fa645e4da2234a150d190420f50011cba8de23118e440414260f2676b0870d61415dc3773caf30748a10bdf
   languageName: node
   linkType: hard
 
@@ -3111,13 +3111,13 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:*":
-  version: 18.2.61
-  resolution: "@types/react@npm:18.2.61"
+  version: 17.0.76
+  resolution: "@types/react@npm:17.0.76"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: a100c09bc0d6d1a0a42b3fa0944b71d209b5adea6515fc21109972ec3267185372cc416c0467b1998afce6b90fc80f4c0029b5d975afb0b3070d864c7a924a5e
+  checksum: 2bee42fc8328b3e93281601e53d0f1e6e6a8826c3b2a41635432fc859839a614245486d9bf559e98695d658a72f71f97d487f46c06a6148cfc827c7c50876af0
   languageName: node
   linkType: hard
 
@@ -4951,9 +4951,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.668":
-  version: 1.4.690
-  resolution: "electron-to-chromium@npm:1.4.690"
-  checksum: c3fd731041dde1096ede37aded29a08e77e80182f3f602ad065c88323ea0cbcad3d9b10a86a107b9db41dde19b6f3ed81b9e0cde30e9b2338bf75a239ad57b3b
+  version: 1.4.691
+  resolution: "electron-to-chromium@npm:1.4.691"
+  checksum: df7811863e39c039fd2f60a94da7e3c7136398d9b25fcae7c91837e7c03434e8cc97f79981221ff592f1e9879db301c1e61ec962d223d5e64ed94123b895268e
   languageName: node
   linkType: hard
 
@@ -7354,7 +7354,7 @@ __metadata:
     "@jupyter-widgets/base": ^1.1.10 || ^2 || ^3 || ^4 || ^5 || ^6
     "@jupyter-widgets/base-manager": ^1.0.7
     "@jupyterlab/builder": ^4.0.11
-    "@labshare/polus-render": "file:labshare-polus-render-0.1.0.tgz"
+    "@labshare/polus-render": ^0.1.4-test
     "@lumino/application": ^2.3.0
     "@lumino/widgets": ^2.3.1
     "@material-ui/core": ^4.11.0
