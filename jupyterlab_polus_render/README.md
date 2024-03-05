@@ -52,7 +52,7 @@ jupyter labextension list
 ```Python
 from jupyterlab_polus_render import Render
 
-# Initiates RenderUI.
+# Initiates Polus Render.
 Render()
 
 # Shows a tiff image by providing the local path. 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from .example import Render
+from .render import Render
 from ._version import __version__, version_info
 from .handlers import setup_handlers
 
@@ -54,4 +54,4 @@ def _jupyter_server_extension_points():
 def _load_jupyter_server_extension(server_app):
     setup_handlers(server_app.web_app)
     name = "jupyterlab_polus_render"
-    server_app.log.info(f"!!!!!!!! Registered {name} server extension")
+    server_app.log.info(f"Registered {name} server extension")

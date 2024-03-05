@@ -8,7 +8,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jupyterlab_polus_render"
-description = "A Jupyterlab extension for RenderUI."
+description = "A Jupyterlab extension for Polus Render."
 readme = "README.md"
 license = { file = "LICENSE.txt" }
 requires-python = ">=3.9"

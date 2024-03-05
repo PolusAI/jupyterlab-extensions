@@ -2,7 +2,19 @@
 # coding: utf-8
 
 """
-TODO: Add module docstring
+This module defines a `Render` class, which is a subclass of `DOMWidget` from ipywidgets. The `Render` widget 
+allows users to open images in Polus Render extension with options to specify file paths either locally or via remote URL.
+
+Attributes:
+    - imagePath (str): The path to the image file or remote URL entered by user.
+    - overlayPath (str): The path to the overlay file or remote URL entered by user.
+    - full_image_path (str): The absolute path to the image file.
+    - full_overlay_path (str): The absolute path to the overlay file.
+    - is_imagePath_url (bool): A flag indicating whether the imagePath is a URL.
+    - is_overlayPath_url (bool): A flag indicating whether the overlayPath is a URL.
+
+Methods:
+    - create_full_path: creates the absolute path for a given file path. Handles both local and remote URL paths.
 """
 
 # import os
@@ -13,10 +25,10 @@ from ._frontend import module_name, module_version
 
 
 class Render(DOMWidget):
-    _model_name = Unicode('ExampleModel').tag(sync=True)
+    _model_name = Unicode('RenderModel').tag(sync=True)
     _model_module = Unicode(module_name).tag(sync=True)
     _model_module_version = Unicode(module_version).tag(sync=True)
-    _view_name = Unicode('ExampleView').tag(sync=True)
+    _view_name = Unicode('RenderView').tag(sync=True)
     _view_module = Unicode(module_name).tag(sync=True)
     _view_module_version = Unicode(module_version).tag(sync=True)
     imagePath = Unicode('').tag(sync=True)
@@ -28,21 +40,6 @@ class Render(DOMWidget):
     
     def __init__(self, imagePath='', overlayPath='', **kwargs):
         super().__init__(**kwargs)
-
-# Commented code below uses OS module to grab system path and perform checks
-        
-        # notebook_dir = os.path.dirname(os.path.realpath(__name__))
-        # self.imagePath = imagePath
-        # self.height = height
-        # full_image_path = imagePath
-        # # Check for sys path or relative path
-        # if os.path.isabs(imagePath):
-        #     full_image_path = imagePath
-        # else:   
-        #     full_image_path = os.path.join(notebook_dir, imagePath)
-        # self.full_image_path = full_image_path
-
-# Below uses pathlib module
         
         self.imagePath = imagePath
         self.overlayPath = overlayPath
@@ -52,14 +49,13 @@ class Render(DOMWidget):
 
 
     def create_full_path(self, path):
-        notebook_dir = Path.cwd()  # Get the current working directory
-
         # If the path starts with 'http', return path value and set True for URL flag
         if path.startswith('http'):
             return path, True 
         else:
             full_path = Path(path)  # Convert path to a Path object
             if not full_path.is_absolute():
+                notebook_dir = Path.cwd()  # Get the current working directory
                 full_path = notebook_dir / path
                     
             # Raise FileNotFoundError if file does not exist             
@@ -67,3 +63,4 @@ class Render(DOMWidget):
                 raise FileNotFoundError(f"The file '{full_path}' does not exist.")
             
             return str(full_path), False
+        
