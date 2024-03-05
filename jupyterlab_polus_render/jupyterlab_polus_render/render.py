@@ -32,20 +32,15 @@ class Render(DOMWidget):
     _view_module = Unicode(module_name).tag(sync=True)
     _view_module_version = Unicode(module_version).tag(sync=True)
     imagePath = Unicode('').tag(sync=True)
-    full_image_path = Unicode('').tag(sync=True)
     overlayPath = Unicode('').tag(sync=True)
-    full_overlay_path = Unicode('').tag(sync=True)
     is_imagePath_url = Bool(False).tag(sync=True)  # Flag if the imagePath is a URL
     is_overlayPath_url = Bool(False).tag(sync=True) # Flag if the overlayPath is a URL
     
     def __init__(self, imagePath='', overlayPath='', **kwargs):
         super().__init__(**kwargs)
-        
-        self.imagePath = imagePath
-        self.overlayPath = overlayPath
 
-        self.full_image_path, self.is_imagePath_url = self.create_full_path(imagePath)
-        self.full_overlay_path, self.is_overlayPath_url = self.create_full_path(overlayPath)
+        self.imagePath, self.is_imagePath_url = self.create_full_path(imagePath)
+        self.overlayPath, self.is_overlayPath_url = self.create_full_path(overlayPath)
 
 
     def create_full_path(self, path):
@@ -55,8 +50,9 @@ class Render(DOMWidget):
         else:
             full_path = Path(path)  # Convert path to a Path object
             if not full_path.is_absolute():
-                notebook_dir = Path.cwd()  # Get the current working directory
-                full_path = notebook_dir / path
+                notebook_dir = Path.cwd()  # Get the current notebook working directory
+                project_root_dir = notebook_dir.parents[0]
+                full_path = project_root_dir / path
                     
             # Raise FileNotFoundError if file does not exist             
             if not full_path.exists():

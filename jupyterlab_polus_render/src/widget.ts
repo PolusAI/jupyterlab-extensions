@@ -28,8 +28,6 @@ export class RenderModel extends DOMWidgetModel {
       _view_name: RenderModel.view_name,
       _view_module: RenderModel.view_module,
       _view_module_version: RenderModel.view_module_version,
-      is_imagePath_url: false, // Default 
-      is_overlayPath_url: false, // Default
     };
   }
 
@@ -48,14 +46,12 @@ export class RenderModel extends DOMWidgetModel {
 
 export class RenderView extends DOMWidgetView {
   render() {
-    //let imagePath = this.model.get('imagePath');
-    let full_image_path = this.model.get('full_image_path');
-    //let overlayPath = this.model.get('overlayPath');
-    let full_overlay_path = this.model.get('full_overlay_path');
+    let imagePath = this.model.get('imagePath');
+    let overlayPath = this.model.get('overlayPath');
     let isImagePathUrl = this.model.get('is_imagePath_url');
     let isOverlayPathUrl = this.model.get('is_overlayPath_url');
-    let imageUrl = isImagePathUrl ? full_image_path : `${baseUrl}${renderFilePrefix}${full_image_path}`; // T/F condition ? valueIfTrue : valueIfFalse
-    let overlayUrl = isOverlayPathUrl ? full_overlay_path : `${baseUrl}${renderFilePrefix}${full_overlay_path}`;
+    let imageUrl = isImagePathUrl ? imagePath : `${baseUrl}${renderFilePrefix}${imagePath}`; // T/F condition ? valueIfTrue : valueIfFalse
+    let overlayUrl = isOverlayPathUrl ? overlayPath : `${baseUrl}${renderFilePrefix}${overlayPath}`;
 
     // Set the image url
     store.setState({
