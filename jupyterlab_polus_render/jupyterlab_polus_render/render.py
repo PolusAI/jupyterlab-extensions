@@ -6,10 +6,10 @@ This module defines a `Render` class, which is a subclass of `DOMWidget` from ip
 allows users to open images in Polus Render extension with options to specify file paths either locally or via remote URL.
 
 Attributes:
-    - imagePath (str): The path to the image file or remote URL entered by user.
-    - overlayPath (str): The path to the overlay file or remote URL entered by user.
-    - full_image_path (str): The absolute path to the image file.
-    - full_overlay_path (str): The absolute path to the overlay file.
+    - imagePath (str): The local path to the image file or remote URL entered by user. 
+        * The entered local path for an image can be either relative or absolute.  
+    - overlayPath (str): The local path to the overlay file or remote URL entered by user.
+        * The entered local path for an overlay can be either relative or absolute. 
     - is_imagePath_url (bool): A flag indicating whether the imagePath is a URL.
     - is_overlayPath_url (bool): A flag indicating whether the overlayPath is a URL.
 
