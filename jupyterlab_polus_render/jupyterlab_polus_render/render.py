@@ -51,8 +51,7 @@ class Render(DOMWidget):
             full_path = Path(path)  # Convert path to a Path object
             if not full_path.is_absolute():
                 notebook_dir = Path.cwd()  # Get the current notebook working directory
-                project_root_dir = notebook_dir.parents[0]
-                full_path = project_root_dir / path
+                full_path = notebook_dir / path
                     
             # Raise FileNotFoundError if file does not exist             
             if not full_path.exists():
