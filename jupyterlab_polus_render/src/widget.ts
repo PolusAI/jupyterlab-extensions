@@ -78,12 +78,7 @@ export class RenderView extends DOMWidgetView {
 
     this.el.innerHTML = `
     <div style="width:100%;height:900px">
-    <div style="position: absolute; z-index: 100; right: 0">
-              <image-menu-web-component></image-menu-web-component>
-              <overlay-menu-web-component></overlay-menu-web-component>
-            </div>
-            <viv-viewer-web-component-wrapper></viv-viewer-web-component-wrapper>
-            </div>
+    <polus-render></polus-render>
     `;
   }
 }
