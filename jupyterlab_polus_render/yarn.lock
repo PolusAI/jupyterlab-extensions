@@ -2080,10 +2080,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@labshare/polus-render@npm:^0.1.4-test":
-  version: 0.1.4-test
-  resolution: "@labshare/polus-render@npm:0.1.4-test"
-  checksum: 1359cf608903479c9543731647b4cd09398362404fa645e4da2234a150d190420f50011cba8de23118e440414260f2676b0870d61415dc3773caf30748a10bdf
+"@labshare/polus-render@npm:0.2.6":
+  version: 0.2.6
+  resolution: "@labshare/polus-render@npm:0.2.6"
+  checksum: a354000c898ead8e60aeedca7f7bbef1619c8799e928069a86f304da1bf925425769b6319d93be98396f473ecf3bde80edcdc0d540d39caf370a13336d5f51ed
   languageName: node
   linkType: hard
 
@@ -7354,7 +7354,7 @@ __metadata:
     "@jupyter-widgets/base": ^1.1.10 || ^2 || ^3 || ^4 || ^5 || ^6
     "@jupyter-widgets/base-manager": ^1.0.7
     "@jupyterlab/builder": ^4.0.11
-    "@labshare/polus-render": ^0.1.4-test
+    "@labshare/polus-render": 0.2.6
     "@lumino/application": ^2.3.0
     "@lumino/widgets": ^2.3.1
     "@material-ui/core": ^4.11.0
