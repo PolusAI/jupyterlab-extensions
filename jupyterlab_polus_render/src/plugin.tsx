@@ -145,9 +145,12 @@ function activateWidgetExtension(
       filePath.id = 'filePath';
       const dropzone = document.createElement('div');
       dropzone.id = 'dropzoneContainer';
+      const polusRender = document.createElement('polus-render');
 
       this.el.appendChild(filePath);
       this.el.appendChild(dropzone);
+      dropzone.appendChild(polusRender);
+      
 
       // Attach drag and drop event listeners
       dropzone.addEventListener('dragenter', (event) => event.preventDefault());
