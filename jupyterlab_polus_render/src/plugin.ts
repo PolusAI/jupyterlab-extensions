@@ -10,6 +10,7 @@ import { RenderModel } from './widget';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 import { Drag } from '@lumino/dragdrop';
 
+
 const EXTENSION_ID = 'jupyterlab_polus_render:plugin';
 
 // Get the base URL of the JupyterLab session
@@ -99,10 +100,10 @@ function activateWidgetExtension(
       // Handle drop event
       const handleDrop = async (e: Event): Promise<void> => {
         const dragEvent = e as Drag.Event;
-        dragEvent.preventDefault();
         
         // Log the dropped item's data
-        console.log("Item dropped:", e);
+        console.log("Item dropped:", dragEvent);
+
         const widget = tracker.currentWidget;
         if (!widget) {
           return;
@@ -139,24 +140,30 @@ function activateWidgetExtension(
         }
       };
 
-      // Create the container element
-      // const dropzoneContainer = document.createElement('div');
+      // Create the div elements
       const filePath = document.createElement('div');
       filePath.id = 'filePath';
       const dropzone = document.createElement('div');
       dropzone.id = 'dropzoneContainer';
+      const containerStyle = 'width: 100%; height: 900px;'; // Specify the style for the container div
+      dropzone.setAttribute('style', containerStyle);  
+          
       const polusRender = document.createElement('polus-render');
-
-      this.el.appendChild(filePath);
-      this.el.appendChild(dropzone);
+  
+      // Append filePath and polusRender to the container dropzone
+      dropzone.appendChild(filePath);
       dropzone.appendChild(polusRender);
-      
 
+      // Append the container dropzone to this.el
+      this.el.appendChild(dropzone);
+
+    
       // Attach drag and drop event listeners
-      dropzone.addEventListener('dragenter', (event) => event.preventDefault());
-      dropzone.addEventListener('dragover', (event) => event.preventDefault());
-      dropzone.addEventListener('dragleave', (event) => event.preventDefault());
+      dropzone.addEventListener('dragenter', (event) => {});
+      dropzone.addEventListener('dragover', (event) => {});
+      dropzone.addEventListener('dragleave', (event) => {});
       dropzone.addEventListener('drop', handleDrop);
+      
     }
   } 
 
