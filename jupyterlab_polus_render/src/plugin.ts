@@ -38,24 +38,17 @@ function activateWidgetExtension(
     protected handleDragEnter(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
-      event.dropAction = "copy";
-      event.dropAction = "move";
       console.log("Drag enter event:", event);
-      event.dropAction = "copy";
-      event.dropAction = "move";
     }
 
     /**
      * Handle the lm-dragleave event for the widget.
      */
     protected handleDragLeave(event: Drag.Event): void {
-      // event.preventDefault();
-      // event.stopPropagation();
-      event.dropAction = "copy";
-      event.dropAction = "move";
+      event.preventDefault();
+      event.stopPropagation();
       console.log("Drag leave event:", event);
-      event.dropAction = "copy";
-      event.dropAction = "move";
+ 
     }
 
     /**
@@ -64,11 +57,9 @@ function activateWidgetExtension(
     protected handleDragOver(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
-      event.dropAction = "copy";
       event.dropAction = "move";
       console.log("Drag over event:", event);
-      event.dropAction = "copy";
-      event.dropAction = "move";
+
     }
 
     /**
@@ -77,11 +68,8 @@ function activateWidgetExtension(
     protected handleDrop(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
-      event.dropAction = "copy";
-      event.dropAction = "move";
       console.log("Item dropped:", event);
-      event.dropAction = "copy";
-      event.dropAction = "move";
+
     //   const widget = tracker.currentWidget;
     //   if (!widget) {
     //     return;
