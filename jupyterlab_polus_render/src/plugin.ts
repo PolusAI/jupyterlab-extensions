@@ -29,7 +29,7 @@ function activateWidgetExtension(
   registry: IJupyterWidgetRegistry,
   browserFactory: IFileBrowserFactory
 ): void { 
-  const tracker = browserFactory.tracker;
+  // const tracker = browserFactory.tracker;
   const RenderView = class extends DOMWidgetView {
 
     /**
@@ -38,16 +38,24 @@ function activateWidgetExtension(
     protected handleDragEnter(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
+      event.dropAction = "copy";
+      event.dropAction = "move";
       console.log("Drag enter event:", event);
+      event.dropAction = "copy";
+      event.dropAction = "move";
     }
 
     /**
      * Handle the lm-dragleave event for the widget.
      */
     protected handleDragLeave(event: Drag.Event): void {
-      event.preventDefault();
-      event.stopPropagation();
+      // event.preventDefault();
+      // event.stopPropagation();
+      event.dropAction = "copy";
+      event.dropAction = "move";
       console.log("Drag leave event:", event);
+      event.dropAction = "copy";
+      event.dropAction = "move";
     }
 
     /**
@@ -56,7 +64,11 @@ function activateWidgetExtension(
     protected handleDragOver(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
+      event.dropAction = "copy";
+      event.dropAction = "move";
       console.log("Drag over event:", event);
+      event.dropAction = "copy";
+      event.dropAction = "move";
     }
 
     /**
@@ -65,22 +77,27 @@ function activateWidgetExtension(
     protected handleDrop(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
+      event.dropAction = "copy";
+      event.dropAction = "move";
       console.log("Item dropped:", event);
-      const widget = tracker.currentWidget;
-      if (!widget) {
-        return;
-      }
-      const selectedItem = widget.selectedItems().next().value;
-      if (!selectedItem) {
-        return;
-      }
-      const relativePath = encodeURI(selectedItem.path);
-      console.log(relativePath);
+      event.dropAction = "copy";
+      event.dropAction = "move";
+    //   const widget = tracker.currentWidget;
+    //   if (!widget) {
+    //     return;
+    //   }
+    //   const selectedItem = widget.selectedItems().next().value;
+    //   if (!selectedItem) {
+    //     return;
+    //   }
+    //   const relativePath = encodeURI(selectedItem.path);
+      // console.log(relativePath);
     }
 
     protected handleEvent(event: Drag.Event): void {
-      event.preventDefault();
-      event.stopPropagation();
+      console.log(event.supportedActions);
+      // event.preventDefault();
+      // event.stopPropagation();
       switch (event.type) {
         case 'lm-dragenter':
           this.handleDragEnter(event);
@@ -100,17 +117,25 @@ function activateWidgetExtension(
     }
 
     render() {
-      const dropzone = document.createElement('div');
-      dropzone.id = 'dropzoneContainer';
-      const containerStyle = 'width: 100%; height: 900px;'; 
-      dropzone.setAttribute('style', containerStyle);  
 
-      this.el.appendChild(dropzone);
 
-      dropzone.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event));
-      dropzone.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event));
-      dropzone.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event));
-      dropzone.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event));
+
+      const dropzoneWidget = new Widget();
+      const dropzoneElement = document.createElement('div');
+      dropzoneElement.textContent = 'Drop files here';
+    
+      // Combine both styles into a single string
+      const dropzoneStyle = 'border: 2px dashed #aaa; padding: 20px; text-align: center; width: 100%; height: 900px;';
+      dropzoneElement.setAttribute('style', dropzoneStyle);
+    
+      dropzoneWidget.node.appendChild(dropzoneElement);
+      this.el.appendChild(dropzoneWidget.node);
+    
+      dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event));
+      dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event));
+      dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event));
+      dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event));
+    
     }
   };
 
