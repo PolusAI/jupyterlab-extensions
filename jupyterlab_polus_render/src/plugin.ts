@@ -38,6 +38,7 @@ function activateWidgetExtension(
     protected handleDragEnter(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
+      // Access CSS class: dragover
       this.dropzoneElement.classList.add('dragover');
       console.log("Drag enter event:", event);
     }
@@ -108,6 +109,7 @@ function activateWidgetExtension(
     render() {
       const dropzoneWidget = new Widget();
       this.dropzoneElement = document.createElement('div');
+      // polus render 
       this.dropzoneElement.textContent = 'Drop files here';
       this.dropzoneElement.className = 'dropzone';
 

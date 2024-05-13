@@ -4,7 +4,7 @@
     height: 900px;
   }
   
-  .dropzone.dragover {
+.dragover {
     border: 6px dashed #aaa;
     padding: 20px;
     border-color: grey; 
