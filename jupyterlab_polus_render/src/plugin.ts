@@ -3,7 +3,9 @@ import { DOMWidgetView } from '@jupyter-widgets/base';
 import { Widget } from '@lumino/widgets';
 import { IJupyterWidgetRegistry } from '@jupyter-widgets/base';
 import { JupyterFrontEndPlugin } from '@jupyterlab/application';
+import { PageConfig } from '@jupyterlab/coreutils';
 import { IFileBrowserFactory } from '@jupyterlab/filebrowser';
+import { store } from '@labshare/polus-render';
 import { RenderModel } from './widget';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 import { Drag } from '@lumino/dragdrop';
@@ -11,6 +13,14 @@ import '../css/dropzone.css';
 
 const EXTENSION_ID = 'jupyterlab_polus_render:plugin';
 
+// Get the base URL of the JupyterLab session
+const baseUrl = PageConfig.getBaseUrl();
+// URL for serving images
+const renderFilePrefix = 'jupyterlab-polus-render/image';
+
+/**
+ * The render plugin.
+ */
 const renderPlugin: JupyterFrontEndPlugin<void> = {
   id: EXTENSION_ID,
   requires: [
@@ -32,6 +42,45 @@ function activateWidgetExtension(
   const RenderView = class extends DOMWidgetView {
     protected dropzoneElement: HTMLDivElement;
 
+    loadsetState() {
+      let imagePath = this.model.get('imagePath');
+      let overlayPath = this.model.get('overlayPath');
+      let isImagePathUrl = this.model.get('is_imagePath_url');
+      let isOverlayPathUrl = this.model.get('is_overlayPath_url');
+      let imageUrl = isImagePathUrl ? imagePath : `${baseUrl}${renderFilePrefix}${imagePath}`; // T/F condition ? valueIfTrue : valueIfFalse
+      let overlayUrl = isOverlayPathUrl ? overlayPath : `${baseUrl}${renderFilePrefix}${overlayPath}`;
+      
+      // Updates the state based on current value
+      this.model.set('is_imagePath_url', imagePath.startsWith('http')); 
+      this.model.set('isOverlayPathUrl', overlayPath.startsWith('http')); 
+      this.model.save_changes();
+
+
+      // Set the image url
+      store.setState({
+        urls: [
+          imageUrl,
+        ],
+      });
+
+      // Set the overlay url
+      fetch(overlayUrl).then((response) => {
+        response.json().then((overlayData) => {
+          store.setState({
+            overlayData,
+          });
+          const heatmapIds = Object.keys(overlayData.value_range)
+            .map((d: any) => ({ label: d, value: d }))
+            .concat({ label: 'None', value: null });
+
+          store.setState({
+            heatmapIds,
+          });
+        });
+      });
+    }
+
+
     /**
      * Handle the lm-dragenter event for the widget.
      */
@@ -40,6 +89,7 @@ function activateWidgetExtension(
       event.stopPropagation();
       // Access CSS class: dragover
       this.dropzoneElement.classList.add('dragover');
+      this.dropzoneElement.textContent = 'Drop files here'; // Show text when entering 
       console.log("Drag enter event:", event);
     }
 
@@ -50,8 +100,9 @@ function activateWidgetExtension(
       event.preventDefault();
       event.stopPropagation();
       this.dropzoneElement.classList.remove('dragover');
+      this.dropzoneElement.textContent = ''; // Hide text when leaving
       console.log("Drag leave event:", event);
-    }
+    } 
 
     /**
      * Handle the lm-dragover event for the widget.
@@ -59,6 +110,7 @@ function activateWidgetExtension(
     protected handleDragOver(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
+      /** dropAction is 'move' when an object is moved from it's original location into the target element or zone **/
       event.dropAction = "move";
       console.log("Drag over event:", event);
     }
@@ -66,10 +118,11 @@ function activateWidgetExtension(
     /**
      * Handle the lm-drop event for the widget.
      */
-    protected handleDrop(event: Drag.Event): void {
+    protected handleDrop(event: Drag.Event, filePath: HTMLElement): void {
       event.preventDefault();
       event.stopPropagation();
       this.dropzoneElement.classList.remove('dragover');
+      this.dropzoneElement.textContent = ''; // Hide text after dropping
       console.log("Item dropped:", event);
 
       const widget = tracker.currentWidget;
@@ -81,10 +134,34 @@ function activateWidgetExtension(
         return;
       }
       const relativePath = encodeURI(selectedItem.path);
-      console.log(relativePath);
+      
+      let notebook_absdir = this.model.get('notebook_absdir'); // Fetch from render.py
+
+      // An overlay gets dropped on an image
+      if (relativePath.endsWith('.json')){
+        if (filePath) {
+          filePath.innerHTML = `Path: ${relativePath}`;
+        }
+        this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
+        this.model.set('is_overlayPath_url', false);
+        this.model.save_changes();
+
+        this.loadsetState(); 
+      }
+      // An image gets dropped
+      else {
+        if (filePath) {
+          filePath.innerHTML = `Path: ${relativePath}`; 
+        }
+        this.model.set('imagePath', notebook_absdir + '/../' + relativePath);
+        this.model.set('is_imagePath_url', false);
+        this.model.save_changes();
+
+        this.loadsetState();
+      }
     }
 
-    protected handleEvent(event: Drag.Event): void {
+    protected handleEvent(event: Drag.Event, filePath: HTMLElement): void {
       console.log(event.supportedActions);
       // event.preventDefault();
       // event.stopPropagation();
@@ -99,7 +176,7 @@ function activateWidgetExtension(
           this.handleDragOver(event);
           break;
         case 'lm-drop':
-          this.handleDrop(event);
+          this.handleDrop(event, filePath);
           break;
         default:
           break;
@@ -109,17 +186,21 @@ function activateWidgetExtension(
     render() {
       const dropzoneWidget = new Widget();
       this.dropzoneElement = document.createElement('div');
-      // polus render 
-      this.dropzoneElement.textContent = 'Drop files here';
+      const filePath = document.createElement('div');
       this.dropzoneElement.className = 'dropzone';
+      this.dropzoneElement.appendChild(document.createTextNode('')); // Set the initial text content
 
+      // polus render 
+      const polusRender = document.createElement('polus-render');
+      this.dropzoneElement.appendChild(polusRender);
+      
       dropzoneWidget.node.appendChild(this.dropzoneElement);
       this.el.appendChild(dropzoneWidget.node);
 
-      this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event));
-      this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event));
-      this.dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event));
-      this.dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event));
+      this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event, filePath));
+      this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event, filePath));
+      this.dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event, filePath));
+      this.dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event, filePath));
     }
   };
 

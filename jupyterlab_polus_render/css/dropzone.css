@@ -5,6 +5,7 @@
   }
   
 .dragover {
+    text-align: center;
     border: 6px dashed #aaa;
     padding: 20px;
     border-color: grey; 
