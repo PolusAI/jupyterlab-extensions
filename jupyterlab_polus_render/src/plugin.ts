@@ -41,6 +41,7 @@ function activateWidgetExtension(
   const tracker = browserFactory.tracker;
   const RenderView = class extends DOMWidgetView {
     protected dropzoneElement: HTMLDivElement;
+    protected dropzoneWidget: Widget;
 
     loadsetState() {
       let imagePath = this.model.get('imagePath');
@@ -54,7 +55,6 @@ function activateWidgetExtension(
       this.model.set('is_imagePath_url', imagePath.startsWith('http')); 
       this.model.set('isOverlayPathUrl', overlayPath.startsWith('http')); 
       this.model.save_changes();
-
 
       // Set the image url
       store.setState({
@@ -79,7 +79,6 @@ function activateWidgetExtension(
         });
       });
     }
-
 
     /**
      * Handle the lm-dragenter event for the widget.
@@ -142,29 +141,41 @@ function activateWidgetExtension(
         if (filePath) {
           filePath.innerHTML = `Path: ${relativePath}`;
         }
-        this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
-        this.model.set('is_overlayPath_url', false);
-        this.model.save_changes();
 
-        this.loadsetState(); 
+        // // If the overlay path is the same as the current, force a state change
+        if (this.model.get('overlayPath') === notebook_absdir + '/../' + relativePath) {
+          this.model.set('overlayPath', '');
+        }
+
+        this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
+        this.model.set('is_overlayPath_url', false);  
+        this.model.save_changes();
+        this.render();
+        
       }
+
       // An image gets dropped
       else {
         if (filePath) {
           filePath.innerHTML = `Path: ${relativePath}`; 
         }
+        
+        // If the image path is the same as the current, force a state change
+        if (this.model.get('imagePath') === notebook_absdir + '/../' + relativePath) {
+          this.model.set('imagePath', '');
+        }
+
         this.model.set('imagePath', notebook_absdir + '/../' + relativePath);
         this.model.set('is_imagePath_url', false);
         this.model.save_changes();
-
-        this.loadsetState();
+        // console.log(this.loadsetState());
+        console.log(this.model.get('imageUrl'));
+        this.render();
       }
+
     }
 
     protected handleEvent(event: Drag.Event, filePath: HTMLElement): void {
-      console.log(event.supportedActions);
-      // event.preventDefault();
-      // event.stopPropagation();
       switch (event.type) {
         case 'lm-dragenter':
           this.handleDragEnter(event);
@@ -184,18 +195,30 @@ function activateWidgetExtension(
     }
 
     render() {
-      const dropzoneWidget = new Widget();
-      this.dropzoneElement = document.createElement('div');
-      const filePath = document.createElement('div');
-      this.dropzoneElement.className = 'dropzone';
-      this.dropzoneElement.appendChild(document.createTextNode('')); // Set the initial text content
+      this.loadsetState();
 
-      // polus render 
+      // Create dropzoneWidget if it doesn't exist
+      if (!this.dropzoneWidget) {
+        this.dropzoneWidget = new Widget();
+        this.dropzoneElement = document.createElement('div');
+        // Attach css class
+        this.dropzoneElement.className = 'dropzone';
+        this.dropzoneWidget.node.appendChild(this.dropzoneElement);
+        // Append the dropzoneWidget to the main element
+        this.el.appendChild(this.dropzoneWidget.node);
+      }
+
+      // Ensure the dropzoneElement is empty before appending new elements
+      this.dropzoneElement.innerHTML = '';
+
+      // Create the polusRender element and filePath element
+      const filePath = document.createElement('div');
+      filePath.id = 'filePath';
       const polusRender = document.createElement('polus-render');
+
+      // Append the filePath and polusRender elements to the dropzoneElement
+      this.dropzoneElement.appendChild(filePath);
       this.dropzoneElement.appendChild(polusRender);
-      
-      dropzoneWidget.node.appendChild(this.dropzoneElement);
-      this.el.appendChild(dropzoneWidget.node);
 
       this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event, filePath));
       this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event, filePath));
