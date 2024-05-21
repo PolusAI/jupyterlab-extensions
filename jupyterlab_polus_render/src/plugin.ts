@@ -142,11 +142,6 @@ function activateWidgetExtension(
           filePath.innerHTML = `Path: ${relativePath}`;
         }
 
-        // // If the overlay path is the same as the current, force a state change
-        if (this.model.get('overlayPath') === notebook_absdir + '/../' + relativePath) {
-          this.model.set('overlayPath', '');
-        }
-
         this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
         this.model.set('is_overlayPath_url', false);  
         this.model.save_changes();
@@ -159,17 +154,10 @@ function activateWidgetExtension(
         if (filePath) {
           filePath.innerHTML = `Path: ${relativePath}`; 
         }
-        
-        // If the image path is the same as the current, force a state change
-        if (this.model.get('imagePath') === notebook_absdir + '/../' + relativePath) {
-          this.model.set('imagePath', '');
-        }
 
         this.model.set('imagePath', notebook_absdir + '/../' + relativePath);
         this.model.set('is_imagePath_url', false);
         this.model.save_changes();
-        // console.log(this.loadsetState());
-        console.log(this.model.get('imageUrl'));
         this.render();
       }
 
@@ -196,6 +184,17 @@ function activateWidgetExtension(
 
     render() {
       this.loadsetState();
+
+
+      // Observe any changes to imagePath and rerun the widget when it changes
+      this.model.on('change:imagePath', () => {
+        this.loadsetState(); // Updates the value of imagePath
+      }, this);
+
+      // Observe any changes to overlayPath and rerun the widget when it changes
+      this.model.on('change:overlayPath', () => {
+        this.loadsetState(); // Updates the value of overlayPath
+      }, this);
 
       // Create dropzoneWidget if it doesn't exist
       if (!this.dropzoneWidget) {

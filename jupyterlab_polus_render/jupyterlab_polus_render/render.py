@@ -35,7 +35,9 @@ class Render(DOMWidget):
     overlayPath = Unicode('').tag(sync=True)
     is_imagePath_url = Bool(False).tag(sync=True)  # Flag if the imagePath is a URL
     is_overlayPath_url = Bool(False).tag(sync=True) # Flag if the overlayPath is a URL
-    
+
+    notebook_absdir = str(Path.cwd())
+
     def __init__(self, imagePath='', overlayPath='', **kwargs):
         super().__init__(**kwargs)
 
