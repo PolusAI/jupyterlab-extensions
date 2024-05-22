@@ -126,15 +126,19 @@ function activateWidgetExtension(
 
       const widget = tracker.currentWidget;
       if (!widget) {
+        console.error("No active widget found.");
         return;
       }
       const selectedItem = widget.selectedItems().next().value;
       if (!selectedItem) {
+        console.error("No selected item found.");
         return;
       }
       const relativePath = encodeURI(selectedItem.path);
+      console.log("Dropped file path:", relativePath);
       
       let notebook_absdir = this.model.get('notebook_absdir'); // Fetch from render.py
+      console.log("Notebook absolute directory:", notebook_absdir);
 
       // An overlay gets dropped on an image
       if (relativePath.endsWith('.json')){
@@ -142,23 +146,36 @@ function activateWidgetExtension(
           filePath.innerHTML = `Path: ${relativePath}`;
         }
 
+        // If the overlay path is the same as the current, force a state change
+        if (this.model.get('overlayPath') === notebook_absdir + '/../' + relativePath) {
+          this.model.set('overlayPath', '');
+        }
+
         this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
         this.model.set('is_overlayPath_url', false);  
         this.model.save_changes();
         this.render();
-        
       }
 
       // An image gets dropped
-      else {
+      else if (relativePath.endsWith('.tif') || relativePath.endsWith('.tiff')){
         if (filePath) {
           filePath.innerHTML = `Path: ${relativePath}`; 
+        }
+
+        // If the image path is the same as the current, force a state change
+        if (this.model.get('imagePath') === notebook_absdir + '/../' + relativePath) {
+          this.model.set('imagePath', '');
         }
 
         this.model.set('imagePath', notebook_absdir + '/../' + relativePath);
         this.model.set('is_imagePath_url', false);
         this.model.save_changes();
+        console.log("New image path set:", this.model.get('imagePath'));
         this.render();
+      }
+      else {
+        console.error("Unsupported file type dropped:", relativePath);
       }
 
     }
