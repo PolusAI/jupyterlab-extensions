@@ -137,6 +137,7 @@ function activateWidgetExtension(
       const relativePath = encodeURI(selectedItem.path);
       console.log("Dropped file path:", relativePath);
       
+      
       let notebook_absdir = this.model.get('notebook_absdir'); // Fetch from render.py
       console.log("Notebook absolute directory:", notebook_absdir);
 

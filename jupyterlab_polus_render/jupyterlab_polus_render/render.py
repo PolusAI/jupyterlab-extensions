@@ -35,15 +35,15 @@ class Render(DOMWidget):
     overlayPath = Unicode('').tag(sync=True)
     is_imagePath_url = Bool(False).tag(sync=True)  # Flag if the imagePath is a URL
     is_overlayPath_url = Bool(False).tag(sync=True) # Flag if the overlayPath is a URL
-
-    notebook_absdir = str(Path.cwd())
+    notebook_absdir = Unicode('').tag(sync=True)
+    
 
     def __init__(self, imagePath='', overlayPath='', **kwargs):
         super().__init__(**kwargs)
 
         self.imagePath, self.is_imagePath_url = self.create_full_path(imagePath)
         self.overlayPath, self.is_overlayPath_url = self.create_full_path(overlayPath)
-
+        self.notebook_absdir = str(Path.cwd())
 
     def create_full_path(self, path):
         # If the path starts with 'http', return path value and set True for URL flag
