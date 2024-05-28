@@ -159,7 +159,7 @@ function activateWidgetExtension(
       }
 
       // An image gets dropped
-      else if (relativePath.endsWith('.tif') || relativePath.endsWith('.tiff')){
+      else if (relativePath.endsWith('.tif') || relativePath.endsWith('.tiff') || relativePath.endsWith('.zarr')){
         if (filePath) {
           filePath.innerHTML = `Path: ${relativePath}`; 
         }
