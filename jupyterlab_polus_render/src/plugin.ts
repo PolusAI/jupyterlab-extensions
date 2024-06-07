@@ -112,6 +112,7 @@ function activateWidgetExtension(
       /** dropAction is 'move' when an object is moved from it's original location into the target element or zone **/
       event.dropAction = "move";
       console.log("Drag over event:", event);
+      this.render();
     }
 
     /**
