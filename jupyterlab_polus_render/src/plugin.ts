@@ -42,6 +42,7 @@ function activateWidgetExtension(
   const RenderView = class extends DOMWidgetView {
     protected dropzoneElement: HTMLDivElement;
     protected dropzoneWidget: Widget;
+    protected eventListenersInitialized = false;
 
     loadsetState() {
       let imagePath = this.model.get('imagePath');
@@ -156,7 +157,7 @@ function activateWidgetExtension(
         this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
         this.model.set('is_overlayPath_url', false);  
         this.model.save_changes();
-        this.render();
+        // this.render(); -- Why run render() here ? this.model.on() should take care of the updated val. 
       }
 
       // An image gets dropped
@@ -174,7 +175,7 @@ function activateWidgetExtension(
         this.model.set('is_imagePath_url', false);
         this.model.save_changes();
         console.log("New image path set:", this.model.get('imagePath'));
-        this.render();
+        // this.render(); -- Why run render() here ? this.model.on() should take care of the updated val. 
       }
       else {
         console.error("Unsupported file type dropped:", relativePath);
@@ -204,44 +205,35 @@ function activateWidgetExtension(
     render() {
       this.loadsetState();
 
-
-      // Observe any changes to imagePath and rerun the widget when it changes
-      this.model.on('change:imagePath', () => {
-        this.loadsetState(); // Updates the value of imagePath
-      }, this);
-
-      // Observe any changes to overlayPath and rerun the widget when it changes
-      this.model.on('change:overlayPath', () => {
-        this.loadsetState(); // Updates the value of overlayPath
-      }, this);
-
-      // Create dropzoneWidget if it doesn't exist
       if (!this.dropzoneWidget) {
         this.dropzoneWidget = new Widget();
         this.dropzoneElement = document.createElement('div');
-        // Attach css class
         this.dropzoneElement.className = 'dropzone';
         this.dropzoneWidget.node.appendChild(this.dropzoneElement);
-        // Append the dropzoneWidget to the main element
         this.el.appendChild(this.dropzoneWidget.node);
       }
 
-      // Ensure the dropzoneElement is empty before appending new elements
       this.dropzoneElement.innerHTML = '';
 
-      // Create the polusRender element and filePath element
       const filePath = document.createElement('div');
       filePath.id = 'filePath';
       const polusRender = document.createElement('polus-render');
 
-      // Append the filePath and polusRender elements to the dropzoneElement
       this.dropzoneElement.appendChild(filePath);
       this.dropzoneElement.appendChild(polusRender);
 
-      this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event, filePath));
-      this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event, filePath));
-      this.dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event, filePath));
-      this.dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event, filePath));
+      // Do not add event listeners repeatedly if already present [initially flagged as false]
+      // Listeners are added only once
+      if (!this.eventListenersInitialized) {
+        this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event, filePath));
+        this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event, filePath));
+        this.dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event, filePath));
+        this.dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event, filePath));
+        this.eventListenersInitialized = true;
+      }
+
+      this.model.on('change:imagePath', () => this.render(), this); // render() has the loadsetstate(). which gets exec when the this.render() runs
+      this.model.on('change:overlayPath', () => this.render(), this);
     }
   };
 
