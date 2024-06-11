@@ -102,7 +102,7 @@ function activateWidgetExtension(
       this.dropzoneElement.classList.remove('dragover');
       this.dropzoneElement.textContent = ''; // Hide text when leaving
       console.log("Drag leave event:", event);
-      this.render();
+      this.render(); 
     } 
 
     /**
@@ -119,7 +119,7 @@ function activateWidgetExtension(
     /**
      * Handle the lm-drop event for the widget.
      */
-    protected handleDrop(event: Drag.Event, filePath: HTMLElement): void {
+    protected handleDrop(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
       this.dropzoneElement.classList.remove('dragover');
@@ -145,13 +145,12 @@ function activateWidgetExtension(
 
       // An overlay gets dropped on an image
       if (relativePath.endsWith('.json')){
-        if (filePath) {
-          filePath.innerHTML = `Path: ${relativePath}`;
-        }
+        
 
-        // If the overlay path is the same as the current, force a state change
+        // If the overlay path is the same as the current input (same file gets dropped), force a state change
         if (this.model.get('overlayPath') === notebook_absdir + '/../' + relativePath) {
           this.model.set('overlayPath', '');
+          this.model.save_changes();
         }
 
         this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
@@ -162,11 +161,9 @@ function activateWidgetExtension(
 
       // An image gets dropped
       else if (relativePath.endsWith('.tif') || relativePath.endsWith('.tiff') || relativePath.endsWith('.zarr')){
-        if (filePath) {
-          filePath.innerHTML = `Path: ${relativePath}`; 
-        }
+      
 
-        // If the image path is the same as the current, force a state change
+        // If the image path is the same as the current (same file gets dropped), force a state change
         if (this.model.get('imagePath') === notebook_absdir + '/../' + relativePath) {
           this.model.set('imagePath', '');
         }
@@ -183,7 +180,7 @@ function activateWidgetExtension(
 
     }
 
-    protected handleEvent(event: Drag.Event, filePath: HTMLElement): void {
+    protected handleEvent(event: Drag.Event): void {
       switch (event.type) {
         case 'lm-dragenter':
           this.handleDragEnter(event);
@@ -195,40 +192,38 @@ function activateWidgetExtension(
           this.handleDragOver(event);
           break;
         case 'lm-drop':
-          this.handleDrop(event, filePath);
+          this.handleDrop(event);
           break;
         default:
           break;
       }
     }
-
+    
     render() {
       this.loadsetState();
 
+      // Create as lumino widget
       if (!this.dropzoneWidget) {
         this.dropzoneWidget = new Widget();
         this.dropzoneElement = document.createElement('div');
-        this.dropzoneElement.className = 'dropzone';
+        this.dropzoneElement.className = 'dropzone'; // CSS class
         this.dropzoneWidget.node.appendChild(this.dropzoneElement);
         this.el.appendChild(this.dropzoneWidget.node);
       }
 
-      this.dropzoneElement.innerHTML = '';
 
-      const filePath = document.createElement('div');
-      filePath.id = 'filePath';
       const polusRender = document.createElement('polus-render');
 
-      this.dropzoneElement.appendChild(filePath);
+      
       this.dropzoneElement.appendChild(polusRender);
 
-      // Do not add event listeners repeatedly if already present [initially flagged as false]
-      // Listeners are added only once
+      // Do not add event listeners repeatedly if already present. Listeners are added only once
+      // [initially flagged as false]
       if (!this.eventListenersInitialized) {
-        this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event, filePath));
-        this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event, filePath));
-        this.dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event, filePath));
-        this.dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event, filePath));
+        this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event));
+        this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event));
+        this.dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event));
+        this.dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event));
         this.eventListenersInitialized = true;
       }
 
