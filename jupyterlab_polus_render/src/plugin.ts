@@ -145,8 +145,6 @@ function activateWidgetExtension(
 
       // An overlay gets dropped on an image
       if (relativePath.endsWith('.json')){
-        
-
         // If the overlay path is the same as the current input (same file gets dropped), force a state change
         if (this.model.get('overlayPath') === notebook_absdir + '/../' + relativePath) {
           this.model.set('overlayPath', '');
@@ -158,11 +156,8 @@ function activateWidgetExtension(
         this.model.save_changes();
         // this.render(); -- Why run render() here ? this.model.on() should take care of the updated val. 
       }
-
       // An image gets dropped
       else if (relativePath.endsWith('.tif') || relativePath.endsWith('.tiff') || relativePath.endsWith('.zarr')){
-      
-
         // If the image path is the same as the current (same file gets dropped), force a state change
         if (this.model.get('imagePath') === notebook_absdir + '/../' + relativePath) {
           this.model.set('imagePath', '');
@@ -199,6 +194,15 @@ function activateWidgetExtension(
       }
     }
     
+    updateView() {
+      // Clear previous content
+      this.dropzoneElement.innerHTML = '';
+  
+      const polusRender = document.createElement('polus-render');
+      this.dropzoneElement.appendChild(polusRender);
+    }
+
+
     render() {
       this.loadsetState();
 
@@ -210,12 +214,10 @@ function activateWidgetExtension(
         this.dropzoneWidget.node.appendChild(this.dropzoneElement);
         this.el.appendChild(this.dropzoneWidget.node);
       }
-
-
-      const polusRender = document.createElement('polus-render');
-
       
-      this.dropzoneElement.appendChild(polusRender);
+      // Update the view
+      this.updateView();
+
 
       // Do not add event listeners repeatedly if already present. Listeners are added only once
       // [initially flagged as false]
@@ -227,8 +229,17 @@ function activateWidgetExtension(
         this.eventListenersInitialized = true;
       }
 
-      this.model.on('change:imagePath', () => this.render(), this); // render() has the loadsetstate(). which gets exec when the this.render() runs
-      this.model.on('change:overlayPath', () => this.render(), this);
+      // Observe any changes to imagePath and rerun the widget when it changes
+      this.model.on('change:imagePath', () => {
+        this.loadsetState(); // Updates the value of imagePath
+        this.updateView(); // Re-render widgets view with new state
+      }, this);
+
+      // Observe any changes to overlayPath and rerun the widget when it changes
+      this.model.on('change:overlayPath', () => {
+        this.loadsetState(); // Updates the value of overlayPath
+        this.updateView(); // Re-render widgets view with new state
+      }, this);
     }
   };
 
