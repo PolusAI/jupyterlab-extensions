@@ -9,6 +9,7 @@ import { store } from '@labshare/polus-render';
 import { RenderModel } from './widget';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 import { Drag } from '@lumino/dragdrop';
+import { Dialog, showDialog } from '@jupyterlab/apputils';
 import '../css/dropzone.css';
 
 const EXTENSION_ID = 'jupyterlab_polus_render:plugin';
@@ -81,6 +82,14 @@ function activateWidgetExtension(
       });
     }
 
+    protected showUnsupportedFileTypePopup() {
+      showDialog({
+        title: 'Unsupported File Type',
+        body: `The file format is not supported.`,
+        buttons: [Dialog.okButton({ label: 'OK' })]
+      });
+    }
+
     /**
      * Handle the lm-dragenter event for the widget.
      */
@@ -102,7 +111,7 @@ function activateWidgetExtension(
       this.dropzoneElement.classList.remove('dragover');
       this.dropzoneElement.textContent = ''; // Hide text when leaving
       console.log("Drag leave event:", event);
-      this.render(); 
+      this.updateView(); 
     } 
 
     /**
@@ -154,7 +163,7 @@ function activateWidgetExtension(
         this.model.set('overlayPath', notebook_absdir + '/../' + relativePath);
         this.model.set('is_overlayPath_url', false);  
         this.model.save_changes();
-        // this.render(); -- Why run render() here ? this.model.on() should take care of the updated val. 
+        // this.render(); -- No need to run render() here ? this.model.on() should take care of the updated val. 
       }
       // An image gets dropped
       else if (relativePath.endsWith('.tif') || relativePath.endsWith('.tiff') || relativePath.endsWith('.zarr')){
@@ -167,10 +176,11 @@ function activateWidgetExtension(
         this.model.set('is_imagePath_url', false);
         this.model.save_changes();
         console.log("New image path set:", this.model.get('imagePath'));
-        // this.render(); -- Why run render() here ? this.model.on() should take care of the updated val. 
+        // this.render(); -- No need to run render() here ? this.model.on() should take care of the updated val. 
       }
       else {
         console.error("Unsupported file type dropped:", relativePath);
+        this.showUnsupportedFileTypePopup(); // Show the popup
       }
 
     }
@@ -195,7 +205,7 @@ function activateWidgetExtension(
     }
     
     updateView() {
-      // Clear previous content
+      // Clear previous content - removes all child elements of this.dropzoneElement
       this.dropzoneElement.innerHTML = '';
   
       const polusRender = document.createElement('polus-render');
