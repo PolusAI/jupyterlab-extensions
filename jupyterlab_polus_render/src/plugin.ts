@@ -10,7 +10,7 @@ import { RenderModel } from './widget';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 import { Drag } from '@lumino/dragdrop';
 import { Dialog, showDialog } from '@jupyterlab/apputils';
-import '../css/dropzone.css';
+import '../css/polusRender.css';
 
 const EXTENSION_ID = 'jupyterlab_polus_render:plugin';
 
@@ -41,8 +41,8 @@ function activateWidgetExtension(
 ): void { 
   const tracker = browserFactory.tracker;
   const RenderView = class extends DOMWidgetView {
-    protected dropzoneElement: HTMLDivElement;
-    protected dropzoneWidget: Widget;
+    protected polusRenderElement: HTMLDivElement;
+    protected polusRenderWidget: Widget;
     protected eventListenersInitialized = false;
 
     loadsetState() {
@@ -97,9 +97,8 @@ function activateWidgetExtension(
       event.preventDefault();
       event.stopPropagation();
       // Access CSS class: dragover
-      this.dropzoneElement.classList.add('dragover');
-      this.dropzoneElement.textContent = 'Drop files here'; // Show text when entering 
-      console.log("Drag enter event:", event);
+      this.polusRenderElement.classList.add('dragover');
+      this.polusRenderElement.textContent = 'Drop files here'; // Show text when entering 
     }
 
     /**
@@ -108,9 +107,8 @@ function activateWidgetExtension(
     protected handleDragLeave(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
-      this.dropzoneElement.classList.remove('dragover');
-      this.dropzoneElement.textContent = ''; // Hide text when leaving
-      console.log("Drag leave event:", event);
+      this.polusRenderElement.classList.remove('dragover');
+      this.polusRenderElement.textContent = ''; // Hide text when leaving
       this.updateView(); 
     } 
 
@@ -122,7 +120,6 @@ function activateWidgetExtension(
       event.stopPropagation();
       /** dropAction is 'move' when an object is moved from it's original location into the target element or zone **/
       event.dropAction = "move";
-      console.log("Drag over event:", event);
     }
 
     /**
@@ -131,8 +128,8 @@ function activateWidgetExtension(
     protected handleDrop(event: Drag.Event): void {
       event.preventDefault();
       event.stopPropagation();
-      this.dropzoneElement.classList.remove('dragover');
-      this.dropzoneElement.textContent = ''; // Hide text after dropping
+      this.polusRenderElement.classList.remove('dragover');
+      this.polusRenderElement.textContent = ''; // Hide text after dropping
       console.log("Item dropped:", event);
 
       const widget = tracker.currentWidget;
@@ -205,11 +202,11 @@ function activateWidgetExtension(
     }
     
     updateView() {
-      // Clear previous content - removes all child elements of this.dropzoneElement
-      this.dropzoneElement.innerHTML = '';
+      // Clear previous content - removes all child elements of this.polusRenderElement
+      this.polusRenderElement.innerHTML = '';
   
       const polusRender = document.createElement('polus-render');
-      this.dropzoneElement.appendChild(polusRender);
+      this.polusRenderElement.appendChild(polusRender);
     }
 
 
@@ -217,12 +214,12 @@ function activateWidgetExtension(
       this.loadsetState();
 
       // Create as lumino widget
-      if (!this.dropzoneWidget) {
-        this.dropzoneWidget = new Widget();
-        this.dropzoneElement = document.createElement('div');
-        this.dropzoneElement.className = 'dropzone'; // CSS class
-        this.dropzoneWidget.node.appendChild(this.dropzoneElement);
-        this.el.appendChild(this.dropzoneWidget.node);
+      if (!this.polusRenderWidget) {
+        this.polusRenderWidget = new Widget();
+        this.polusRenderElement = document.createElement('div');
+        this.polusRenderElement.className = 'polusRender'; // CSS class
+        this.polusRenderWidget.node.appendChild(this.polusRenderElement);
+        this.el.appendChild(this.polusRenderWidget.node);
       }
       
       // Update the view
@@ -232,10 +229,10 @@ function activateWidgetExtension(
       // Do not add event listeners repeatedly if already present. Listeners are added only once
       // [initially flagged as false]
       if (!this.eventListenersInitialized) {
-        this.dropzoneElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event));
-        this.dropzoneElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event));
-        this.dropzoneElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event));
-        this.dropzoneElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event));
+        this.polusRenderElement.addEventListener('lm-dragenter', (event) => this.handleEvent(event as Drag.Event));
+        this.polusRenderElement.addEventListener('lm-dragover', (event) => this.handleEvent(event as Drag.Event));
+        this.polusRenderElement.addEventListener('lm-dragleave', (event) => this.handleEvent(event as Drag.Event));
+        this.polusRenderElement.addEventListener('lm-drop', (event) => this.handleEvent(event as Drag.Event));
         this.eventListenersInitialized = true;
       }
 
