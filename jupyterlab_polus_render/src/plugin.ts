@@ -55,7 +55,7 @@ function activateWidgetExtension(
       
       // Updates the state based on current value
       this.model.set('is_imagePath_url', imagePath.startsWith('http')); 
-      this.model.set('isOverlayPathUrl', overlayPath.startsWith('http')); 
+      this.model.set('is_overlayPath_url', overlayPath.startsWith('http')); 
       this.model.save_changes();
 
       // Set the image url
