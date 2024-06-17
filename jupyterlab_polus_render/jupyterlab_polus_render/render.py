@@ -20,7 +20,7 @@ Methods:
 # import os
 from pathlib import Path
 from ipywidgets import DOMWidget
-from traitlets import Unicode, Bool
+from traitlets import Unicode, Bool, observe
 from ._frontend import module_name, module_version
 
 
@@ -44,6 +44,18 @@ class Render(DOMWidget):
         self.imagePath, self.is_imagePath_url = self.create_full_path(imagePath)
         self.overlayPath, self.is_overlayPath_url = self.create_full_path(overlayPath)
         self.notebook_absdir = str(Path.cwd())
+
+    # Decorator to observe when a trait attribute is changed
+    @observe('imagePath')
+    def _image_path_change(self, change): # Handler - change
+        new_value = change['new']
+        self.imagePath, self.is_imagePath_url = self.create_full_path(new_value)
+
+    @observe('overlayPath')
+    def _overlay_path_change(self, change):
+        new_value = change['new']   
+        self.overlayPath, self.is_overlayPath_url = self.create_full_path(new_value)
+
 
     def create_full_path(self, path):
         # If the path starts with 'http', return path value and set True for URL flag
