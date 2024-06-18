@@ -53,7 +53,7 @@ function activateWidgetExtension(
       let imageUrl = isImagePathUrl ? imagePath : `${baseUrl}${renderFilePrefix}${imagePath}`; // T/F condition ? valueIfTrue : valueIfFalse
       let overlayUrl = isOverlayPathUrl ? overlayPath : `${baseUrl}${renderFilePrefix}${overlayPath}`;
       
-      // Updates the state based on current value
+      // Updates the state based on current value --- [ Not needed anymore since traitlet sync takes cares ]
       this.model.set('is_imagePath_url', imagePath.startsWith('http')); 
       this.model.set('is_overlayPath_url', overlayPath.startsWith('http')); 
       this.model.save_changes();
