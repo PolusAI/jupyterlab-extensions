@@ -63,7 +63,7 @@ class Render(DOMWidget):
             return str(full_path), False
         
 
-     # Decorator to observe when a trait attribute is changed
+    # Decorator to observe when a trait attribute is changed
     @observe('imagePath')
     def _image_path_change(self, change): # Handler - change
         new_value = change['new']
