@@ -204,6 +204,7 @@ function activateWidgetExtension(
     }
     
     updateView() {
+      console.log("updateView called");
       // Clear previous content - removes all child elements of this.polusRenderElement
       this.polusRenderElement.innerHTML = '';
   
@@ -240,7 +241,7 @@ function activateWidgetExtension(
 
       // Observe any changes to imagePath and rerun the widget when it changes
       this.model.on('change:imagePath', () => {
-        
+        console.log('imagePath change detected')
         this.loadsetState(); // Updates the value of imagePath
         this.updateView(); // Re-render widgets view with new state
       }, this);
