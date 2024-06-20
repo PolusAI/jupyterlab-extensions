@@ -46,6 +46,7 @@ function activateWidgetExtension(
     protected eventListenersInitialized = false;
 
     loadsetState() {
+      console.log("loadsetState called");
       let imagePath = this.model.get('imagePath');
       let overlayPath = this.model.get('overlayPath');
       let isImagePathUrl = this.model.get('is_imagePath_url');
@@ -239,6 +240,7 @@ function activateWidgetExtension(
 
       // Observe any changes to imagePath and rerun the widget when it changes
       this.model.on('change:imagePath', () => {
+        
         this.loadsetState(); // Updates the value of imagePath
         this.updateView(); // Re-render widgets view with new state
       }, this);
