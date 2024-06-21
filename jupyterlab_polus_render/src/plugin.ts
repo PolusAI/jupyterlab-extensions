@@ -210,10 +210,12 @@ function activateWidgetExtension(
   
       const polusRender = document.createElement('polus-render');
       this.polusRenderElement.appendChild(polusRender);
+      console.log("View updated with new content");
     }
 
 
     render() {
+      console.log('render method called');
       this.loadsetState();
 
       // Create as lumino widget
