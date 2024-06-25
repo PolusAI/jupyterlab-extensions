@@ -249,9 +249,7 @@ function activateWidgetExtension(
       this.model.on('change:imagePath', () => {
         console.log('imagePath change detected in frontend');
         console.log('New imagePath:', this.model.get('imagePath'));   
-      
-        // Check if is_imagePath_url is updated correctly
-        console.log('New is_imagePath_url:', this.model.get('is_imagePath_url'));
+        console.log('New is_imagePath_url:', this.model.get('is_imagePath_url')); // This value is wrong because because of improper syncing between frontend and backend. Adding a delay returns correct value
       
         // Add a small delay before calling loadsetState - Helps to ensure the backend processing is complete
         setTimeout(() => {
