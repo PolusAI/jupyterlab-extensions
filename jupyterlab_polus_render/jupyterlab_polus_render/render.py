@@ -20,7 +20,7 @@ Methods:
 # import os
 from pathlib import Path
 from ipywidgets import DOMWidget
-from traitlets import Unicode, Bool
+from traitlets import Unicode, Bool, observe
 from ._frontend import module_name, module_version
 
 
@@ -35,18 +35,22 @@ class Render(DOMWidget):
     overlayPath = Unicode('').tag(sync=True)
     is_imagePath_url = Bool(False).tag(sync=True)  # Flag if the imagePath is a URL
     is_overlayPath_url = Bool(False).tag(sync=True) # Flag if the overlayPath is a URL
+    notebook_absdir = Unicode('').tag(sync=True)
     
+
     def __init__(self, imagePath='', overlayPath='', **kwargs):
         super().__init__(**kwargs)
 
         self.imagePath, self.is_imagePath_url = self.create_full_path(imagePath)
         self.overlayPath, self.is_overlayPath_url = self.create_full_path(overlayPath)
+        self.notebook_absdir = str(Path.cwd())
 
 
     def create_full_path(self, path):
         # If the path starts with 'http', return path value and set True for URL flag
         if path.startswith('http'):
-            return path, True 
+            print(f"Path is a URL: {path}")
+            return str(path), True 
         else:
             full_path = Path(path)  # Convert path to a Path object
             if not full_path.is_absolute():
@@ -57,5 +61,19 @@ class Render(DOMWidget):
             if not full_path.exists():
                 raise FileNotFoundError(f"The file '{full_path}' does not exist.")
             
+            print(f"Path is a local file: {full_path}")
             return str(full_path), False
         
+
+    # Decorator to observe when a trait attribute is changed
+    @observe('imagePath')
+    def _image_path_change(self, change): # Handler - change
+        print("Image path changed:", change['new'])
+        new_value = change['new']
+        self.imagePath, self.is_imagePath_url = self.create_full_path(new_value)
+        print(f"Updated imagePath: {self.imagePath}, is_imagePath_url: {self.is_imagePath_url}")
+
+    @observe('overlayPath')
+    def _overlay_path_change(self, change):
+        new_value = change['new']   
+        self.overlayPath, self.is_overlayPath_url = self.create_full_path(new_value)
