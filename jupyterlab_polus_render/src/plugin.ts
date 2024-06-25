@@ -51,38 +51,42 @@ function activateWidgetExtension(
       let overlayPath = this.model.get('overlayPath');
       let isImagePathUrl = this.model.get('is_imagePath_url');
       let isOverlayPathUrl = this.model.get('is_overlayPath_url');
-      let imageUrl = isImagePathUrl ? imagePath : `${baseUrl}${renderFilePrefix}${imagePath}`; // T/F condition ? valueIfTrue : valueIfFalse
-      let overlayUrl = isOverlayPathUrl ? overlayPath : `${baseUrl}${renderFilePrefix}${overlayPath}`;
-      
-      // [ Not needed anymore since traitlet sync takes cares ]
-      // Updates the state based on current value 
-      // this.model.set('is_imagePath_url', imagePath.startsWith('http')); 
-      // this.model.set('is_overlayPath_url', overlayPath.startsWith('http')); 
-      // this.model.save_changes();
 
-      // Set the image url
+      console.log(`isImagePathUrl: ${isImagePathUrl}, imagePath: ${imagePath}`);
+      // console.log(`isOverlayPathUrl: ${isOverlayPathUrl}, overlayPath: ${overlayPath}`);
+
+  
+      // T/F condition ? valueIfTrue : valueIfFalse
+      let imageUrl = isImagePathUrl ? imagePath : `${baseUrl}${renderFilePrefix}${imagePath}`;
+      let overlayUrl = isOverlayPathUrl ? overlayPath : `${baseUrl}${renderFilePrefix}${overlayPath}`;
+  
+      console.log(`imageUrl: ${imageUrl}`);
+      // console.log(`overlayUrl: ${overlayUrl}`);
+  
+      // Set the image URL in the store
       store.setState({
         urls: [
-          imageUrl,
+            imageUrl,
         ],
-      });
+    });
 
-      // Set the overlay url
-      fetch(overlayUrl).then((response) => {
+    // Set the overlay url
+    fetch(overlayUrl).then((response) => {
         response.json().then((overlayData) => {
-          store.setState({
-            overlayData,
-          });
-          const heatmapIds = Object.keys(overlayData.value_range)
-            .map((d: any) => ({ label: d, value: d }))
-            .concat({ label: 'None', value: null });
+            store.setState({
+                overlayData,
+            });
+            const heatmapIds = Object.keys(overlayData.value_range)
+                .map((d: any) => ({ label: d, value: d }))
+                .concat({ label: 'None', value: null });
 
-          store.setState({
-            heatmapIds,
-          });
+            store.setState({
+                heatmapIds,
+            });
         });
-      });
-    }
+    });
+  }
+  
 
     protected showUnsupportedFileTypePopup() {
       showDialog({
@@ -243,9 +247,17 @@ function activateWidgetExtension(
 
       // Observe any changes to imagePath and rerun the widget when it changes
       this.model.on('change:imagePath', () => {
-        console.log('imagePath change detected')
-        this.loadsetState(); // Updates the value of imagePath
-        this.updateView(); // Re-render widgets view with new state
+        console.log('imagePath change detected in frontend');
+        console.log('New imagePath:', this.model.get('imagePath'));   
+      
+        // Check if is_imagePath_url is updated correctly
+        console.log('New is_imagePath_url:', this.model.get('is_imagePath_url'));
+      
+        // Add a small delay before calling loadsetState - Helps to ensure the backend processing is complete
+        setTimeout(() => {
+          this.loadsetState();
+          this.updateView();
+        }, 100); // 100 milliseconds delay
       }, this);
 
       // Observe any changes to overlayPath and rerun the widget when it changes
