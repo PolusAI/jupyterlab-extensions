@@ -5,8 +5,10 @@ import json
 from pathlib import Path
 
 import setuptools
+
 try:
     from jupyter_packaging import get_data_files, npm_builder, wrap_installers
+
     try:
         import jupyterlab
     except ImportError as e:
@@ -21,25 +23,27 @@ HERE = Path(__file__).parent.resolve()
 # The name of the project
 name = "jupyterlab_wipp"
 
-lab_path = (HERE / name.replace("-", "_") / "labextension")
+lab_path = HERE / name.replace("-", "_") / "labextension"
 
 # Representative files that should exist after a successful build
-ensured_targets = [
-    str(lab_path / "package.json"),
-    str(lab_path / "static/style.js")
-]
+ensured_targets = [str(lab_path / "package.json"), str(lab_path / "static/style.js")]
 
 labext_name = "jupyterlab_wipp"
 
 data_files_spec = [
     ("share/jupyter/labextensions/%s" % labext_name, str(lab_path), "**"),
     ("share/jupyter/labextensions/%s" % labext_name, str(HERE), "install.json"),
-    ("etc/jupyter/jupyter_server_config.d",
-     "jupyter-config/server-config", "jupyterlab_wipp.json"),
+    (
+        "etc/jupyter/jupyter_server_config.d",
+        "jupyter-config/server-config",
+        "jupyterlab_wipp.json",
+    ),
     # For backward compatibility with notebook server
-    ("etc/jupyter/jupyter_notebook_config.d",
-     "jupyter-config/nb-config", "jupyterlab_wipp.json"),
-    
+    (
+        "etc/jupyter/jupyter_notebook_config.d",
+        "jupyter-config/nb-config",
+        "jupyterlab_wipp.json",
+    ),
 ]
 
 long_description = (HERE / "README.md").read_text()
@@ -63,9 +67,7 @@ setup_args = dict(
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
     data_files=get_data_files(data_files_spec),
-    install_requires=[
-        "jupyter_server>=1.6,<2"
-    ],
+    install_requires=["jupyter_server>=1.6,<2", "wipp-client>0.2.1"],
     zip_safe=False,
     include_package_data=True,
     python_requires=">=3.6",
@@ -81,7 +83,9 @@ setup_args = dict(
         "Programming Language :: Python :: 3.9",
         "Framework :: Jupyter",
     ],
-    cmdclass=wrap_installers(post_develop=post_develop, ensured_targets=ensured_targets)
+    cmdclass=wrap_installers(
+        post_develop=post_develop, ensured_targets=ensured_targets
+    ),
 )
 
 if __name__ == "__main__":

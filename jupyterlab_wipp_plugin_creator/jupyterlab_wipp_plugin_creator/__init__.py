@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from ._version import __version__
-from wipp_client.wipp import Wipp
+from wipp_client import Wipp
 
 HERE = Path(__file__).parent.resolve()
 
