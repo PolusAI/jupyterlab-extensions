@@ -125,6 +125,12 @@ dmypy.json
 .yarn/
 .sample-datasets/
 
+# Local dev environments and scratch notebooks
+.venv/
+venv/
+Untitled*.ipynb
+install-into-notebooks-hub.sh
+
 # Generated transformation outputs and local UI snapshots
 *__subset__*/
 *__subset__*.csv

@@ -39,12 +39,29 @@ interface IApplyResponse {
   cell_source: string;
 }
 
+function buildLoaderSnippet(
+  datasetName: string,
+  tableFormat: string,
+  includePreview = false
+): string {
+  const lines = [
+    'from notebooks_data import Dataset',
+    '',
+    `loaded_dataset = Dataset.get(${JSON.stringify(datasetName)}).read_table(format=${JSON.stringify(tableFormat)})`
+  ];
+  if (includePreview && tableFormat === 'pandas') {
+    lines.push('loaded_dataset.head()');
+  }
+  return lines.join('\n');
+}
+
 class DatasetSidebar extends Widget {
   private static readonly TABLE_FORMAT_OPTIONS = ['pandas', 'numpy'] as const;
   private static readonly DEFAULT_TABLE_FORMAT = 'pandas';
 
   private readonly statusNode = document.createElement('div');
   private readonly applyButton = document.createElement('button');
+  private readonly copySnippetButton = document.createElement('button');
   private readonly refreshButton = document.createElement('button');
   private readonly tilesContainer = document.createElement('div');
   private readonly notebookSelect = document.createElement('select');
@@ -106,16 +123,20 @@ class DatasetSidebar extends Widget {
 
     this.formatLabel.className = 'jp-DatasetsHint';
     this.formatLabel.textContent =
-      'Apply inserts a loader cell with the selected dataframe type.';
+      'Apply inserts a loader cell, or copy a snippet to paste into any notebook cell.';
     this.node.appendChild(this.formatLabel);
 
     const actionRow = document.createElement('div');
     actionRow.className = 'jp-DatasetsActions';
     this.refreshButton.className = 'jp-Button jp-mod-styled';
     this.refreshButton.textContent = 'Refresh';
+    this.copySnippetButton.className =
+      'jp-Button jp-mod-styled jp-DatasetsCopySnippetButton';
+    this.copySnippetButton.textContent = 'Copy\u00A0snippet';
     this.applyButton.className = 'jp-Button jp-mod-styled jp-DatasetsApplyButton';
     this.applyButton.textContent = 'Apply';
     actionRow.appendChild(this.refreshButton);
+    actionRow.appendChild(this.copySnippetButton);
     actionRow.appendChild(this.applyButton);
     this.node.appendChild(actionRow);
 
@@ -129,6 +150,13 @@ class DatasetSidebar extends Widget {
     this.applyButton.onclick = () => {
       void this.apply();
     };
+    this.copySnippetButton.onclick = () => {
+      void this.copySnippet();
+    };
+  }
+
+  private isReadyToCopySnippet(): boolean {
+    return Boolean(this.activeDatasetName);
   }
 
   private isReadyToApply(datasetPath = this.activeDatasetFilePath): boolean {
@@ -155,10 +183,20 @@ class DatasetSidebar extends Widget {
   }
 
   private updateActionState(): void {
-    const isReady = this.isReadyToApply();
-    this.applyButton.disabled = !isReady;
-    this.applyButton.classList.toggle('jp-DatasetsApplyButton-ready', isReady);
-    this.applyButton.classList.toggle('jp-DatasetsApplyButton-disabled', !isReady);
+    const isReadyToApply = this.isReadyToApply();
+    const isReadyToCopy = this.isReadyToCopySnippet();
+    this.applyButton.disabled = !isReadyToApply;
+    this.applyButton.classList.toggle('jp-DatasetsApplyButton-ready', isReadyToApply);
+    this.applyButton.classList.toggle('jp-DatasetsApplyButton-disabled', !isReadyToApply);
+    this.copySnippetButton.disabled = !isReadyToCopy;
+    this.copySnippetButton.classList.toggle(
+      'jp-DatasetsCopySnippetButton-ready',
+      isReadyToCopy
+    );
+    this.copySnippetButton.classList.toggle(
+      'jp-DatasetsCopySnippetButton-disabled',
+      !isReadyToCopy
+    );
   }
 
   private renderDatasetTiles(): void {
@@ -266,6 +304,36 @@ class DatasetSidebar extends Widget {
       this.setStatus(message, 'error');
     } finally {
       this.refreshButton.disabled = false;
+      this.updateActionState();
+    }
+  }
+
+  private async copySnippet(): Promise<void> {
+    const datasetName = this.activeDatasetName;
+    if (!datasetName) {
+      this.setStatus('Select a dataset before copying a snippet.', 'error');
+      return;
+    }
+
+    const snippet = buildLoaderSnippet(
+      datasetName,
+      this.activeTableFormat,
+      true
+    );
+
+    this.copySnippetButton.disabled = true;
+    this.setStatus('Copying loader snippet...', 'info');
+    try {
+      await navigator.clipboard.writeText(snippet);
+      this.setStatus(
+        `Copied loader snippet for "${datasetName}" to clipboard.`,
+        'success'
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to copy snippet.';
+      this.setStatus(message, 'error');
+    } finally {
       this.updateActionState();
     }
   }
