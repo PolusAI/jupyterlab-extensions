@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 
 import nbformat
+import pytest
+import tornado.httpclient
 from jupyter_dataset import handlers
 
 
@@ -176,20 +178,20 @@ async def test_apply_rejects_unsupported_format(
     notebook = nbformat.v4.new_notebook(cells=[])
     nbformat.write(notebook, notebook_path)
 
-    response = await jp_fetch(
-        "jupyter-dataset",
-        "apply",
-        method="POST",
-        body=json.dumps(
-            {
-                "dataset_file": "demo/sample.csv",
-                "notebook_path": "transform.ipynb",
-                "dataset_name": "demo",
-                "format": "polars",
-            }
-        ),
-        headers={"Content-Type": "application/json"},
-    )
-    assert response.code == 400
-    payload = json.loads(response.body)
-    assert "format must be one of:" in payload["reason"]
+    with pytest.raises(tornado.httpclient.HTTPClientError) as exc_info:
+        await jp_fetch(
+            "jupyter-dataset",
+            "apply",
+            method="POST",
+            body=json.dumps(
+                {
+                    "dataset_file": "demo/sample.csv",
+                    "notebook_path": "transform.ipynb",
+                    "dataset_name": "demo",
+                    "format": "polars",
+                }
+            ),
+            headers={"Content-Type": "application/json"},
+        )
+    assert exc_info.value.code == 400
+    assert "format must be one of:" in str(exc_info.value)

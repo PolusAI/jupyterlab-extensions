@@ -162,11 +162,11 @@
 .jp-DatasetsCopySnippetButton-ready {
   border-color: var(--jp-brand-color1);
   color: var(--jp-ui-inverse-font-color1);
-  background: var(--jp-brand-color1);
+  background: var(--jp-brand-color4);
 }
 
 .jp-DatasetsCopySnippetButton-ready:hover:not(:disabled) {
-  background: var(--jp-brand-color0);
+  background: var(--jp-brand-color3);
 }
 
 .jp-DatasetsCopySnippetButton-disabled {
