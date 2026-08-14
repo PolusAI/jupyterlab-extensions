@@ -9,12 +9,10 @@ The sidebar is **not** part of the Notebooks Hub web UI. It is a separate Jupyte
 After the extension is installed and datasets are mounted under `/opt/datasets`, JupyterLab shows a **Datasets** panel in the left sidebar. From there you can:
 
 1. Browse datasets attached to your server (each dataset is a folder with CSV/TSV/Parquet/JSON files).
-2. Pick a target notebook.
-3. Choose a loader format (`pandas` or `numpy`).
-4. **Apply** — append a loader code cell to the selected notebook.
-5. **Copy snippet** — copy the same loader code to the clipboard for pasting anywhere.
+2. Choose a loader format (`pandas` or `numpy`).
+3. **Copy snippet** — copy loader code to the clipboard for pasting into any notebook cell.
 
-Example code inserted by **Apply**:
+Example copied snippet:
 
 ```python
 from notebooks_data import Dataset
@@ -51,8 +49,7 @@ flowchart TB
   Spawn -->|bind mount subfolder by dataset id| Mount
   ExtFE -->|GET /jupyter-dataset/datasets| ExtAPI
   ExtAPI -->|scan| Mount
-  ExtFE -->|POST /jupyter-dataset/apply| ExtAPI
-  ExtAPI -->|append loader cell| NB
+  ExtFE -->|copy snippet to clipboard| NB
   NB -->|read_table| Mount
 ```
 
@@ -126,8 +123,8 @@ It has two parts:
 | Route | Method | Purpose |
 |-------|--------|---------|
 | `/jupyter-dataset/datasets` | GET | List folders/files under `JUPYTER_DATASET_ROOT` (default `/opt/datasets`) |
-| `/jupyter-dataset/notebooks` | GET | List `.ipynb` files in the user's notebook root |
-| `/jupyter-dataset/apply` | POST | Append a loader cell to a notebook |
+| `/jupyter-dataset/notebooks` | GET | List `.ipynb` files in the user's notebook root (unused by current sidebar UI) |
+| `/jupyter-dataset/apply` | POST | Append a loader cell to a notebook (server API retained; no sidebar button) |
 
 **Environment variable:**
 
@@ -205,8 +202,8 @@ Then **hard-refresh** JupyterLab in the browser (`Cmd+Shift+R` on macOS).
 ### Step 4 — Verify
 
 - The left sidebar should show **Datasets**.
-- Click **Refresh** — status should report loaded datasets and notebooks (not HTML/404).
-- Select a dataset, pick a notebook, and click **Apply** or **Copy snippet**.
+- Click **Refresh** — status should report loaded datasets (not HTML/404).
+- Select a dataset and click **Copy snippet**.
 
 ## Standalone extension testing (without Notebooks Hub)
 

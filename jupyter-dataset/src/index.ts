@@ -24,21 +24,6 @@ interface IDatasetListResponse {
   datasets: IDatasetEntry[];
 }
 
-interface INotebookListResponse {
-  notebook_root: string;
-  notebooks: string[];
-}
-
-interface IApplyResponse {
-  status: string;
-  dataset_file: string;
-  notebook_path: string;
-  dataset_name: string;
-  format: string;
-  cell_index: number;
-  cell_source: string;
-}
-
 function buildLoaderSnippet(
   datasetName: string,
   tableFormat: string,
@@ -60,21 +45,16 @@ class DatasetSidebar extends Widget {
   private static readonly DEFAULT_TABLE_FORMAT = 'pandas';
 
   private readonly statusNode = document.createElement('div');
-  private readonly applyButton = document.createElement('button');
   private readonly copySnippetButton = document.createElement('button');
   private readonly refreshButton = document.createElement('button');
   private readonly tilesContainer = document.createElement('div');
-  private readonly notebookSelect = document.createElement('select');
-  private readonly notebookControl = document.createElement('div');
   private readonly formatSelect = document.createElement('select');
   private readonly formatControl = document.createElement('div');
   private readonly formatLabel = document.createElement('div');
 
   private datasets: IDatasetEntry[] = [];
-  private notebooks: string[] = [];
   private activeDatasetFilePath = '';
   private activeDatasetName = '';
-  private activeNotebookPath = '';
   private activeTableFormat = DatasetSidebar.DEFAULT_TABLE_FORMAT;
 
   constructor() {
@@ -88,19 +68,6 @@ class DatasetSidebar extends Widget {
     this.tilesContainer.className = 'jp-DatasetsTiles';
     this.node.appendChild(this.tilesContainer);
     this.renderDatasetTiles();
-
-    this.notebookControl.className = 'jp-DatasetsControl';
-    const notebookLabel = document.createElement('label');
-    notebookLabel.className = 'jp-DatasetsLabel';
-    notebookLabel.textContent = 'Notebook';
-    this.notebookSelect.className = 'jp-DatasetsSelect';
-    this.notebookSelect.onchange = () => {
-      this.activeNotebookPath = this.notebookSelect.value;
-      this.updateActionState();
-    };
-    this.notebookControl.appendChild(notebookLabel);
-    this.notebookControl.appendChild(this.notebookSelect);
-    this.node.appendChild(this.notebookControl);
 
     this.formatControl.className = 'jp-DatasetsControl';
     const formatSelectLabel = document.createElement('label');
@@ -123,7 +90,7 @@ class DatasetSidebar extends Widget {
 
     this.formatLabel.className = 'jp-DatasetsHint';
     this.formatLabel.textContent =
-      'Apply inserts a loader cell, or copy a snippet to paste into any notebook cell.';
+      'Copy a loader snippet to paste into any notebook cell.';
     this.node.appendChild(this.formatLabel);
 
     const actionRow = document.createElement('div');
@@ -133,22 +100,16 @@ class DatasetSidebar extends Widget {
     this.copySnippetButton.className =
       'jp-Button jp-mod-styled jp-DatasetsCopySnippetButton';
     this.copySnippetButton.textContent = 'Copy\u00A0snippet';
-    this.applyButton.className = 'jp-Button jp-mod-styled jp-DatasetsApplyButton';
-    this.applyButton.textContent = 'Apply';
     actionRow.appendChild(this.refreshButton);
     actionRow.appendChild(this.copySnippetButton);
-    actionRow.appendChild(this.applyButton);
     this.node.appendChild(actionRow);
 
     this.statusNode.className = 'jp-DatasetsStatus';
-    this.statusNode.textContent = 'Loading datasets and notebooks...';
+    this.statusNode.textContent = 'Loading datasets...';
     this.node.appendChild(this.statusNode);
 
     this.refreshButton.onclick = () => {
       void this.refresh();
-    };
-    this.applyButton.onclick = () => {
-      void this.apply();
     };
     this.copySnippetButton.onclick = () => {
       void this.copySnippet();
@@ -159,35 +120,8 @@ class DatasetSidebar extends Widget {
     return Boolean(this.activeDatasetName);
   }
 
-  private isReadyToApply(datasetPath = this.activeDatasetFilePath): boolean {
-    return Boolean(datasetPath && this.activeDatasetName && this.activeNotebookPath);
-  }
-
-  private ensureActiveNotebookSelection(): void {
-    if (!this.notebooks.includes(this.activeNotebookPath)) {
-      this.activeNotebookPath = this.notebooks[0] ?? '';
-    }
-  }
-
-  private renderNotebookControl(): void {
-    this.notebookSelect.replaceChildren();
-    this.notebooks.forEach(notebookPath => {
-      const option = document.createElement('option');
-      option.value = notebookPath;
-      option.textContent = notebookPath;
-      option.selected = notebookPath === this.activeNotebookPath;
-      this.notebookSelect.appendChild(option);
-    });
-
-    this.notebookSelect.disabled = this.notebooks.length === 0;
-  }
-
   private updateActionState(): void {
-    const isReadyToApply = this.isReadyToApply();
     const isReadyToCopy = this.isReadyToCopySnippet();
-    this.applyButton.disabled = !isReadyToApply;
-    this.applyButton.classList.toggle('jp-DatasetsApplyButton-ready', isReadyToApply);
-    this.applyButton.classList.toggle('jp-DatasetsApplyButton-disabled', !isReadyToApply);
     this.copySnippetButton.disabled = !isReadyToCopy;
     this.copySnippetButton.classList.toggle(
       'jp-DatasetsCopySnippetButton-ready',
@@ -280,24 +214,14 @@ class DatasetSidebar extends Widget {
   }
 
   async refresh(): Promise<void> {
-    this.setStatus('Loading datasets and notebooks...', 'info');
-    this.applyButton.disabled = true;
+    this.setStatus('Loading datasets...', 'info');
     this.refreshButton.disabled = true;
     try {
-      const [datasetResponse, notebookResponse] = await Promise.all([
-        requestAPI<IDatasetListResponse>('datasets'),
-        requestAPI<INotebookListResponse>('notebooks')
-      ]);
+      const datasetResponse = await requestAPI<IDatasetListResponse>('datasets');
       this.datasets = datasetResponse.datasets;
-      this.notebooks = notebookResponse.notebooks;
-      this.ensureActiveNotebookSelection();
-      this.renderNotebookControl();
       this.renderDatasetTiles();
       this.updateActionState();
-      this.setStatus(
-        `Loaded ${this.datasets.length} dataset(s) and ${this.notebooks.length} notebook(s).`,
-        'success'
-      );
+      this.setStatus(`Loaded ${this.datasets.length} dataset(s).`, 'success');
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Unknown error while refreshing.';
@@ -332,53 +256,6 @@ class DatasetSidebar extends Widget {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Failed to copy snippet.';
-      this.setStatus(message, 'error');
-    } finally {
-      this.updateActionState();
-    }
-  }
-
-  private async apply(): Promise<void> {
-    const datasetFile = this.activeDatasetFilePath;
-    const datasetName = this.activeDatasetName;
-    const notebookPath = this.activeNotebookPath;
-
-    if (!datasetFile) {
-      this.setStatus('Select a dataset file before applying.', 'error');
-      return;
-    }
-    if (!datasetName) {
-      this.setStatus('Select a dataset before applying.', 'error');
-      return;
-    }
-    if (!notebookPath) {
-      this.setStatus('Select a notebook before applying.', 'error');
-      return;
-    }
-
-    this.applyButton.disabled = true;
-    this.applyButton.classList.add('jp-DatasetsApplyButton-disabled');
-    this.applyButton.classList.remove('jp-DatasetsApplyButton-ready');
-    this.setStatus('Adding dataset loader cell to notebook...', 'info');
-    try {
-      const response = await requestAPI<IApplyResponse>('apply', {
-        method: 'POST',
-        body: JSON.stringify({
-          dataset_file: datasetFile,
-          dataset_name: datasetName,
-          notebook_path: notebookPath,
-          format: this.activeTableFormat
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      this.setStatus(
-        `Added loader cell (#${response.cell_index}) for "${response.dataset_name}" in ${response.notebook_path}.`,
-        'success'
-      );
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Apply failed.';
       this.setStatus(message, 'error');
     } finally {
       this.updateActionState();

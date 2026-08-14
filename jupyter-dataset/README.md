@@ -8,14 +8,15 @@
 
 # jupyter-dataset
 
-JupyterLab dataset loading helper with a simple sidebar flow: pick a dataset, choose a notebook, and apply.
+JupyterLab dataset loading helper with a Datasets sidebar: pick a dataset, choose a format, and copy a loader snippet to the clipboard.
 
-Apply appends a code cell to the selected notebook:
+Example snippet:
 
 ```python
 from notebooks_data import Dataset
 
 loaded_dataset = Dataset.get("<dataset-name>").read_table(format="pandas")
+loaded_dataset.head()
 ```
 
 Supported loader formats in the sidebar: `pandas` (default), `numpy`.

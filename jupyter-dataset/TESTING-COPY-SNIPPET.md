@@ -30,7 +30,6 @@ Notes:
 
 - Copy snippet works when a **dataset is selected** (notebook selection is **not** required).
 - `.head()` is included for `pandas` only; `numpy` format omits it.
-- The **Apply** button still inserts a loader cell server-side; Copy snippet is a client-side clipboard copy.
 
 ---
 
@@ -96,7 +95,7 @@ This script:
 ### Local test checklist
 
 - [ ] Left sidebar shows **Datasets**
-- [ ] Click **Refresh** → status shows datasets and notebooks loaded
+- [ ] Click **Refresh** → status shows datasets loaded
 - [ ] `Test_Dataset` tile appears
 - [ ] Click **Test_Dataset** → **Copy snippet** button becomes enabled (blue)
 - [ ] Click **Copy snippet** → success message in status area
@@ -323,10 +322,3 @@ Then relaunch the server (and re-install the extension if the container was recr
 
 ---
 
-## Meeting walkthrough agenda (15 min)
-
-1. Show PR review scope — only `index.ts` + `base.css` for Copy snippet
-2. Demo local path (`./run-jupyterlab-test.sh`) if Hub setup is heavy
-3. In Datasets sidebar: select dataset → Copy snippet → paste → run cell
-4. Show dataframe type toggle (`pandas` vs `numpy`) changes snippet format
-5. Discuss follow-ups: bake extension into `polusai/notebook` image, fix dataset bind mounts in Hub dev mode
