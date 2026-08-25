@@ -123,8 +123,6 @@ It has two parts:
 | Route | Method | Purpose |
 |-------|--------|---------|
 | `/jupyter-dataset/datasets` | GET | List folders/files under `JUPYTER_DATASET_ROOT` (default `/opt/datasets`) |
-| `/jupyter-dataset/notebooks` | GET | List `.ipynb` files in the user's notebook root (unused by current sidebar UI) |
-| `/jupyter-dataset/apply` | POST | Append a loader cell to a notebook (server API retained; no sidebar button) |
 
 **Environment variable:**
 
@@ -214,7 +212,17 @@ cd ~/Projects/jupyterlab-extensions/jupyter-dataset
 ./run-jupyterlab-test.sh
 ```
 
-This uses local sample data in `.sample-datasets/` (create folders with CSV files as documented in the extension repo's `TESTING-COPY-SNIPPET.md`).
+This uses local sample data in `.sample-datasets/` (gitignored). Create it once with a folder per dataset:
+
+```bash
+mkdir -p .sample-datasets/Test_Dataset
+cat > .sample-datasets/Test_Dataset/data.csv <<'EOF'
+id,name,value
+1,alpha,10.5
+2,beta,22.0
+3,gamma,8.75
+EOF
+```
 
 ## Troubleshooting
 
