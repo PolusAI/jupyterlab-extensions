@@ -126,18 +126,6 @@ jupyter server extension enable jupyterlab_wipp_plugin_creator
 jlpm run build
 ```
 
-#### Manually fix the bug in @deathbeds/jupyterlab-rjsf to make `formData` work
-1. Open `jupyterlab_wipp_plugin_creator/node_modules/@deathbeds/jupyterlab-rjsf/lib/schemaform/model.js`
-2. Add to line 13
-```js
-if (props) {
-    this.props = props;
-    if (props.formData) {
-        this.formData = props.formData;
-    }
-}
-```
-
 You can watch the source directory and run JupyterLab at the same time in different terminals to watch for changes in the extension's source and automatically rebuild the extension.
 
 ```bash
