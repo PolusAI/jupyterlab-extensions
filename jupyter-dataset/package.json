@@ -89,6 +89,9 @@
     "typescript": "^5.7.3",
     "yjs": "^13.5.0"
   },
+  "overrides": {
+    "webpack": "5.106.2"
+  },
   "sideEffects": [
     "style/*.css",
     "style/index.js"
