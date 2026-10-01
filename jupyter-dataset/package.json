@@ -1,20 +1,19 @@
 {
   "name": "jupyter-dataset",
   "version": "0.1.0",
-  "description": "A JupyterLab extension.",
+  "description": "JupyterLab Datasets sidebar that copies notebooks_data loader snippets for pandas or numpy.",
   "keywords": [
     "jupyter",
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/your-org/jupyter-dataset",
+  "homepage": "https://github.com/PolusAI/jupyterlab-extensions/tree/master/jupyter-dataset",
   "bugs": {
-    "url": "https://github.com/your-org/jupyter-dataset/issues"
+    "url": "https://github.com/PolusAI/jupyterlab-extensions/issues"
   },
   "license": "BSD-3-Clause",
   "author": {
-    "name": "jupyter-dataset contributors",
-    "email": "maintainers@example.com"
+    "name": "PolusAI"
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
@@ -25,7 +24,8 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/jupyter-dataset.git"
+    "url": "https://github.com/PolusAI/jupyterlab-extensions.git",
+    "directory": "jupyter-dataset"
   },
   "workspaces": [
     "ui-tests"
