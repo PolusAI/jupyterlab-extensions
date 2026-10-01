@@ -1,0 +1,86 @@
+name: Build and release jupyter-dataset
+
+on:
+  pull_request:
+    paths:
+      - "jupyter-dataset/**"
+      - ".github/workflows/jupyter-dataset-publish.yml"
+  push:
+    tags:
+      - "jupyter-dataset-v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: jupyter-dataset
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: jupyter-dataset/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build the wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+
+      - name: Confirm the wheel contains the lab extension
+        run: unzip -l dist/*.whl | grep "share/jupyter/labextensions/jupyter-dataset/package.json"
+
+      - name: Confirm pip install enables the extension
+        run: |
+          python -m pip install "jupyterlab>=4,<5" dist/*.whl
+          jupyter labextension list 2>&1 | grep -ie "jupyter-dataset.*OK"
+
+      - name: Require the tag to match package.json
+        if: startsWith(github.ref, 'refs/tags/jupyter-dataset-v')
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          tag_version="${GITHUB_REF_NAME#jupyter-dataset-v}"
+          if [ "$version" != "$tag_version" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package.json version ${version}."
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jupyter-dataset-wheel
+          path: jupyter-dataset/dist/*.whl
+
+  publish:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/jupyter-dataset-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: jupyter-dataset-wheel
+          path: dist
+
+      - name: Attach the wheel to the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          notes="Python wheel for jupyter-dataset ${GITHUB_REF_NAME#jupyter-dataset-v}."
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/*.whl --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" dist/*.whl \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "$GITHUB_REF_NAME" \
+              --notes "$notes"
+          fi
